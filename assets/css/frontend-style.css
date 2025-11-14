@@ -15,6 +15,12 @@ body {
     /* font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Oxygen-Sans, Ubuntu, Cantarell, "Helvetica Neue", sans-serif; */
 }
 
+@media (max-width: 991px) {
+    .dhr-hotel-map-container {
+        display: block;
+    }
+}
+
 .dhr-hotel-info-panel {
     flex: 0 0 33.333%;
     background: #C1C0BB;
@@ -24,6 +30,38 @@ body {
     flex-direction: column;
     overflow-y: auto;
     justify-content: center;
+}
+
+@media (max-width: 1280px) {
+    .dhr-hotel-info-panel {
+        max-width: 500px;
+        padding-left: 6%;
+    }
+}
+
+@media (max-width: 1199px) {
+    .dhr-hotel-info-panel {
+        padding: 30px;
+        max-width: 400px;
+    }
+}
+
+@media (max-width: 991px) {
+    .dhr-hotel-info-panel {
+        max-width: 100%;
+    }
+}
+
+@media (max-width: 768px) {
+    .dhr-hotel-info-panel {
+        padding: 40px 30px;
+    }
+}
+
+@media (max-width: 575px) {
+    .dhr-hotel-info-panel {
+        padding: 40px 20px;
+    }
 }
 
 .dhr-hotel-info-content {
@@ -46,6 +84,18 @@ body {
     margin: 0 0 20px 0;
     line-height: 110.00000000000001%;
     color: #FAFAFA;
+}
+
+@media (max-width: 1280px) {
+    .dhr-main-heading {
+        font-size: 38px;
+    }
+}
+
+@media (max-width: 1199px) {
+    .dhr-main-heading {
+        font-size: 36px;
+    }
 }
 
 .dhr-description {
@@ -281,12 +331,12 @@ body {
 
     .dhr-hotel-info-panel {
         flex: 0 0 auto;
-        max-height: 300px;
+        max-height: 100%;
     }
 
     .dhr-hotel-map-panel {
         flex: 1;
-        min-height: 400px;
+        /* min-height: 400px; */
     }
 }
 
