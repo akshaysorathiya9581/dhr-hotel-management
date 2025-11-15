@@ -212,6 +212,22 @@ class DHR_Hotel_Admin {
         $api_key = isset($_POST['google_maps_api_key']) ? sanitize_text_field($_POST['google_maps_api_key']) : '';
         update_option('dhr_hotel_google_maps_api_key', $api_key);
         
+        // Save map display settings
+        $location_heading = isset($_POST['location_heading']) ? sanitize_text_field($_POST['location_heading']) : '';
+        update_option('dhr_hotel_location_heading', $location_heading);
+        
+        $main_heading = isset($_POST['main_heading']) ? sanitize_text_field($_POST['main_heading']) : '';
+        update_option('dhr_hotel_main_heading', $main_heading);
+        
+        $description_text = isset($_POST['description_text']) ? sanitize_textarea_field($_POST['description_text']) : '';
+        update_option('dhr_hotel_description_text', $description_text);
+        
+        $reservation_label = isset($_POST['reservation_label']) ? sanitize_text_field($_POST['reservation_label']) : '';
+        update_option('dhr_hotel_reservation_label', $reservation_label);
+        
+        $reservation_phone = isset($_POST['reservation_phone']) ? sanitize_text_field($_POST['reservation_phone']) : '';
+        update_option('dhr_hotel_reservation_phone', $reservation_phone);
+        
         wp_redirect(admin_url('admin.php?page=dhr-hotel-settings&message=saved'));
         exit;
     }

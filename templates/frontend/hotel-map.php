@@ -11,11 +11,23 @@ if (!defined('ABSPATH')) {
 <div class="dhr-hotel-map-container" style="height: <?php echo esc_attr($atts['height']); ?>;">
     <div class="dhr-hotel-info-panel">
         <div class="dhr-hotel-info-content">
-            <h2 class="dhr-location-heading">LOCATED IN THE WESTERN CAPE</h2>
-            <h3 class="dhr-main-heading">Find Us</h3>
-            <p class="dhr-description">
-                <?php _e('Discover our hotel locations across the Western Cape. Click on any marker to view hotel details and make a reservation.', 'dhr-hotel-management'); ?>
-            </p>
+            <?php 
+            // Get dynamic settings with defaults
+            $location_heading = get_option('dhr_hotel_location_heading', 'LOCATED IN THE WESTERN CAPE');
+            $main_heading = get_option('dhr_hotel_main_heading', 'Find Us');
+            $description_text = get_option('dhr_hotel_description_text', 'Discover our hotel locations across the Western Cape. Click on any marker to view hotel details and make a reservation.');
+            ?>
+            <?php if (!empty($location_heading)): ?>
+                <h2 class="dhr-location-heading"><?php echo esc_html($location_heading); ?></h2>
+            <?php endif; ?>
+            <?php if (!empty($main_heading)): ?>
+                <h3 class="dhr-main-heading"><?php echo esc_html($main_heading); ?></h3>
+            <?php endif; ?>
+            <?php if (!empty($description_text)): ?>
+                <p class="dhr-description">
+                    <?php echo esc_html($description_text); ?>
+                </p>
+            <?php endif; ?>
             
             <?php //if (!empty($hotels)): ?>
                 <!-- <div class="dhr-hotels-list"> -->
@@ -28,8 +40,20 @@ if (!defined('ABSPATH')) {
                 <!-- </div> -->
             <?php //endif; ?>
             
-            <?php if (!empty($hotels) && isset($hotels[0])): ?>
-                <?php $first_hotel = $hotels[0]; ?>
+            <?php 
+            // Get reservation settings
+            $reservation_label = get_option('dhr_hotel_reservation_label', 'RESERVATION BY PHONE');
+            $reservation_phone = get_option('dhr_hotel_reservation_phone', '');
+            
+            // Use setting phone if available, otherwise fall back to first hotel's phone
+            $display_phone = !empty($reservation_phone) ? $reservation_phone : '';
+            if (empty($display_phone) && !empty($hotels) && isset($hotels[0])) {
+                $display_phone = $hotels[0]->phone;
+            }
+            
+            // Only show reservation section if we have a phone number
+            if (!empty($display_phone)):
+            ?>
                 <div class="dhr-reservation-info">
                     <div class="dhr-phone-section">
                         <span class="dhr-phone-icon">
@@ -38,8 +62,10 @@ if (!defined('ABSPATH')) {
                             </svg>
                         </span>
                         <div>
-                            <p class="dhr-reservation-label">RESERVATION BY PHONE</p>
-                            <p class="dhr-phone-number"><?php echo esc_html($first_hotel->phone); ?></p>
+                            <?php if (!empty($reservation_label)): ?>
+                                <p class="dhr-reservation-label"><?php echo esc_html($reservation_label); ?></p>
+                            <?php endif; ?>
+                            <p class="dhr-phone-number"><?php echo esc_html($display_phone); ?></p>
                         </div>
                     </div>
                 </div>

@@ -9,6 +9,11 @@ if (!defined('ABSPATH')) {
 
 $message = isset($_GET['message']) ? sanitize_text_field($_GET['message']) : '';
 $api_key = get_option('dhr_hotel_google_maps_api_key', '');
+$location_heading = get_option('dhr_hotel_location_heading', 'LOCATED IN THE WESTERN CAPE');
+$main_heading = get_option('dhr_hotel_main_heading', 'Find Us');
+$description_text = get_option('dhr_hotel_description_text', 'Discover our hotel locations across the Western Cape. Click on any marker to view hotel details and make a reservation.');
+$reservation_label = get_option('dhr_hotel_reservation_label', 'RESERVATION BY PHONE');
+$reservation_phone = get_option('dhr_hotel_reservation_phone', '+27 (0)21 876 8900');
 ?>
 
 <div class="wrap dhr-hotel-admin">
@@ -35,6 +40,64 @@ $api_key = get_option('dhr_hotel_google_maps_api_key', '');
                         <?php _e('Get your API key from', 'dhr-hotel-management'); ?> 
                         <a href="https://console.cloud.google.com/" target="_blank">Google Cloud Console</a>.
                         <?php _e('Enable "Maps JavaScript API" for your project.', 'dhr-hotel-management'); ?>
+                    </p>
+                </td>
+            </tr>
+            <tr>
+                <th colspan="2"><h2><?php _e('Map Display Settings', 'dhr-hotel-management'); ?></h2></th>
+            </tr>
+            <tr>
+                <th><label for="location_heading"><?php _e('Location Heading', 'dhr-hotel-management'); ?></label></th>
+                <td>
+                    <input type="text" id="location_heading" name="location_heading" 
+                           class="regular-text" value="<?php echo esc_attr($location_heading); ?>" 
+                           placeholder="LOCATED IN THE WESTERN CAPE">
+                    <p class="description">
+                        <?php _e('The small heading text displayed above the main heading (e.g., "LOCATED IN THE WESTERN CAPE").', 'dhr-hotel-management'); ?>
+                    </p>
+                </td>
+            </tr>
+            <tr>
+                <th><label for="main_heading"><?php _e('Main Heading', 'dhr-hotel-management'); ?></label></th>
+                <td>
+                    <input type="text" id="main_heading" name="main_heading" 
+                           class="regular-text" value="<?php echo esc_attr($main_heading); ?>" 
+                           placeholder="Find Us">
+                    <p class="description">
+                        <?php _e('The main heading text displayed on the map section (e.g., "Find Us").', 'dhr-hotel-management'); ?>
+                    </p>
+                </td>
+            </tr>
+            <tr>
+                <th><label for="description_text"><?php _e('Description Text', 'dhr-hotel-management'); ?></label></th>
+                <td>
+                    <textarea id="description_text" name="description_text" 
+                              class="large-text" rows="3" 
+                              placeholder="Discover our hotel locations across the Western Cape. Click on any marker to view hotel details and make a reservation."><?php echo esc_textarea($description_text); ?></textarea>
+                    <p class="description">
+                        <?php _e('The descriptive text displayed below the main heading.', 'dhr-hotel-management'); ?>
+                    </p>
+                </td>
+            </tr>
+            <tr>
+                <th><label for="reservation_label"><?php _e('Reservation Label', 'dhr-hotel-management'); ?></label></th>
+                <td>
+                    <input type="text" id="reservation_label" name="reservation_label" 
+                           class="regular-text" value="<?php echo esc_attr($reservation_label); ?>" 
+                           placeholder="RESERVATION BY PHONE">
+                    <p class="description">
+                        <?php _e('The label text displayed above the phone number (e.g., "RESERVATION BY PHONE").', 'dhr-hotel-management'); ?>
+                    </p>
+                </td>
+            </tr>
+            <tr>
+                <th><label for="reservation_phone"><?php _e('Reservation Phone Number', 'dhr-hotel-management'); ?></label></th>
+                <td>
+                    <input type="text" id="reservation_phone" name="reservation_phone" 
+                           class="regular-text" value="<?php echo esc_attr($reservation_phone); ?>" 
+                           placeholder="+27 (0)21 876 8900">
+                    <p class="description">
+                        <?php _e('The phone number displayed for reservations. If left empty, the first hotel\'s phone number will be used.', 'dhr-hotel-management'); ?>
                     </p>
                 </td>
             </tr>
