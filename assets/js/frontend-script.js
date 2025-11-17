@@ -175,6 +175,7 @@
             .replace(/{city}/g, escapeHtml(hotel.city))
             .replace(/{province}/g, escapeHtml(hotel.province))
             .replace(/{image_url}/g, hotel.image_url || (dhrHotelsData.pluginUrl + 'assets/images/default-hotel.jpg'))
+            .replace(/{pluginUrl}/g, dhrHotelsData.pluginUrl)
             .replace(/{google_maps_url}/g, hotel.google_maps_url || 'https://www.google.com/maps?q=' + hotel.latitude + ',' + hotel.longitude)
             .replace(/{phone}/g, escapeHtml(hotel.phone || ''));
 

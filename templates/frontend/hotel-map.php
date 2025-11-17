@@ -81,7 +81,7 @@ if (!defined('ABSPATH')) {
 <div id="dhr-hotel-info-window-template" style="display: none;">
     <div class="dhr-info-window">
         <div class="dhr-info-window-image">
-            <img src="{image_url}" alt="{name}" onerror="this.src='<?php echo DHR_HOTEL_PLUGIN_URL; ?>assets/images/default-hotel.jpg';">
+            <img src="{image_url}" alt="{name}" onerror="this.onerror=null; this.src='{pluginUrl}assets/images/default-hotel.jpg';">
         </div>
         <div class="dhr-info-window-content">
             <h3 class="dhr-info-window-title">{name}</h3>
@@ -99,5 +99,3 @@ if (!defined('ABSPATH')) {
         </div>
     </div>
 </div>
-
-

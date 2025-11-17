@@ -53,11 +53,70 @@ class DHR_Hotel_Frontend {
         );
         
         // Localize script with hotels data
-        $hotels = DHR_Hotel_Database::get_all_hotels('active');
-        wp_localize_script('dhr-hotel-frontend-script', 'dhrHotelsData', array(
-            'hotels' => $hotels,
-            'pluginUrl' => DHR_HOTEL_PLUGIN_URL
-        ));
+        // CRITICAL: Convert database objects to arrays for JSON encoding
+        // WordPress cannot JSON encode database objects directly, which causes infinite loading
+        $hotels_array = array();
+        
+        try {
+            $hotels = DHR_Hotel_Database::get_all_hotels('active');
+            
+            if (!empty($hotels) && is_array($hotels)) {
+                foreach ($hotels as $hotel) {
+                    // Convert object to array for JSON encoding
+                    if (is_object($hotel)) {
+                        $hotels_array[] = array(
+                            'id' => isset($hotel->id) ? intval($hotel->id) : 0,
+                            'name' => isset($hotel->name) ? sanitize_text_field($hotel->name) : '',
+                            'description' => isset($hotel->description) ? sanitize_text_field($hotel->description) : '',
+                            'address' => isset($hotel->address) ? sanitize_text_field($hotel->address) : '',
+                            'city' => isset($hotel->city) ? sanitize_text_field($hotel->city) : '',
+                            'province' => isset($hotel->province) ? sanitize_text_field($hotel->province) : '',
+                            'country' => isset($hotel->country) ? sanitize_text_field($hotel->country) : '',
+                            'latitude' => isset($hotel->latitude) ? floatval($hotel->latitude) : 0,
+                            'longitude' => isset($hotel->longitude) ? floatval($hotel->longitude) : 0,
+                            'phone' => isset($hotel->phone) ? sanitize_text_field($hotel->phone) : '',
+                            'email' => isset($hotel->email) ? sanitize_email($hotel->email) : '',
+                            'website' => isset($hotel->website) ? esc_url_raw($hotel->website) : '',
+                            'image_url' => isset($hotel->image_url) ? esc_url_raw($hotel->image_url) : '',
+                            'google_maps_url' => isset($hotel->google_maps_url) ? esc_url_raw($hotel->google_maps_url) : '',
+                            'status' => isset($hotel->status) ? sanitize_text_field($hotel->status) : 'active'
+                        );
+                    } elseif (is_array($hotel)) {
+                        // Already an array, just sanitize
+                        $hotels_array[] = array(
+                            'id' => isset($hotel['id']) ? intval($hotel['id']) : 0,
+                            'name' => isset($hotel['name']) ? sanitize_text_field($hotel['name']) : '',
+                            'description' => isset($hotel['description']) ? sanitize_text_field($hotel['description']) : '',
+                            'address' => isset($hotel['address']) ? sanitize_text_field($hotel['address']) : '',
+                            'city' => isset($hotel['city']) ? sanitize_text_field($hotel['city']) : '',
+                            'province' => isset($hotel['province']) ? sanitize_text_field($hotel['province']) : '',
+                            'country' => isset($hotel['country']) ? sanitize_text_field($hotel['country']) : '',
+                            'latitude' => isset($hotel['latitude']) ? floatval($hotel['latitude']) : 0,
+                            'longitude' => isset($hotel['longitude']) ? floatval($hotel['longitude']) : 0,
+                            'phone' => isset($hotel['phone']) ? sanitize_text_field($hotel['phone']) : '',
+                            'email' => isset($hotel['email']) ? sanitize_email($hotel['email']) : '',
+                            'website' => isset($hotel['website']) ? esc_url_raw($hotel['website']) : '',
+                            'image_url' => isset($hotel['image_url']) ? esc_url_raw($hotel['image_url']) : '',
+                            'google_maps_url' => isset($hotel['google_maps_url']) ? esc_url_raw($hotel['google_maps_url']) : '',
+                            'status' => isset($hotel['status']) ? sanitize_text_field($hotel['status']) : 'active'
+                        );
+                    }
+                }
+            }
+        } catch (Exception $e) {
+            if (defined('WP_DEBUG') && WP_DEBUG) {
+                error_log('DHR Hotel Management Error: ' . $e->getMessage());
+            }
+            $hotels_array = array();
+        }
+        
+        // Only localize if script is registered
+        if (wp_script_is('dhr-hotel-frontend-script', 'registered')) {
+            wp_localize_script('dhr-hotel-frontend-script', 'dhrHotelsData', array(
+                'hotels' => $hotels_array,
+                'pluginUrl' => DHR_HOTEL_PLUGIN_URL
+            ));
+        }
     }
     
     /**
