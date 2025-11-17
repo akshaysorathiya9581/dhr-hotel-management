@@ -21,7 +21,7 @@ body {
     }
 }
 
-.dhr-hotel-info-panel {
+.dhr-hotel-map-container .dhr-hotel-info-panel {
     flex: 0 0 33.333%;
     background: #C1C0BB;
     padding: 40px 30px;
@@ -33,42 +33,42 @@ body {
 }
 
 @media (max-width: 1280px) {
-    .dhr-hotel-info-panel {
+    .dhr-hotel-map-container .dhr-hotel-info-panel {
         max-width: 500px;
         padding-left: 6%;
     }
 }
 
 @media (max-width: 1199px) {
-    .dhr-hotel-info-panel {
+    .dhr-hotel-map-container .dhr-hotel-info-panel {
         padding: 30px;
         max-width: 400px;
     }
 }
 
 @media (max-width: 991px) {
-    .dhr-hotel-info-panel {
+    .dhr-hotel-map-container .dhr-hotel-info-panel {
         max-width: 100%;
     }
 }
 
 @media (max-width: 768px) {
-    .dhr-hotel-info-panel {
+    .dhr-hotel-map-container .dhr-hotel-info-panel {
         padding: 40px 30px;
     }
 }
 
 @media (max-width: 575px) {
-    .dhr-hotel-info-panel {
+    .dhr-hotel-map-container .dhr-hotel-info-panel {
         padding: 40px 20px;
     }
 }
 
-.dhr-hotel-info-content {
+.dhr-hotel-map-container .dhr-hotel-info-content {
     max-width: 100%;
 }
 
-.dhr-location-heading {
+.dhr-hotel-map-container .dhr-location-heading {
     font-size: 13px;
     font-weight: 600;
     line-height: 140%;
@@ -78,7 +78,7 @@ body {
     margin: 0 0 15px 0;
 }
 
-.dhr-main-heading {
+.dhr-hotel-map-container .dhr-main-heading {
     font-size: 40px;
     font-weight: 300;
     margin: 0 0 20px 0;
@@ -87,18 +87,18 @@ body {
 }
 
 @media (max-width: 1280px) {
-    .dhr-main-heading {
+    .dhr-hotel-map-container .dhr-main-heading {
         font-size: 38px;
     }
 }
 
 @media (max-width: 1199px) {
-    .dhr-main-heading {
+    .dhr-hotel-map-container .dhr-main-heading {
         font-size: 36px;
     }
 }
 
-.dhr-description {
+.dhr-hotel-map-container .dhr-description {
     font-size: 16px;
     font-weight: 400;
     color: #FAFAFA;
@@ -107,11 +107,11 @@ body {
     max-width: 414px;
 }
 
-.dhr-hotels-list {
+.dhr-hotel-map-container .dhr-hotels-list {
     margin: 30px 0;
 }
 
-.dhr-hotel-item {
+.dhr-hotel-map-container .dhr-hotel-item {
     padding: 15px;
     margin-bottom: 10px;
     background: #fff;
@@ -121,49 +121,49 @@ body {
     border-left: 3px solid transparent;
 }
 
-.dhr-hotel-item:hover {
+.dhr-hotel-map-container .dhr-hotel-item:hover {
     background: #f0f0f0;
     border-left-color: #8B4513;
 }
 
-.dhr-hotel-item.active {
+.dhr-hotel-map-container .dhr-hotel-item.active {
     background: #fff3e0;
     border-left-color: #8B4513;
     box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
 }
 
-.dhr-hotel-item h4 {
+.dhr-hotel-map-container .dhr-hotel-item h4 {
     margin: 0 0 5px 0;
     font-size: 16px;
     color: #333;
     font-weight: 600;
 }
 
-.dhr-hotel-item p {
+.dhr-hotel-map-container .dhr-hotel-item p {
     margin: 0;
     font-size: 13px;
     color: #666;
 }
 
-.dhr-reservation-info {
+.dhr-hotel-map-container .dhr-reservation-info {
     /* margin-top: 30px;
     padding-top: 30px;
     border-top: 1px solid #ddd; */
 }
 
-.dhr-phone-section {
+.dhr-hotel-map-container .dhr-phone-section {
     display: flex;
     align-items: center;
     gap: 12px;
 }
 
-.dhr-phone-icon {
+.dhr-hotel-map-container .dhr-phone-icon {
     /* font-size: 24px; */
     display: inline-flex;
     color: currentColor;
 }
 
-.dhr-reservation-label {
+.dhr-hotel-map-container .dhr-reservation-label {
     font-size: 13px;
     font-weight: 600;
     line-height: 140%;
@@ -173,7 +173,7 @@ body {
     margin: 0 0 3px 0;
 }
 
-.dhr-phone-number {
+.dhr-hotel-map-container .dhr-phone-number {
     font-size: 20px;
     font-weight: 400;
     line-height: 120%;
@@ -182,13 +182,13 @@ body {
     font-weight: 400;
 }
 
-.dhr-hotel-map-panel {
+.dhr-hotel-map-container .dhr-hotel-map-panel {
     flex: 1;
     position: relative;
     background: #e5e5e5;
 }
 
-.dhr-hotel-map {
+.dhr-hotel-map-container .dhr-hotel-map {
     width: 100%;
     height: 100%;
     min-height: 531px;
@@ -228,32 +228,32 @@ body {
 }
 
 /* Info Window Styles */
-.dhr-info-window {
+.dhr-hotel-map-container .dhr-info-window {
     display: flex;
     flex-direction: column;
     align-items: center;
 }
 
-.dhr-info-window-image {
+.dhr-hotel-map-container .dhr-info-window-image {
     width: 166px;
     height: 109px;
     overflow: hidden;
     background: transparent;
 }
 
-.dhr-info-window-image img {
+.dhr-hotel-map-container .dhr-info-window-image img {
     width: 100%;
     height: 100%;
     object-fit: cover;
     border-radius: 4px;
 }
 
-.dhr-info-window-content {
+.dhr-hotel-map-container .dhr-info-window-content {
     padding: 7px 4px 0;
     text-align: center;
 }
 
-.dhr-info-window-title {
+.dhr-hotel-map-container .dhr-info-window-title {
     font-size: 10.45px;
     font-weight: 400;
     line-height: 140%;
@@ -262,7 +262,7 @@ body {
     margin: 0 0 2px 0;
 }
 
-.dhr-info-window-location {
+.dhr-hotel-map-container .dhr-info-window-location {
     font-size: 10.45px;
     font-weight: 400;
     line-height: 140%;
@@ -270,14 +270,14 @@ body {
     margin: 0 0 8px 0;
 }
 
-.dhr-info-window-actions {
+.dhr-hotel-map-container .dhr-info-window-actions {
     display: flex;
     gap: 12px;
     padding: 0 10spx;
 }
 
-.dhr-btn-info,
-.dhr-btn-book {
+.dhr-hotel-map-container .dhr-btn-info,
+.dhr-hotel-map-container .dhr-btn-book {
     width: auto;
     flex: 1;
     height: 42px;
@@ -295,47 +295,47 @@ body {
     gap: 5px;
 }
 
-.dhr-btn-book {
+.dhr-hotel-map-container .dhr-btn-book {
    min-width: 96px;
 }
 
-.dhr-btn-info {
+.dhr-hotel-map-container .dhr-btn-info {
     background: #DFEFF9;
     color: #fff;
 }
 
-.dhr-btn-info:hover {
+.dhr-hotel-map-container .dhr-btn-info:hover {
     background: #afd3e9;
     color: #fff;
 }
 
-.dhr-btn-book {
+.dhr-hotel-map-container .dhr-btn-book {
     background: #062943;
     color: #fff;
 }
 
-.dhr-btn-book:hover {
+.dhr-hotel-map-container .dhr-btn-book:hover {
     background: #031725;
     color: #fff;
 }
 
-.dhr-icon {
+.dhr-hotel-map-container .dhr-icon {
     font-size: 16px;
     font-weight: bold;
 }
 
 /* Responsive Design */
 @media (max-width: 768px) {
-    .dhr-hotel-map-container {
+    .dhr-hotel-map-container .dhr-hotel-map-container {
         flex-direction: column;
     }
 
-    .dhr-hotel-info-panel {
+    .dhr-hotel-map-container .dhr-hotel-info-panel {
         flex: 0 0 auto;
         max-height: 100%;
     }
 
-    .dhr-hotel-map-panel {
+    .dhr-hotel-map-container .dhr-hotel-map-panel {
         flex: 1;
         /* min-height: 400px; */
     }
