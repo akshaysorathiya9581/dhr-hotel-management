@@ -17,7 +17,8 @@ body {
 
 @media (max-width: 991px) {
     .dhr-hotel-map-container {
-        display: block;
+        flex-direction: column-reverse;
+        height: 100% !important;
     }
 }
 
@@ -49,18 +50,14 @@ body {
 @media (max-width: 991px) {
     .dhr-hotel-map-container .dhr-hotel-info-panel {
         max-width: 100%;
+        background-color: #FAFAFA;
+        padding: 75px 30px 40px;
     }
 }
 
 @media (max-width: 768px) {
     .dhr-hotel-map-container .dhr-hotel-info-panel {
-        padding: 40px 30px;
-    }
-}
-
-@media (max-width: 575px) {
-    .dhr-hotel-map-container .dhr-hotel-info-panel {
-        padding: 40px 20px;
+        padding: 70px 35px 40px;
     }
 }
 
@@ -77,6 +74,13 @@ body {
     letter-spacing: 2%;
     color: #462801;
     margin: 0 0 15px 0;
+}
+
+@media (max-width: 991px) {
+    .dhr-hotel-map-container .dhr-location-heading {
+        color: #D3AA74;
+        margin-bottom: 18px;
+    }
 }
 
 .dhr-hotel-map-container .dhr-main-heading {
@@ -100,14 +104,48 @@ body {
     }
 }
 
+@media (max-width: 991px) {
+    .dhr-hotel-map-container .dhr-main-heading {
+        font-size: 34px;
+        color: #462801;
+    }
+}
+
+@media (max-width: 768px) {
+    .dhr-hotel-map-container .dhr-main-heading {
+        font-size: 32px;
+    }
+}
+
 .dhr-hotel-map-container .dhr-description {
     font-family: "Open Sans", sans-serif !important;
-    font-size: 16px;
+    font-size: 14px;
     font-weight: 400;
     color: #FAFAFA;
     line-height: 140%;
     margin: 0 0 40px 0;
     max-width: 414px;
+}
+
+@media (max-width: 991px) {
+    .dhr-hotel-map-container .dhr-description {
+        max-width: 100%;
+        color: #676B6D;
+        margin-bottom: 35px;
+        font-size: 18px;
+    }
+}
+
+@media (max-width: 420px) {
+    .dhr-hotel-map-container .dhr-description {
+        font-size: 16px;
+    }
+}
+
+@media (max-width: 380px) {
+    .dhr-hotel-map-container .dhr-description {
+        font-size: 14px;
+    }
 }
 
 .dhr-hotel-map-container .dhr-hotels-list {
@@ -151,9 +189,8 @@ body {
 }
 
 .dhr-hotel-map-container .dhr-reservation-info {
-    /* margin-top: 30px;
-    padding-top: 30px;
-    border-top: 1px solid #ddd; */
+    /* Reserved for future styles */
+    display: block;
 }
 
 .dhr-hotel-map-container .dhr-phone-section {
@@ -170,23 +207,29 @@ body {
 
 .dhr-hotel-map-container .dhr-reservation-label {
     font-family: "Open Sans", sans-serif !important;
-    font-size: 13px;
+    font-size: 12px;
     font-weight: 600;
     line-height: 140%;
     text-transform: uppercase;
     letter-spacing: 2%;
     color: #462801;
-    margin: 0 0 3px 0;
+    margin: 0 0 5px 0;
 }
 
 .dhr-hotel-map-container .dhr-phone-number {
     font-family: "Open Sans", sans-serif !important;
-    font-size: 20px;
+    font-size: 18px;
     font-weight: 400;
     line-height: 120%;
     color: #FAFAFA;
     margin: 0;
     font-weight: 400;
+}
+
+@media (max-width: 991px) {
+    .dhr-hotel-map-container .dhr-phone-number {
+        color: #434648;
+    }
 }
 
 .dhr-hotel-map-container .dhr-hotel-map-panel {
@@ -202,12 +245,12 @@ body {
 }
 
 .gm-style-iw {
-    max-width: 200px !important;
+    max-width: 210px !important;
     width: 100% !important;
     background: #FFFFFF !important;
     box-shadow: 0px 3.48px 5.23px -1.74px #04286F08 !important;
     box-shadow: 0px 10.45px 13.94px -3.48px #04286F14 !important;
-    padding: 15px !important;
+    padding: 20px !important;
     border-radius: 6.97px !important;
 }
 
@@ -222,15 +265,15 @@ body {
 
 .gm-ui-hover-effect {
     position: absolute !important;
-    right: 0;
-    top: 0;
-    width: 20px !important;
-    height: 20px !important;
+    right: 3px;
+    top: 3px;
+    width: 18px !important;
+    height: 18px !important;
 }
 
 .gm-ui-hover-effect>span {
-    width: 18px !important;
-    height: 18px !important;
+    width: 16px !important;
+    height: 16px !important;
     margin: 0 !important;
 }
 
@@ -242,7 +285,7 @@ body {
 }
 
 .dhr-hotel-map-container .dhr-info-window-image {
-    width: 166px;
+    width: 100%;
     height: 109px;
     overflow: hidden;
     background: transparent;
@@ -256,7 +299,7 @@ body {
 }
 
 .dhr-hotel-map-container .dhr-info-window-content {
-    padding: 7px 4px 0;
+    padding: 7px 0 0;
     text-align: center;
 }
 
@@ -358,4 +401,136 @@ body {
 
 .elementor-element.elementor-element-43318e2 {
     padding: 0 !important;
+}
+
+.dhr-hotel-map-container .map-btn {
+    margin-bottom: 25px;
+}
+
+.dhr-hotel-map-container .map-btn__link {
+    min-width: 260px;
+    height: 48px;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    column-gap: 10px;
+    font-size: 16px;
+    font-weight: 400;
+    line-height: 24px;
+    background-color: #EBDBCA;
+    color: #1C1E1F;
+    padding: 10px 20px;
+    transition: all .25s ease-in-out;
+}
+
+@media (max-width: 480px) {
+    .dhr-hotel-map-container .map-btn__link {
+        display: flex;
+    }
+}
+
+.dhr-hotel-map-container .map-btn__link:hover {
+    background-color: #e1cfbc;
+}
+
+/* Pulse Effect for Map Markers using CSS Transform */
+.dhr-marker-pulse {
+    position: absolute;
+    pointer-events: none;
+    transform-origin: center center;
+    z-index: 0;
+    overflow: visible;
+    border: none !important;
+    outline: none !important;
+    box-shadow: none !important;
+    margin: 0 !important;
+    padding: 0 !important;
+    background: transparent !important;
+}
+
+.dhr-marker-pulse svg {
+    display: block;
+    overflow: visible;
+    border: none !important;
+    outline: none !important;
+    margin: 0 !important;
+    padding: 0 !important;
+}
+
+.dhr-marker-pulse .pulse-outer-circle {
+    transform-origin: center;
+    animation: pulse-outer 2s ease-in-out infinite;
+}
+
+.dhr-marker-pulse .pulse-middle-circle {
+    transform-origin: center;
+    animation: pulse-middle 2s ease-in-out infinite;
+}
+
+.dhr-marker-pulse.dhr-marker-pulse-active .pulse-outer-circle {
+    animation: pulse-outer-active 2s ease-in-out infinite;
+}
+
+.dhr-marker-pulse.dhr-marker-pulse-active .pulse-middle-circle {
+    animation: pulse-middle-active 2s ease-in-out infinite;
+}
+
+@keyframes pulse-outer {
+    0% {
+        transform: scale(1);
+        opacity: 0.1;
+    }
+    50% {
+        transform: scale(1.6);
+        opacity: 0.2;
+    }
+    100% {
+        transform: scale(1);
+        opacity: 0.1;
+    }
+}
+
+@keyframes pulse-middle {
+    0% {
+        transform: scale(1);
+        opacity: 0.3;
+    }
+    50% {
+        transform: scale(1.4);
+        opacity: 0.5;
+    }
+    100% {
+        transform: scale(1);
+        opacity: 0.3;
+    }
+}
+
+@keyframes pulse-outer-active {
+    0% {
+        transform: scale(1);
+        opacity: 0.1;
+    }
+    50% {
+        transform: scale(1.5);
+        opacity: 0.2;
+    }
+    100% {
+        transform: scale(1);
+        opacity: 0.1;
+    }
+}
+
+@keyframes pulse-middle-active {
+    0% {
+        transform: scale(1);
+        opacity: 0.3;
+    }
+    50% {
+        transform: scale(1.35);
+        opacity: 0.5;
+    }
+    100% {
+        transform: scale(1);
+        opacity: 0.3;
+    }
 }
