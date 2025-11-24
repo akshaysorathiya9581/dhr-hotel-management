@@ -47,6 +47,12 @@ body {
     }
 }
 
+@media (max-width: 1024px) {
+    .dhr-hotel-map-container .dhr-hotel-info-panel {
+        display: flex !important;
+    }
+}
+
 @media (max-width: 991px) {
     .dhr-hotel-map-container .dhr-hotel-info-panel {
         max-width: 100%;
