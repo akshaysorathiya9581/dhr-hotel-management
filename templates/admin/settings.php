@@ -14,6 +14,7 @@ $main_heading = get_option('dhr_hotel_main_heading', 'Find Us');
 $description_text = get_option('dhr_hotel_description_text', 'Discover our hotel locations across the Western Cape. Click on any marker to view hotel details and make a reservation.');
 $reservation_label = get_option('dhr_hotel_reservation_label', 'RESERVATION BY PHONE');
 $reservation_phone = get_option('dhr_hotel_reservation_phone', '+27 (0)21 876 8900');
+$view_on_google_maps_link = get_option('dhr_hotel_view_on_google_maps_link', '');
 ?>
 
 <div class="wrap dhr-hotel-admin">
@@ -98,6 +99,17 @@ $reservation_phone = get_option('dhr_hotel_reservation_phone', '+27 (0)21 876 89
                            placeholder="+27 (0)21 876 8900">
                     <p class="description">
                         <?php _e('The phone number displayed for reservations. If left empty, the first hotel\'s phone number will be used.', 'dhr-hotel-management'); ?>
+                    </p>
+                </td>
+            </tr>
+            <tr>
+                <th><label for="view_on_google_maps_link"><?php _e('View On Google Maps Link', 'dhr-hotel-management'); ?></label></th>
+                <td>
+                    <input type="url" id="view_on_google_maps_link" name="view_on_google_maps_link" 
+                           class="regular-text" value="<?php echo esc_url($view_on_google_maps_link); ?>" 
+                           placeholder="https://www.google.com/maps?q=Western+Cape">
+                    <p class="description">
+                        <?php _e('The URL for the "View On Google Maps" button. This can be a general location link or a specific Google Maps URL.', 'dhr-hotel-management'); ?>
                     </p>
                 </td>
             </tr>

@@ -29,8 +29,20 @@ if (!defined('ABSPATH')) {
                 </p>
             <?php endif; ?>
 
+            <?php
+            // Get View On Google Maps link
+            $view_on_google_maps_link = get_option('dhr_hotel_view_on_google_maps_link', '');
+            
+            // If no link is set, use first hotel's Google Maps URL as fallback
+            if (empty($view_on_google_maps_link) && !empty($hotels) && isset($hotels[0]) && !empty($hotels[0]->google_maps_url)) {
+                $view_on_google_maps_link = $hotels[0]->google_maps_url;
+            }
+            
+            // Only show button if we have a link
+            if (!empty($view_on_google_maps_link)):
+            ?>
             <div class="map-btn">
-                <a href="#" class="map-btn__link">
+                <a href="<?php echo esc_url($view_on_google_maps_link); ?>" target="_blank" rel="noopener noreferrer" class="map-btn__link">
                     <svg width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
                         <g clip-path="url(#clip0_4637_2271)">
                             <path
@@ -46,6 +58,7 @@ if (!defined('ABSPATH')) {
                     View On Google Maps
                 </a>
             </div>
+            <?php endif; ?>
 
             <?php //if (!empty($hotels)): ?>
             <!-- <div class="dhr-hotels-list"> -->

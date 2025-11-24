@@ -228,6 +228,9 @@ class DHR_Hotel_Admin {
         $reservation_phone = isset($_POST['reservation_phone']) ? sanitize_text_field($_POST['reservation_phone']) : '';
         update_option('dhr_hotel_reservation_phone', $reservation_phone);
         
+        $view_on_google_maps_link = isset($_POST['view_on_google_maps_link']) ? esc_url_raw($_POST['view_on_google_maps_link']) : '';
+        update_option('dhr_hotel_view_on_google_maps_link', $view_on_google_maps_link);
+        
         wp_redirect(admin_url('admin.php?page=dhr-hotel-settings&message=saved'));
         exit;
     }
