@@ -90,7 +90,7 @@ $reservation_phone = isset($settings['reservation_phone']) ? $settings['reservat
             }
             
             hotels.forEach(function(hotel) {
-                new google.maps.Marker({
+                var marker = new google.maps.Marker({
                     position: { lat: parseFloat(hotel.latitude), lng: parseFloat(hotel.longitude) },
                     map: map,
                     title: hotel.name,
@@ -102,6 +102,21 @@ $reservation_phone = isset($settings['reservation_phone']) ? $settings['reservat
                         strokeColor: '#fff',
                         strokeWeight: 2
                     }
+                });
+                
+                // Add info window
+                var infoContent = '<div style="padding: 10px; max-width: 250px;">' +
+                    '<h4 style="margin: 0 0 5px 0; font-size: 14px; font-weight: bold;">' + hotel.name + '</h4>' +
+                    '<p style="margin: 0 0 5px 0; font-size: 12px; color: #666;">' + hotel.address + '</p>' +
+                    '<p style="margin: 0; font-size: 12px; color: #666;">' + hotel.city + ', ' + hotel.province + '</p>' +
+                    '</div>';
+                
+                var infoWindow = new google.maps.InfoWindow({
+                    content: infoContent
+                });
+                
+                marker.addListener('click', function() {
+                    infoWindow.open(map, marker);
                 });
             });
         }

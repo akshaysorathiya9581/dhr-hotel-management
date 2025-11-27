@@ -46,16 +46,23 @@ $google_maps_url = isset($settings['google_maps_url']) ? $settings['google_maps_
             return;
         }
         
+        // Get hotels data
+        var hotels = (typeof dhrHotelsData !== 'undefined' && dhrHotelsData.hotels) ? dhrHotelsData.hotels : [];
+        
+        // Initialize map
+        var map;
+        var centerLocation = null;
+        var bounds = new google.maps.LatLngBounds();
+        
         // Use coordinates if available, otherwise geocode address
         var latitude = <?php echo !empty($latitude) ? floatval($latitude) : 'null'; ?>;
         var longitude = <?php echo !empty($longitude) ? floatval($longitude) : 'null'; ?>;
         
-        if (latitude !== null && longitude !== null) {
-            // Use coordinates directly (no Geocoding API needed)
-            var location = { lat: latitude, lng: longitude };
-            var map = new google.maps.Map(mapElement, {
-                zoom: 15,
-                center: location,
+        function initializeMapWithHotels(centerLocation) {
+            // Create map
+            map = new google.maps.Map(mapElement, {
+                zoom: hotels.length > 1 ? 10 : 15,
+                center: centerLocation,
                 styles: [
                     {
                         featureType: 'all',
@@ -70,78 +77,91 @@ $google_maps_url = isset($settings['google_maps_url']) ? $settings['google_maps_
                 ]
             });
             
-            new google.maps.Marker({
-                position: location,
-                map: map,
-                title: '<?php echo esc_js($title); ?>'
-            });
-            return;
-        }
-        
-        // Fallback to geocoding if coordinates not provided
-        var address = <?php echo json_encode($address); ?>;
-        var geocoder = new google.maps.Geocoder();
-        
-        geocoder.geocode({ address: address }, function(results, status) {
-            if (status === 'OK' && results[0]) {
-                var location = results[0].geometry.location;
-                var map = new google.maps.Map(mapElement, {
-                    zoom: 15,
-                    center: location,
-                    styles: [
-                        {
-                            featureType: 'all',
-                            elementType: 'geometry',
-                            stylers: [{ color: '#f5f5f5' }]
-                        },
-                        {
-                            featureType: 'water',
-                            elementType: 'geometry',
-                            stylers: [{ color: '#e0e0e0' }]
+            // Add hotel markers
+            if (hotels.length > 0) {
+                hotels.forEach(function(hotel) {
+                    var hotelLocation = { lat: parseFloat(hotel.latitude), lng: parseFloat(hotel.longitude) };
+                    bounds.extend(hotelLocation);
+                    
+                    var marker = new google.maps.Marker({
+                        position: hotelLocation,
+                        map: map,
+                        title: hotel.name,
+                        icon: {
+                            path: google.maps.SymbolPath.CIRCLE,
+                            scale: 10,
+                            fillColor: '#0066CC',
+                            fillOpacity: 1,
+                            strokeColor: '#fff',
+                            strokeWeight: 2
                         }
-                    ]
-                });
-                
-                new google.maps.Marker({
-                    position: location,
-                    map: map,
-                    title: '<?php echo esc_js($title); ?>'
-                });
-            } else {
-                // Handle geocoding errors gracefully
-                if (status === 'REQUEST_DENIED') {
-                    console.warn('Geocoding API not enabled. Using fallback coordinates.');
-                    // Fallback: Use approximate coordinates for Bryanston, Gauteng
-                    var fallbackLocation = { lat: -26.0519, lng: 28.0231 };
-                    var map = new google.maps.Map(mapElement, {
-                        zoom: 15,
-                        center: fallbackLocation,
-                        styles: [
-                            {
-                                featureType: 'all',
-                                elementType: 'geometry',
-                                stylers: [{ color: '#f5f5f5' }]
-                            },
-                            {
-                                featureType: 'water',
-                                elementType: 'geometry',
-                                stylers: [{ color: '#e0e0e0' }]
-                            }
-                        ]
                     });
                     
+                    // Add info window
+                    var infoContent = '<div style="padding: 10px; max-width: 250px;">' +
+                        '<h4 style="margin: 0 0 5px 0; font-size: 14px; font-weight: bold;">' + hotel.name + '</h4>' +
+                        '<p style="margin: 0 0 5px 0; font-size: 12px; color: #666;">' + hotel.address + '</p>' +
+                        '<p style="margin: 0; font-size: 12px; color: #666;">' + hotel.city + ', ' + hotel.province + '</p>' +
+                        '</div>';
+                    
+                    var infoWindow = new google.maps.InfoWindow({
+                        content: infoContent
+                    });
+                    
+                    marker.addListener('click', function() {
+                        infoWindow.open(map, marker);
+                    });
+                });
+                
+                // Fit bounds to show all hotels
+                if (hotels.length > 1) {
+                    map.fitBounds(bounds);
+                } else if (hotels.length === 1) {
+                    map.setCenter({ lat: parseFloat(hotels[0].latitude), lng: parseFloat(hotels[0].longitude) });
+                    map.setZoom(15);
+                }
+            } else {
+                // No hotels, show head office location
+                if (centerLocation) {
                     new google.maps.Marker({
-                        position: fallbackLocation,
+                        position: centerLocation,
                         map: map,
                         title: '<?php echo esc_js($title); ?>'
                     });
-                } else {
-                    console.error('Geocoding failed: ' + status);
-                    // Show error message in map container
-                    mapElement.innerHTML = '<div style="padding: 20px; text-align: center; color: #666;"><p>Unable to load map. Please check your Google Maps API configuration.</p><p style="font-size: 12px;">Error: ' + status + '</p></div>';
                 }
             }
-        });
+        }
+        
+        if (latitude !== null && longitude !== null) {
+            // Use coordinates directly (no Geocoding API needed)
+            centerLocation = { lat: latitude, lng: longitude };
+            initializeMapWithHotels(centerLocation);
+        } else if (hotels.length > 0) {
+            // Use first hotel as center if no coordinates provided
+            centerLocation = { lat: parseFloat(hotels[0].latitude), lng: parseFloat(hotels[0].longitude) };
+            initializeMapWithHotels(centerLocation);
+        } else {
+            // Fallback to geocoding if no hotels and no coordinates
+            var address = <?php echo json_encode($address); ?>;
+            var geocoder = new google.maps.Geocoder();
+            
+            geocoder.geocode({ address: address }, function(results, status) {
+                if (status === 'OK' && results[0]) {
+                    centerLocation = results[0].geometry.location;
+                    initializeMapWithHotels(centerLocation);
+                } else {
+                    // Handle geocoding errors gracefully
+                    if (status === 'REQUEST_DENIED') {
+                        console.warn('Geocoding API not enabled. Using fallback coordinates.');
+                        centerLocation = { lat: -26.0519, lng: 28.0231 };
+                        initializeMapWithHotels(centerLocation);
+                    } else {
+                        console.error('Geocoding failed: ' + status);
+                        mapElement.innerHTML = '<div style="padding: 20px; text-align: center; color: #666;"><p>Unable to load map. Please check your Google Maps API configuration.</p><p style="font-size: 12px;">Error: ' + status + '</p></div>';
+                    }
+                }
+            });
+        }
     }
     
     if (document.readyState === 'loading') {

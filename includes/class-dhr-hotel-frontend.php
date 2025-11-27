@@ -171,6 +171,7 @@ class DHR_Hotel_Frontend {
             'height' => '400px'
         ), $atts);
         
+        $hotels = DHR_Hotel_Database::get_all_hotels('active');
         $map_config = DHR_Hotel_Database::get_map_config('dhr_head_office_map');
         $settings = $map_config ? json_decode($map_config->settings, true) : array();
         

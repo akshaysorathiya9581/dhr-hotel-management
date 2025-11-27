@@ -69,24 +69,53 @@ $legend_dream = isset($settings['legend_dream']) ? $settings['legend_dream'] : '
         });
         
         // Create markers - alternate between CityBlue (blue) and Dream (light blue)
-        hotels.forEach(function(hotel, index) {
-            var isCityBlue = index % 2 === 0;
-            var markerColor = isCityBlue ? '#0066CC' : '#66B3FF';
+        if (hotels.length > 0) {
+            var bounds = new google.maps.LatLngBounds();
             
-            var marker = new google.maps.Marker({
-                position: { lat: parseFloat(hotel.latitude), lng: parseFloat(hotel.longitude) },
-                map: map,
-                title: hotel.name,
-                icon: {
-                    path: google.maps.SymbolPath.CIRCLE,
-                    scale: 8,
-                    fillColor: markerColor,
-                    fillOpacity: 1,
-                    strokeColor: '#fff',
-                    strokeWeight: 2
-                }
+            hotels.forEach(function(hotel, index) {
+                var isCityBlue = index % 2 === 0;
+                var markerColor = isCityBlue ? '#0066CC' : '#66B3FF';
+                var hotelLocation = { lat: parseFloat(hotel.latitude), lng: parseFloat(hotel.longitude) };
+                bounds.extend(hotelLocation);
+                
+                var marker = new google.maps.Marker({
+                    position: hotelLocation,
+                    map: map,
+                    title: hotel.name,
+                    icon: {
+                        path: google.maps.SymbolPath.CIRCLE,
+                        scale: 8,
+                        fillColor: markerColor,
+                        fillOpacity: 1,
+                        strokeColor: '#fff',
+                        strokeWeight: 2
+                    }
+                });
+                
+                // Add info window
+                var infoContent = '<div style="padding: 10px; max-width: 250px;">' +
+                    '<h4 style="margin: 0 0 5px 0; font-size: 14px; font-weight: bold;">' + hotel.name + '</h4>' +
+                    '<p style="margin: 0 0 5px 0; font-size: 12px; color: #666;">' + hotel.address + '</p>' +
+                    '<p style="margin: 0; font-size: 12px; color: #666;">' + hotel.city + ', ' + hotel.province + '</p>' +
+                    '</div>';
+                
+                var infoWindow = new google.maps.InfoWindow({
+                    content: infoContent
+                });
+                
+                marker.addListener('click', function() {
+                    infoWindow.open(map, marker);
+                });
             });
-        });
+            
+            // Fit bounds to show all hotels
+            if (hotels.length > 1) {
+                map.fitBounds(bounds);
+            } else if (hotels.length === 1) {
+                map.setCenter({ lat: parseFloat(hotels[0].latitude), lng: parseFloat(hotels[0].longitude) });
+                map.setZoom(12);
+            }
+        }
     }
     
     if (document.readyState === 'loading') {
