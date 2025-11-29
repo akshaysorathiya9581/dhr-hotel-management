@@ -544,33 +544,127 @@ body {
 /* ============================================
    Map 2: Head Office Map Styles
    ============================================ */
-.dhr-head-office-map-container {
+
+.mb-0{
+    margin-bottom: 0px!important;
+} 
+
+.d-flex{
     display: flex;
+}
+
+.align-items-center{
+    align-items: center;
+}
+
+.justify-content-between{
+    justify-content: space-between;
+}
+
+.justify-content-end{
+    justify-content: end;
+}
+
+.dhr-map-container{
+    max-width: 1200px;
+    margin: 0px auto;
+}
+
+.dhr-map-row {
+    display: flex;
+    flex-wrap: wrap;
+    width: 100%;
+}
+
+.dhr-head-office-area{
+    padding: 100px;
+    background-color: #F5F8F9;
+    margin-top: -120px;
+    position: relative;
+    z-index: 1;
+}
+
+.dhr-head-office-left{
+    width: 100%;
+    max-width: 50%;
+}
+
+.dhr-text-primary{
+    color: #062943;
+}
+
+.dhr-head-office-title{
+    font-size: 40px;
+    margin: 0px;
+    font-weight:300;
+}
+
+.dhr-head-office-map-container {
     width: 100%;
     min-height: 400px;
     font-family: "Open Sans", sans-serif !important;
 }
-
-.dhr-head-office-info {
-    flex: 0 0 40%;
-    background: #fff;
-    padding: 40px;
-    display: flex;
-    flex-direction: column;
-    justify-content: center;
+.dhr-head-office-map{
+    width: 100%;
+    height: 100%;
+    min-height: 400px;
 }
 
-.dhr-head-office-title {
-    font-size: 32px;
-    font-weight: 400;
-    color: #333;
-    margin: 0 0 20px 0;
+.dhr-head-office-block{
+    margin-top: 40px;
 }
 
-.dhr-head-office-address {
+.dhr-head-office-left{
+    width: 100%;
+    max-width: 50%;
+}
+
+.dhr-head-office-right{
+    width: 100%;
+    max-width: 50%;
+}
+
+.dhr-head-office-block ul{
+    margin: 0px;
+    padding: 0px;
+    list-style: none;
+    max-width: 85%;
+}
+
+.dhr-head-office-block ul li{
     font-size: 16px;
-    color: #666;
-    margin: 0 0 30px 0;
+    
+    padding: 10px 0px;
+    border-bottom: 1px solid rgba(0, 0, 0, 0.1);
+}
+
+.dhr-head-office-block ul li a{
+    color: #333632;
+    text-decoration: none;
+}
+
+.dhr-head-office-social-list ul{
+    display: flex;
+    gap: 26px;
+    align-items: center;
+}
+
+.dhr-head-office-social-list ul li{
+    border: none;
+    padding: 0px;
+ 
+}
+
+.dhr-head-office-social-list ul li a{
+    color: #333632;
+    display: flex;
+    align-items: center;
+}
+
+.dhr-head-office-block-subtitle{
+    font-size: 20px;
+    font-weight: 400;
+    margin: 0px 0px 40px;
 }
 
 .dhr-google-maps-btn {
@@ -590,25 +684,59 @@ body {
     background: #0052A3;
 }
 
-.dhr-head-office-map-wrapper {
-    flex: 1;
+.dhr-info-window{
+    text-align: center;
+}
+
+.dhr-info-window-title{
+    font-size: 16px;
+    font-weight: 700;
+    margin: 0px 0px 10px;
+    color: #062943;
+}
+
+.dhr-info-window-content{
+    font-size: 14px;
+    font-weight: 400;
+    margin: 0px 0px 10px;
+    color: #676B6D;
+}
+
+.dhr-head-office-marker{
+    width: 14px;
+    height: 14px;
+    background-color: #062943;
+    border-radius: 50%;
+    transform: translate(-50%, -50%);
+    border: 1px solid #fff;
     position: relative;
 }
 
-.dhr-head-office-map {
-    width: 100%;
-    height: 100%;
-    min-height: 400px;
+.dhr-head-office-marker::before {
+    content: '';
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    width: 14px;
+    height: 14px;
+    transform: translate(-50%, -50%);
+    border: 7px solid rgba(68, 185, 248, 0.30);
+    border-radius: 50%;
+    opacity: 0;
+    animation: dhr-head-office-marker-animation 3s cubic-bezier(0.4, 0, 0.6, 1) infinite;
 }
 
-@media (max-width: 768px) {
-    .dhr-head-office-map-container {
-        flex-direction: column;
+@keyframes dhr-head-office-marker-animation {
+    0% {
+        transform: translate(-50%, -50%) scale(1);
+        opacity: 1;
     }
-    .dhr-head-office-info {
-        flex: 0 0 auto;
+    100% {
+        transform: translate(-50%, -50%) scale(2.3);
+        opacity: 0;
     }
 }
+
 
 /* ============================================
    Map 3: Partner Portfolio Map Styles
