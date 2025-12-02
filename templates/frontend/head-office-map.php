@@ -35,7 +35,7 @@ $youtube_url = isset($settings['youtube_url']) ? $settings['youtube_url'] : '#';
         <div class="dhr-head-office-area">
             <div class="dhr-map-row justify-content-between">
                 <div class="dhr-head-office-left">
-                    <h2 class="dhr-head-office-title dhr-text-primary mb-0"><?php echo esc_html($title); ?></h2>
+                    <h2 class="dhr-map-title dhr-text-primary mb-0"><?php echo esc_html($title); ?></h2>
                 </div>
                 <div class="dhr-head-office-right">
                     <?php if (!empty($google_maps_url)): ?>

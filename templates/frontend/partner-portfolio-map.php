@@ -15,23 +15,27 @@ $legend_dream = isset($settings['legend_dream']) ? $settings['legend_dream'] : '
 ?>
 
 <div class="dhr-partner-portfolio-map-container" style="height: <?php echo esc_attr($atts['height']); ?>;">
-    <div class="dhr-partner-portfolio-content">
-        <p class="dhr-overview-label"><?php echo esc_html($overview_label); ?></p>
-        <h2 class="dhr-partner-main-heading"><?php echo esc_html($main_heading); ?></h2>
-        <p class="dhr-partner-description"><?php echo esc_html($description); ?></p>
-        <div class="dhr-partner-legend">
-            <div class="dhr-legend-item">
-                <span class="dhr-legend-dot dhr-legend-cityblue"></span>
-                <span class="dhr-legend-text"><?php echo esc_html($legend_cityblue); ?></span>
+    <div class="dhr-partner-portfolio-area">
+        <div class="dhr-map-row align-items-end">
+            <div class="dhr-map-left">
+                <div class="dhr-partner-portfolio-block">
+                    <p class="dhr-map-label"><?php echo esc_html($overview_label); ?></p>
+                    <h2 class="dhr-map-title dhr-text-primary"><?php echo esc_html($main_heading); ?></h2>
+                    <p class="dhr-map-description"><?php echo esc_html($description); ?></p>
+                    <div>
+                        <div class="dhr-partner-portfolio-legend">
+                            <ul>
+                                <li><?php echo esc_html($legend_cityblue); ?></li>
+                                <li><?php echo esc_html($legend_dream); ?></li>
+                            </ul>
+                        </div>
+                    </div>
+                </div>
             </div>
-            <div class="dhr-legend-item">
-                <span class="dhr-legend-dot dhr-legend-dream"></span>
-                <span class="dhr-legend-text"><?php echo esc_html($legend_dream); ?></span>
+            <div class="dhr-map-right">
+                <div id="dhr-partner-portfolio-map" class="dhr-partner-portfolio-map"></div>
             </div>
         </div>
-    </div>
-    <div class="dhr-partner-portfolio-map-wrapper">
-        <div id="dhr-partner-portfolio-map" class="dhr-partner-portfolio-map"></div>
     </div>
 </div>
 
@@ -58,15 +62,70 @@ $legend_dream = isset($settings['legend_dream']) ? $settings['legend_dream'] : '
                 {
                     featureType: 'all',
                     elementType: 'geometry',
-                    stylers: [{ color: '#B8D4E8' }]
+                    stylers: [{ color: '#ffffff' }]
                 },
                 {
                     featureType: 'water',
                     elementType: 'geometry',
-                    stylers: [{ color: '#B8D4E8' }]
+                    stylers: [{ color: '#E2EFF7' }]
                 }
             ]
         });
+        
+        // Custom HTML Div Marker Class using OverlayView
+        function CustomDivMarker(position, map, title, className) {
+            this.position = position;
+            this.map = map;
+            this.title = title;
+            this.className = className || 'dhr-head-office-marker';
+            this.div = null;
+            this.infoWindow = null;
+            this.setMap(map);
+        }
+        
+        CustomDivMarker.prototype = new google.maps.OverlayView();
+        
+        CustomDivMarker.prototype.onAdd = function() {
+            var self = this;
+            var div = document.createElement('div');
+            div.className = this.className;
+            div.style.position = 'absolute';
+            div.style.cursor = 'pointer';
+            
+            this.div = div;
+            var panes = this.getPanes();
+            panes.overlayMouseTarget.appendChild(div);
+            
+            // Add click listener
+            google.maps.event.addDomListener(div, 'click', function() {
+                if (self.infoWindow) {
+                    self.infoWindow.setPosition(self.getPosition());
+                    self.infoWindow.open(self.map);
+                }
+            });
+        };
+        
+        CustomDivMarker.prototype.draw = function() {
+            var overlayProjection = this.getProjection();
+            var position = overlayProjection.fromLatLngToDivPixel(this.position);
+            var div = this.div;
+            
+            if (div) {
+                div.style.left = position.x + 'px';
+                div.style.top = position.y + 'px';
+            }
+        };
+        
+        CustomDivMarker.prototype.onRemove = function() {
+            if (this.div) {
+                this.div.parentNode.removeChild(this.div);
+                this.div = null;
+            }
+        };
+        
+        CustomDivMarker.prototype.getPosition = function() {
+            return this.position;
+        };
         
         // Create markers - alternate between CityBlue (blue) and Dream (light blue)
         if (hotels.length > 0) {
@@ -74,38 +133,30 @@ $legend_dream = isset($settings['legend_dream']) ? $settings['legend_dream'] : '
             
             hotels.forEach(function(hotel, index) {
                 var isCityBlue = index % 2 === 0;
-                var markerColor = isCityBlue ? '#0066CC' : '#66B3FF';
+                var markerClassName = isCityBlue ? 'dhr-head-office-marker dhr-cityblue-marker' : 'dhr-head-office-marker dhr-dream-marker';
                 var hotelLocation = { lat: parseFloat(hotel.latitude), lng: parseFloat(hotel.longitude) };
                 bounds.extend(hotelLocation);
                 
-                var marker = new google.maps.Marker({
-                    position: hotelLocation,
-                    map: map,
-                    title: hotel.name,
-                    icon: {
-                        path: google.maps.SymbolPath.CIRCLE,
-                        scale: 8,
-                        fillColor: markerColor,
-                        fillOpacity: 1,
-                        strokeColor: '#fff',
-                        strokeWeight: 2
-                    }
-                });
+                var marker = new CustomDivMarker(
+                    hotelLocation,
+                    map,
+                    hotel.name,
+                    markerClassName
+                );
                 
                 // Add info window
-                var infoContent = '<div style="padding: 10px; max-width: 250px;">' +
-                    '<h4 style="margin: 0 0 5px 0; font-size: 14px; font-weight: bold;">' + hotel.name + '</h4>' +
-                    '<p style="margin: 0 0 5px 0; font-size: 12px; color: #666;">' + hotel.address + '</p>' +
-                    '<p style="margin: 0; font-size: 12px; color: #666;">' + hotel.city + ', ' + hotel.province + '</p>' +
+                var infoContent = '<div class="dhr-info-window">' +
+                    '<h4 class="dhr-info-window-title">' + hotel.name + '</h4>' +
+                    '<p class="dhr-info-window-content">' + hotel.address + '</p>' +
+                    '<p class="dhr-info-window-content mb-0">' + hotel.city + ', ' + hotel.province + '</p>' +
                     '</div>';
                 
                 var infoWindow = new google.maps.InfoWindow({
                     content: infoContent
                 });
                 
-                marker.addListener('click', function() {
-                    infoWindow.open(map, marker);
-                });
+                // Store info window on marker
+                marker.infoWindow = infoWindow;
             });
             
             // Fit bounds to show all hotels

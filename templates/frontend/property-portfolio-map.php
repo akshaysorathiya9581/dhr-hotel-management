@@ -8,20 +8,18 @@ if (!defined('ABSPATH')) {
 }
 
 $panel_title = isset($settings['panel_title']) ? $settings['panel_title'] : 'Ownership Property Portfolio';
-$show_numbers = isset($settings['show_numbers']) ? $settings['show_numbers'] : true;
 ?>
 
-<div class="dhr-property-portfolio-map-container" style="height: <?php echo esc_attr($atts['height']); ?>;">
-    <div class="dhr-property-portfolio-map-wrapper">
-        <div id="dhr-property-portfolio-map" class="dhr-property-portfolio-map"></div>
+<div class="dhr-property-map-container" style="height: <?php echo esc_attr($atts['height']); ?>;">
+    <div class="dhr-property-map-wrapper">
+        <div id="dhr-property-map" class="dhr-property-map"></div>
     </div>
-    <div class="dhr-property-portfolio-panel">
-        <h3 class="dhr-property-panel-title"><?php echo esc_html($panel_title); ?></h3>
-        <ul class="dhr-property-list">
+    <div class="dhr-property-panel">
+        <h4><?php echo esc_html($panel_title); ?></h4>
+        <ul>
             <?php if (!empty($hotels)): ?>
                 <?php foreach ($hotels as $index => $hotel): ?>
-                    <li class="dhr-property-item" data-hotel-id="<?php echo esc_attr($hotel->id); ?>" data-index="<?php echo esc_attr($index + 1); ?>">
-                        <span class="dhr-property-bullet"></span>
+                    <li data-hotel-id="<?php echo esc_attr($hotel->id); ?>" data-index="<?php echo esc_attr($index + 1); ?>">
                         <?php echo esc_html($hotel->name); ?>
                     </li>
                 <?php endforeach; ?>
@@ -38,7 +36,7 @@ $show_numbers = isset($settings['show_numbers']) ? $settings['show_numbers'] : t
             return;
         }
         
-        var mapElement = document.getElementById('dhr-property-portfolio-map');
+        var mapElement = document.getElementById('dhr-property-map');
         if (!mapElement) {
             return;
         }
@@ -53,12 +51,10 @@ $show_numbers = isset($settings['show_numbers']) ? $settings['show_numbers'] : t
             var centerLng = 0;
             
             hotels.forEach(function(hotel) {
-                centerLat += parseFloat(hotel.latitude);
-                centerLng += parseFloat(hotel.longitude);
-                bounds.extend(new google.maps.LatLng(
-                    parseFloat(hotel.latitude),
-                    parseFloat(hotel.longitude)
-                ));
+                var hotelLocation = { lat: parseFloat(hotel.latitude), lng: parseFloat(hotel.longitude) };
+                centerLat += hotelLocation.lat;
+                centerLng += hotelLocation.lng;
+                bounds.extend(hotelLocation);
             });
             
             centerLat = centerLat / hotels.length;
@@ -76,10 +72,77 @@ $show_numbers = isset($settings['show_numbers']) ? $settings['show_numbers'] : t
                     {
                         featureType: 'water',
                         elementType: 'geometry',
-                        stylers: [{ color: '#e0e0e0' }]
+                        stylers: [{ color: '#A0B6CB' }]
                     }
                 ]
             });
+            
+            // Custom HTML Div Marker Class using OverlayView with number support
+            function CustomDivMarker(position, map, title, className, labelText) {
+                this.position = position;
+                this.map = map;
+                this.title = title;
+                this.className = className || 'dhr-head-office-marker';
+                this.labelText = labelText || '';
+                this.div = null;
+                this.infoWindow = null;
+                this.setMap(map);
+            }
+            
+            CustomDivMarker.prototype = new google.maps.OverlayView();
+            
+            CustomDivMarker.prototype.onAdd = function() {
+                var self = this;
+                var div = document.createElement('div');
+                div.className = this.className;
+                div.style.position = 'absolute';
+                div.style.cursor = 'pointer';
+                div.style.display = 'flex';
+                div.style.alignItems = 'center';
+                div.style.justifyContent = 'center';
+                
+                // Add label text if provided
+                if (this.labelText) {
+                    div.textContent = this.labelText;
+                    div.style.color = '#fff';
+                    div.style.fontSize = '16px';
+                    div.style.lineHeight = '1';
+                }
+                
+                this.div = div;
+                var panes = this.getPanes();
+                panes.overlayMouseTarget.appendChild(div);
+                
+                // Add click listener
+                google.maps.event.addDomListener(div, 'click', function() {
+                    if (self.infoWindow) {
+                        self.infoWindow.setPosition(self.getPosition());
+                        self.infoWindow.open(self.map);
+                    }
+                });
+            };
+            
+            CustomDivMarker.prototype.draw = function() {
+                var overlayProjection = this.getProjection();
+                var position = overlayProjection.fromLatLngToDivPixel(this.position);
+                var div = this.div;
+                
+                if (div) {
+                    div.style.left = position.x + 'px';
+                    div.style.top = position.y + 'px';
+                }
+            };
+            
+            CustomDivMarker.prototype.onRemove = function() {
+                if (this.div) {
+                    this.div.parentNode.removeChild(this.div);
+                    this.div = null;
+                }
+            };
+            
+            CustomDivMarker.prototype.getPosition = function() {
+                return this.position;
+            };
             
             if (hotels.length > 1) {
                 map.fitBounds(bounds);
@@ -87,52 +150,40 @@ $show_numbers = isset($settings['show_numbers']) ? $settings['show_numbers'] : t
             
             hotels.forEach(function(hotel, index) {
                 var number = (index + 1).toString().padStart(2, '0');
+                var hotelLocation = { lat: parseFloat(hotel.latitude), lng: parseFloat(hotel.longitude) };
                 
                 // Create numbered marker
-                var marker = new google.maps.Marker({
-                    position: { lat: parseFloat(hotel.latitude), lng: parseFloat(hotel.longitude) },
-                    map: map,
-                    title: hotel.name,
-                    label: {
-                        text: number,
-                        color: '#fff',
-                        fontSize: '12px',
-                        fontWeight: 'bold'
-                    },
-                    icon: {
-                        path: google.maps.SymbolPath.CIRCLE,
-                        scale: 25,
-                        fillColor: '#0066CC',
-                        fillOpacity: 1,
-                        strokeColor: '#fff',
-                        strokeWeight: 2
-                    }
-                });
+                var marker = new CustomDivMarker(
+                    hotelLocation,
+                    map,
+                    hotel.name,
+                    'dhr-property-portfolio-marker',
+                    number
+                );
                 
                 // Create info window
                 var infoContent = '<div class="dhr-property-info-window">' +
                     '<img src="' + (hotel.image_url || dhrHotelsData.pluginUrl + 'assets/images/default-hotel.jpg') + '" alt="' + hotel.name + '" style="width: 100%; height: 150px; object-fit: cover; border-radius: 4px; margin-bottom: 10px;">' +
                     '<h4 style="margin: 0 0 5px 0; font-size: 14px; font-weight: bold;">' + hotel.name + '</h4>' +
                     '<p style="margin: 0 0 10px 0; font-size: 12px; color: #666;">' + hotel.city + ', ' + hotel.province + '</p>' +
-                    '<a href="' + (hotel.google_maps_url || '#') + '" target="_blank" style="display: inline-block; padding: 8px 16px; background: #0066CC; color: #fff; text-decoration: none; border-radius: 4px; font-size: 12px;">View Portfolio</a>' +
+                    '<a href="' + (hotel.google_maps_url || '#') + '" target="_blank" style="display: inline-block; padding: 8px 16px; background: #0066CC; color: #fff; text-decoration: none; border-radius: 4px; font-size: 12px;">View Packages</a>' +
                     '</div>';
                 
                 var infoWindow = new google.maps.InfoWindow({
                     content: infoContent
                 });
                 
-                marker.addListener('click', function() {
-                    infoWindows.forEach(function(iw) { iw.close(); });
-                    infoWindow.open(map, marker);
-                });
+                // Store info window on marker
+                marker.infoWindow = infoWindow;
                 
                 markers.push({ marker: marker, hotel: hotel, index: index });
                 infoWindows.push(infoWindow);
             });
             
             // Handle property list item clicks
-            var propertyItems = document.querySelectorAll('.dhr-property-item');
+            var propertyItems = document.querySelectorAll('.dhr-property-panel li');
             propertyItems.forEach(function(item) {
+                item.style.cursor = 'pointer';
                 item.addEventListener('click', function() {
                     var hotelId = parseInt(this.getAttribute('data-hotel-id'));
                     var markerData = markers.find(function(m) {
@@ -142,8 +193,10 @@ $show_numbers = isset($settings['show_numbers']) ? $settings['show_numbers'] : t
                     if (markerData) {
                         infoWindows.forEach(function(iw) { iw.close(); });
                         var infoWindow = infoWindows[markerData.index];
-                        infoWindow.open(map, markerData.marker);
-                        map.setCenter(markerData.marker.getPosition());
+                        var position = markerData.marker.getPosition();
+                        infoWindow.setPosition(position);
+                        infoWindow.open(map);
+                        map.setCenter(position);
                         map.setZoom(15);
                     }
                 });

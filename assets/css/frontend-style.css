@@ -7,6 +7,55 @@ body {
     font-family: "Open Sans", sans-serif !important;
 }
 
+.mb-0 {
+    margin-bottom: 0px !important;
+}
+
+.d-flex {
+    display: flex;
+}
+
+.align-items-center {
+    align-items: center;
+}
+
+.align-items-end {
+    align-items: end;
+}
+
+.justify-content-between {
+    justify-content: space-between;
+}
+
+.justify-content-end {
+    justify-content: end;
+}
+
+.text-white {
+    color: #FFFFFF !important;
+}
+
+.dhr-text-primary {
+    color: #062943;
+}
+
+.dhr-map-title {
+    font-size: 40px;
+    margin: 0px;
+    font-weight: 300;
+}
+
+.dhr-map-container {
+    max-width: 1200px;
+    margin: 0px auto;
+}
+
+.dhr-map-row {
+    display: flex;
+    flex-wrap: wrap;
+    width: 100%;
+}
+
 .dhr-hotel-map-container {
     display: flex;
     width: 100%;
@@ -15,7 +64,8 @@ body {
     /* font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Oxygen-Sans, Ubuntu, Cantarell, "Helvetica Neue", sans-serif; */
 }
 
-@media (max-width: 991px) {
+
+@media (max-width:991px) {
     .dhr-hotel-map-container {
         flex-direction: column-reverse;
         height: 100% !important;
@@ -33,27 +83,27 @@ body {
     justify-content: center;
 }
 
-@media (max-width: 1280px) {
+@media (max-width:1280px) {
     .dhr-hotel-map-container .dhr-hotel-info-panel {
         max-width: 500px;
         padding-left: 6%;
     }
 }
 
-@media (max-width: 1199px) {
+@media (max-width:1199px) {
     .dhr-hotel-map-container .dhr-hotel-info-panel {
         padding: 30px;
         max-width: 400px;
     }
 }
 
-@media (max-width: 1024px) {
+@media (max-width:1024px) {
     .dhr-hotel-map-container .dhr-hotel-info-panel {
         display: flex !important;
     }
 }
 
-@media (max-width: 991px) {
+@media (max-width:991px) {
     .dhr-hotel-map-container .dhr-hotel-info-panel {
         max-width: 100%;
         background-color: #FAFAFA;
@@ -61,7 +111,7 @@ body {
     }
 }
 
-@media (max-width: 768px) {
+@media (max-width:768px) {
     .dhr-hotel-map-container .dhr-hotel-info-panel {
         padding: 70px 35px 40px;
     }
@@ -82,7 +132,7 @@ body {
     margin: 0 0 15px 0;
 }
 
-@media (max-width: 991px) {
+@media (max-width:991px) {
     .dhr-hotel-map-container .dhr-location-heading {
         color: #D3AA74;
         margin-bottom: 18px;
@@ -98,26 +148,26 @@ body {
     color: #FAFAFA;
 }
 
-@media (max-width: 1280px) {
+@media (max-width:1280px) {
     .dhr-hotel-map-container .dhr-main-heading {
         font-size: 38px;
     }
 }
 
-@media (max-width: 1199px) {
+@media (max-width:1199px) {
     .dhr-hotel-map-container .dhr-main-heading {
         font-size: 36px;
     }
 }
 
-@media (max-width: 991px) {
+@media (max-width:991px) {
     .dhr-hotel-map-container .dhr-main-heading {
         font-size: 34px;
         color: #462801;
     }
 }
 
-@media (max-width: 768px) {
+@media (max-width:768px) {
     .dhr-hotel-map-container .dhr-main-heading {
         font-size: 32px;
     }
@@ -133,7 +183,7 @@ body {
     max-width: 414px;
 }
 
-@media (max-width: 991px) {
+@media (max-width:991px) {
     .dhr-hotel-map-container .dhr-description {
         max-width: 100%;
         color: #676B6D;
@@ -142,13 +192,13 @@ body {
     }
 }
 
-@media (max-width: 420px) {
+@media (max-width:420px) {
     .dhr-hotel-map-container .dhr-description {
         font-size: 16px;
     }
 }
 
-@media (max-width: 380px) {
+@media (max-width:380px) {
     .dhr-hotel-map-container .dhr-description {
         font-size: 14px;
     }
@@ -232,7 +282,7 @@ body {
     font-weight: 400;
 }
 
-@media (max-width: 991px) {
+@media (max-width:991px) {
     .dhr-hotel-map-container .dhr-phone-number {
         color: #434648;
     }
@@ -355,7 +405,7 @@ body {
 }
 
 .dhr-hotel-map-container .dhr-btn-book {
-   min-width: 96px;
+    min-width: 96px;
 }
 
 .dhr-hotel-map-container .dhr-btn-info {
@@ -385,7 +435,7 @@ body {
 }
 
 /* Responsive Design */
-@media (max-width: 768px) {
+@media (max-width:768px) {
     .dhr-hotel-map-container .dhr-hotel-map-container {
         flex-direction: column;
     }
@@ -429,7 +479,7 @@ body {
     transition: all .25s ease-in-out;
 }
 
-@media (max-width: 480px) {
+@media (max-width:480px) {
     .dhr-hotel-map-container .map-btn__link {
         display: flex;
     }
@@ -439,229 +489,80 @@ body {
     background-color: #e1cfbc;
 }
 
-/* Pulse Effect for Map Markers using CSS Transform */
-.dhr-marker-pulse {
-    position: absolute;
-    pointer-events: none;
-    transform-origin: center center;
-    z-index: 0;
-    overflow: visible;
-    border: none !important;
-    outline: none !important;
-    box-shadow: none !important;
-    margin: 0 !important;
-    padding: 0 !important;
-    background: transparent !important;
-}
-
-.dhr-marker-pulse svg {
-    display: block;
-    overflow: visible;
-    border: none !important;
-    outline: none !important;
-    margin: 0 !important;
-    padding: 0 !important;
-}
-
-.dhr-marker-pulse .pulse-outer-circle {
-    transform-origin: center;
-    animation: pulse-outer 2s ease-in-out infinite;
-}
-
-.dhr-marker-pulse .pulse-middle-circle {
-    transform-origin: center;
-    animation: pulse-middle 2s ease-in-out infinite;
-}
-
-.dhr-marker-pulse.dhr-marker-pulse-active .pulse-outer-circle {
-    animation: pulse-outer-active 2s ease-in-out infinite;
-}
-
-.dhr-marker-pulse.dhr-marker-pulse-active .pulse-middle-circle {
-    animation: pulse-middle-active 2s ease-in-out infinite;
-}
-
-@keyframes pulse-outer {
-    0% {
-        transform: scale(1);
-        opacity: 0.1;
-    }
-    50% {
-        transform: scale(1.6);
-        opacity: 0.2;
-    }
-    100% {
-        transform: scale(1);
-        opacity: 0.1;
-    }
-}
-
-@keyframes pulse-middle {
-    0% {
-        transform: scale(1);
-        opacity: 0.3;
-    }
-    50% {
-        transform: scale(1.4);
-        opacity: 0.5;
-    }
-    100% {
-        transform: scale(1);
-        opacity: 0.3;
-    }
-}
-
-@keyframes pulse-outer-active {
-    0% {
-        transform: scale(1);
-        opacity: 0.1;
-    }
-    50% {
-        transform: scale(1.5);
-        opacity: 0.2;
-    }
-    100% {
-        transform: scale(1);
-        opacity: 0.1;
-    }
-}
-
-@keyframes pulse-middle-active {
-    0% {
-        transform: scale(1);
-        opacity: 0.3;
-    }
-    50% {
-        transform: scale(1.35);
-        opacity: 0.5;
-    }
-    100% {
-        transform: scale(1);
-        opacity: 0.3;
-    }
-}
 
 /* ============================================
    Map 2: Head Office Map Styles
    ============================================ */
-
-.mb-0{
-    margin-bottom: 0px!important;
-} 
-
-.d-flex{
-    display: flex;
-}
-
-.align-items-center{
-    align-items: center;
-}
-
-.justify-content-between{
-    justify-content: space-between;
-}
-
-.justify-content-end{
-    justify-content: end;
-}
-
-.dhr-map-container{
-    max-width: 1200px;
-    margin: 0px auto;
-}
-
-.dhr-map-row {
-    display: flex;
-    flex-wrap: wrap;
-    width: 100%;
-}
-
-.dhr-head-office-area{
+.dhr-head-office-area {
     padding: 100px;
     background-color: #F5F8F9;
     margin-top: -120px;
     position: relative;
     z-index: 1;
+    font-family: "Open Sans", sans-serif !important;
 }
 
-.dhr-head-office-left{
+.dhr-head-office-left {
     width: 100%;
     max-width: 50%;
 }
 
-.dhr-text-primary{
-    color: #062943;
-}
-
-.dhr-head-office-title{
-    font-size: 40px;
-    margin: 0px;
-    font-weight:300;
-}
-
-.dhr-head-office-map-container {
-    width: 100%;
-    min-height: 400px;
-    font-family: "Open Sans", sans-serif !important;
-}
-.dhr-head-office-map{
+.dhr-head-office-map {
     width: 100%;
     height: 100%;
     min-height: 400px;
 }
 
-.dhr-head-office-block{
+.dhr-head-office-block {
     margin-top: 40px;
 }
 
-.dhr-head-office-left{
+.dhr-head-office-left {
     width: 100%;
     max-width: 50%;
 }
 
-.dhr-head-office-right{
+.dhr-head-office-right {
     width: 100%;
     max-width: 50%;
 }
 
-.dhr-head-office-block ul{
+.dhr-head-office-block ul {
     margin: 0px;
     padding: 0px;
     list-style: none;
     max-width: 85%;
 }
 
-.dhr-head-office-block ul li{
+.dhr-head-office-block ul li {
     font-size: 16px;
-    
     padding: 10px 0px;
     border-bottom: 1px solid rgba(0, 0, 0, 0.1);
 }
 
-.dhr-head-office-block ul li a{
+.dhr-head-office-block ul li a {
     color: #333632;
     text-decoration: none;
 }
 
-.dhr-head-office-social-list ul{
+.dhr-head-office-social-list ul {
     display: flex;
     gap: 26px;
     align-items: center;
 }
 
-.dhr-head-office-social-list ul li{
+.dhr-head-office-social-list ul li {
     border: none;
     padding: 0px;
- 
 }
 
-.dhr-head-office-social-list ul li a{
+.dhr-head-office-social-list ul li a {
     color: #333632;
     display: flex;
     align-items: center;
 }
 
-.dhr-head-office-block-subtitle{
+.dhr-head-office-block-subtitle {
     font-size: 20px;
     font-weight: 400;
     margin: 0px 0px 40px;
@@ -684,25 +585,25 @@ body {
     background: #0052A3;
 }
 
-.dhr-info-window{
+.dhr-info-window {
     text-align: center;
 }
 
-.dhr-info-window-title{
+.dhr-info-window-title {
     font-size: 16px;
     font-weight: 700;
     margin: 0px 0px 10px;
     color: #062943;
 }
 
-.dhr-info-window-content{
+.dhr-info-window-content {
     font-size: 14px;
     font-weight: 400;
     margin: 0px 0px 10px;
     color: #676B6D;
 }
 
-.dhr-head-office-marker{
+.dhr-head-office-marker {
     width: 14px;
     height: 14px;
     background-color: #062943;
@@ -731,98 +632,21 @@ body {
         transform: translate(-50%, -50%) scale(1);
         opacity: 1;
     }
+
     100% {
         transform: translate(-50%, -50%) scale(2.3);
         opacity: 0;
     }
 }
 
-
 /* ============================================
    Map 3: Partner Portfolio Map Styles
    ============================================ */
 .dhr-partner-portfolio-map-container {
-    display: flex;
     width: 100%;
     min-height: 600px;
-    background: #B8D4E8;
+    background: #E2EFF7;
     font-family: "Open Sans", sans-serif !important;
-}
-
-.dhr-partner-portfolio-content {
-    flex: 0 0 40%;
-    padding: 60px 40px;
-    display: flex;
-    flex-direction: column;
-    justify-content: center;
-}
-
-.dhr-overview-label {
-    font-size: 12px;
-    font-weight: 600;
-    text-transform: uppercase;
-    letter-spacing: 2px;
-    color: #666;
-    margin: 0 0 15px 0;
-}
-
-.dhr-partner-main-heading {
-    font-size: 36px;
-    font-weight: 700;
-    color: #333;
-    margin: 0 0 20px 0;
-}
-
-.dhr-partner-description {
-    font-size: 16px;
-    line-height: 1.6;
-    color: #555;
-    margin: 0 0 30px 0;
-}
-
-.dhr-partner-legend {
-    display: flex;
-    flex-direction: column;
-    gap: 15px;
-}
-
-.dhr-legend-item {
-    display: flex;
-    align-items: center;
-    gap: 10px;
-}
-
-.dhr-legend-dot {
-    width: 16px;
-    height: 16px;
-    border-radius: 50%;
-    display: inline-block;
-}
-
-.dhr-legend-cityblue {
-    background: #0066CC;
-}
-
-.dhr-legend-dream {
-    background: #66B3FF;
-}
-
-.dhr-legend-lodges {
-    background: #0066CC;
-}
-
-.dhr-legend-weddings {
-    background: #FF6B35;
-}
-
-.dhr-legend-text {
-    font-size: 14px;
-    color: #333;
-}
-
-.dhr-partner-portfolio-map-wrapper {
-    flex: 1;
-    position: relative;
 }
 
 .dhr-partner-portfolio-map {
@@ -831,13 +655,145 @@ body {
     min-height: 600px;
 }
 
-@media (max-width: 768px) {
-    .dhr-partner-portfolio-map-container {
-        flex-direction: column;
+.dhr-map-left {
+    width: 100%;
+    max-width: 50%;
+}
+
+.dhr-map-right {
+    width: 100%;
+    max-width: 50%;
+}
+
+.dhr-partner-portfolio-block {
+    max-width: 85%;
+    margin: 0px auto;
+    padding-bottom: 100px;
+}
+
+.dhr-map-label {
+    font-size: 14px;
+    font-weight: 600;
+    text-transform: uppercase;
+    letter-spacing: 2px;
+    color: #0B5991;
+    margin: 0px 0px 10px;
+}
+
+.dhr-map-title {
+    margin: 0px 0px 10px;
+}
+
+.dhr-map-description {
+    font-size: 16px;
+    font-weight: 400;
+    margin: 0px 0px 0px;
+    color: #676B6D;
+}
+
+.dhr-partner-portfolio-legend {
+    margin: 0px 0px 0px;
+    padding: 18px 36px;
+    background-color: #FAFAFA;
+    border-radius: 5px;
+    margin-top: 40px;
+    max-width: 500px;
+    display: inline-block;
+}
+
+.dhr-partner-portfolio-legend ul {
+    margin: 0px;
+    padding: 0px;
+    list-style: none;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    width: 100%;
+    gap: 36px;
+}
+
+.dhr-partner-portfolio-legend ul li {
+    font-size: 16px;
+    font-weight: 400;
+    color: #0B5991;
+    position: relative;
+    padding-left: 36px;
+}
+
+.dhr-partner-portfolio-legend ul li::before {
+    content: '';
+    position: absolute;
+    left: 0;
+    top: 50%;
+    transform: translateY(-50%);
+    width: 20px;
+    height: 20px;
+    background-color: #0B5991;
+    border-radius: 50%;
+}
+
+.dhr-partner-portfolio-legend ul li:last-child::before {
+    background-color: #86CEFF;
+}
+
+/* Partner Portfolio Map Markers */
+.dhr-cityblue-marker {
+    width: 14px;
+    height: 14px;
+    background-color: #0066CC;
+    border-radius: 50%;
+    transform: translate(-50%, -50%);
+    border: 1px solid #fff;
+    position: relative;
+}
+
+.dhr-cityblue-marker::before {
+    content: '';
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    width: 14px;
+    height: 14px;
+    transform: translate(-50%, -50%);
+    border: 7px solid rgba(0, 102, 204, 0.30);
+    border-radius: 50%;
+    opacity: 0;
+    animation: dhr-partner-marker-animation 3s cubic-bezier(0.4, 0, 0.6, 1) infinite;
+}
+
+.dhr-dream-marker {
+    width: 14px;
+    height: 14px;
+    background-color: #66B3FF;
+    border-radius: 50%;
+    transform: translate(-50%, -50%);
+    border: 1px solid #fff;
+    position: relative;
+}
+
+.dhr-dream-marker::before {
+    content: '';
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    width: 14px;
+    height: 14px;
+    transform: translate(-50%, -50%);
+    border: 7px solid rgba(102, 179, 255, 0.30);
+    border-radius: 50%;
+    opacity: 0;
+    animation: dhr-partner-marker-animation 3s cubic-bezier(0.4, 0, 0.6, 1) infinite;
+}
+
+@keyframes dhr-partner-marker-animation {
+    0% {
+        transform: translate(-50%, -50%) scale(1);
+        opacity: 1;
     }
-    .dhr-partner-portfolio-content {
-        flex: 0 0 auto;
-        padding: 40px 20px;
+
+    100% {
+        transform: translate(-50%, -50%) scale(2.3);
+        opacity: 0;
     }
 }
 
@@ -845,73 +801,21 @@ body {
    Map 4: Dining Venue Map Styles
    ============================================ */
 .dhr-dining-venue-map-container {
-    display: flex;
     width: 100%;
     min-height: 600px;
-    background: #B8E6B8;
+    background: #b1c2a8;
     font-family: "Open Sans", sans-serif !important;
 }
 
-.dhr-dining-venue-content {
-    flex: 0 0 40%;
-    padding: 60px 40px;
-    display: flex;
-    flex-direction: column;
-    justify-content: center;
+.dhr-dining-venue-block {
+    max-width: 85%;
+    margin: 0px auto;
+    padding-bottom: 100px;
 }
 
-.dhr-dining-overview-label {
-    font-size: 12px;
-    font-weight: 600;
-    text-transform: uppercase;
-    letter-spacing: 2px;
-    color: rgba(0, 0, 0, 0.3);
-    margin: 0 0 15px 0;
-}
-
-.dhr-dining-main-heading {
-    font-size: 36px;
-    font-weight: 300;
-    color: rgba(0, 0, 0, 0.7);
-    margin: 0 0 20px 0;
-}
-
-.dhr-dining-description {
-    font-size: 16px;
-    line-height: 1.6;
-    color: rgba(0, 0, 0, 0.7);
-    margin: 0 0 30px 0;
-}
-
-.dhr-dining-reservation {
-    display: flex;
-    align-items: flex-start;
-    gap: 12px;
-}
-
-.dhr-dining-phone-icon {
-    color: #462801;
-    display: inline-flex;
-}
-
-.dhr-dining-reservation-label {
-    font-size: 12px;
-    font-weight: 600;
-    text-transform: uppercase;
-    letter-spacing: 2px;
-    color: rgba(0, 0, 0, 0.7);
-    margin: 0 0 5px 0;
-}
-
-.dhr-dining-phone-number {
-    font-size: 18px;
-    color: rgba(0, 0, 0, 0.7);
-    margin: 0;
-}
-
-.dhr-dining-venue-map-wrapper {
-    flex: 1;
-    position: relative;
+.dhr-dining-venue-block p,
+.dhr-dining-venue-block h2 {
+    color: #FAFAFA !important;
 }
 
 .dhr-dining-venue-map {
@@ -920,13 +824,58 @@ body {
     min-height: 600px;
 }
 
-@media (max-width: 768px) {
-    .dhr-dining-venue-map-container {
-        flex-direction: column;
+.dhr-map-reservation {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    margin-top: 20px;
+}
+
+.dhr-map-reservation .dhr-map-label {
+    color: #0B5991 !important;
+    font-size: 12px !important;
+    margin: 0px !important;
+}
+
+.dhr-map-reservation .dhr-map-description {
+    font-size: 20px !important;
+    margin: 0px !important;
+}
+
+/* Wedding Venue Map Marker */
+.dhr-wedding-venue-marker {
+    width: 14px;
+    height: 14px;
+    background-color: #FE4B67;
+    border-radius: 50%;
+    transform: translate(-50%, -50%);
+    border: 1px solid #fff;
+    position: relative;
+}
+
+.dhr-wedding-venue-marker::before {
+    content: '';
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    width: 14px;
+    height: 14px;
+    transform: translate(-50%, -50%);
+    border: 7px solid rgba(254, 75, 103, 0.30);
+    border-radius: 50%;
+    opacity: 0;
+    animation: dhr-wedding-marker-animation 3s cubic-bezier(0.4, 0, 0.6, 1) infinite;
+}
+
+@keyframes dhr-wedding-marker-animation {
+    0% {
+        transform: translate(-50%, -50%) scale(1);
+        opacity: 1;
     }
-    .dhr-dining-venue-content {
-        flex: 0 0 auto;
-        padding: 40px 20px;
+
+    100% {
+        transform: translate(-50%, -50%) scale(2.3);
+        opacity: 0;
     }
 }
 
@@ -934,74 +883,29 @@ body {
    Map 5: Wedding Venue Map Styles
    ============================================ */
 .dhr-wedding-venue-map-container {
-    display: flex;
     width: 100%;
     min-height: 600px;
-    background: #B8D4E8;
+    background: #A0B6CB;
     font-family: "Open Sans", sans-serif !important;
 }
 
-.dhr-wedding-venue-content {
-    flex: 0 0 40%;
-    padding: 60px 40px;
-    display: flex;
-    flex-direction: column;
-    justify-content: center;
+.dhr-wedding-venue-map-container .dhr-map-left {
+    max-width: 40%;
 }
 
-.dhr-wedding-header-label {
-    font-size: 12px;
-    font-weight: 600;
-    text-transform: uppercase;
-    letter-spacing: 2px;
-    color: rgba(0, 0, 0, 0.5);
-    margin: 0 0 15px 0;
+.dhr-wedding-venue-map-container .dhr-map-right {
+    max-width: 60%;
 }
 
-.dhr-wedding-main-heading {
-    font-size: 32px;
-    font-weight: 300;
-    color: rgba(0, 0, 0, 0.7);
-    margin: 0 0 20px 0;
-    line-height: 1.3;
+.dhr-wedding-venue-block {
+    max-width: 85%;
+    margin: 0px auto;
+    padding-bottom: 100px;
 }
 
-.dhr-wedding-description {
-    font-size: 16px;
-    line-height: 1.6;
-    color: rgba(0, 0, 0, 0.7);
-    margin: 0 0 30px 0;
-}
-
-.dhr-wedding-reservation {
-    display: flex;
-    align-items: flex-start;
-    gap: 12px;
-}
-
-.dhr-wedding-phone-icon {
-    color: rgba(0, 0, 0, 0.5);
-    display: inline-flex;
-}
-
-.dhr-wedding-reservation-label {
-    font-size: 12px;
-    font-weight: 600;
-    text-transform: uppercase;
-    letter-spacing: 2px;
-    color: rgba(0, 0, 0, 0.7);
-    margin: 0 0 5px 0;
-}
-
-.dhr-wedding-phone-number {
-    font-size: 18px;
-    color: rgba(0, 0, 0, 0.7);
-    margin: 0;
-}
-
-.dhr-wedding-venue-map-wrapper {
-    flex: 1;
-    position: relative;
+.dhr-wedding-venue-block p,
+.dhr-wedding-venue-block h2 {
+    color: #FAFAFA !important;
 }
 
 .dhr-wedding-venue-map {
@@ -1010,89 +914,112 @@ body {
     min-height: 600px;
 }
 
-@media (max-width: 768px) {
-    .dhr-wedding-venue-map-container {
-        flex-direction: column;
-    }
-    .dhr-wedding-venue-content {
-        flex: 0 0 auto;
-        padding: 40px 20px;
-    }
+.dhr-map-reservation {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    margin-top: 20px;
+}
+
+.dhr-map-reservation .dhr-map-label {
+    color: #0B5991 !important;
+    font-size: 12px !important;
+    margin: 0px !important;
+}
+
+.dhr-map-reservation .dhr-map-description {
+    font-size: 20px !important;
+    margin: 0px !important;
 }
 
 /* ============================================
    Map 6: Property Portfolio Map Styles
    ============================================ */
-.dhr-property-portfolio-map-container {
-    display: flex;
+.dhr-property-map-container {
     width: 100%;
     min-height: 700px;
     font-family: "Open Sans", sans-serif !important;
-}
-
-.dhr-property-portfolio-map-wrapper {
-    flex: 1;
     position: relative;
 }
 
-.dhr-property-portfolio-map {
+.dhr-property-map {
     width: 100%;
     height: 100%;
     min-height: 700px;
 }
 
-.dhr-property-portfolio-panel {
-    flex: 0 0 350px;
-    background: #062943;
-    padding: 40px 30px;
-    overflow-y: auto;
-    max-height: 700px;
+.dhr-property-panel {
+    position: absolute;
+    bottom: 30px;
+    right: 30px;
+    background-color: rgba(4, 35, 57, 0.5);
+    padding: 30px;
+    border-radius: 5px;
 }
 
-.dhr-property-panel-title {
+.dhr-property-panel h4 {
     font-size: 20px;
-    font-weight: 600;
+    font-weight: 400;
     color: #fff;
-    margin: 0 0 30px 0;
+    margin: 0px 0px 20px;
+    padding-top: 20px;
+    border-top: 1px solid rgba(6, 41, 67, 0.50);
 }
 
-.dhr-property-list {
-    list-style: none;
-    padding: 0;
-    margin: 0;
+.dhr-property-panel ul {
+    margin: 0px;
+    padding: 0px 0px 0px 30px;
+    list-style-type: decimal-leading-zero;
+    max-height: 280px;
+    overflow-y: auto;
+    scrollbar-width: thin;
 }
 
-.dhr-property-item {
-    display: flex;
-    align-items: center;
-    gap: 12px;
-    padding: 12px 0;
-    color: #fff;
+.dhr-property-panel ul li {
     font-size: 14px;
-    cursor: pointer;
-    transition: color 0.3s;
-    border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+    font-weight: 400;
+    color: #fff;
+    margin: 0px 0px 10px;
 }
 
-.dhr-property-item:hover {
-    color: #66B3FF;
+.dhr-property-panel ul li:last-child {
+    margin-bottom: 0px;
 }
 
-.dhr-property-bullet {
-    width: 8px;
-    height: 8px;
-    background: #fff;
+/* Property Portfolio Map Marker with Number */
+.dhr-property-portfolio-marker {
+    width: 32px;
+    height: 32px;
+    background-color: #062943;
     border-radius: 50%;
-    flex-shrink: 0;
+    border: 1px solid #fff;
+    transform: translate(-50%, -50%);
+    position: relative;
 }
 
-@media (max-width: 768px) {
-    .dhr-property-portfolio-map-container {
-        flex-direction: column;
+.dhr-property-portfolio-marker::before {
+    content: '';
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    width: 32px;
+    height: 32px;
+    transform: translate(-50%, -50%);
+    border: 7px solid rgba(68, 185, 248, 0.10);
+    border-radius: 50%;
+    opacity: 0;
+    animation: dhr-property-marker-animation 3s cubic-bezier(0.4, 0, 0.6, 1) infinite;
+}
+
+@keyframes dhr-property-marker-animation {
+    0% {
+        transform: translate(-50%, -50%) scale(1);
+        opacity: 1;
     }
-    .dhr-property-portfolio-panel {
-        flex: 0 0 auto;
-        max-height: 300px;
+
+    100% {
+        transform: translate(-50%, -50%) scale(2.3);
+        opacity: 0;
     }
 }
 
@@ -1100,62 +1027,158 @@ body {
    Map 7: Lodges & Camps Map Styles
    ============================================ */
 .dhr-lodges-camps-map-container {
-    display: flex;
     width: 100%;
-    min-height: 600px;
+    min-height: 700px;
     font-family: "Open Sans", sans-serif !important;
-}
-
-.dhr-lodges-camps-panel {
-    flex: 0 0 350px;
-    background: rgba(0, 0, 0, 0.7);
-    padding: 40px 30px;
-    overflow-y: auto;
-    max-height: 600px;
-}
-
-.dhr-lodges-list {
-    list-style: none;
-    padding: 0;
-    margin: 0 0 30px 0;
-}
-
-.dhr-lodge-item {
-    padding: 12px 0;
-    color: #fff;
-    font-size: 14px;
-    cursor: pointer;
-    transition: color 0.3s;
-    border-bottom: 1px solid rgba(255, 255, 255, 0.1);
-}
-
-.dhr-lodge-item:hover {
-    color: #66B3FF;
-}
-
-.dhr-lodges-legend {
-    display: flex;
-    flex-direction: column;
-    gap: 15px;
-}
-
-.dhr-lodges-camps-map-wrapper {
-    flex: 1;
     position: relative;
 }
 
 .dhr-lodges-camps-map {
     width: 100%;
     height: 100%;
-    min-height: 600px;
+    min-height: 700px;
 }
 
-@media (max-width: 768px) {
-    .dhr-lodges-camps-map-container {
-        flex-direction: column;
+.dhr-lodges-camps-panel {
+    position: absolute;
+    bottom: 30px;
+    left: 30px;
+    background-color: rgba(4, 35, 57, 0.3);
+    backdrop-filter: blur(20px);
+    padding: 30px;
+    border-radius: 5px;
+    z-index: 1;
+}
+
+.dhr-lodges-camps-panel ul {
+    margin: 0px;
+    padding: 0px 0px 0px 30px;
+    list-style-type: decimal-leading-zero;
+    max-height: 510px;
+    overflow-y: auto;
+    scrollbar-width: thin;
+}
+
+.dhr-lodges-camps-panel ul li {
+    font-size: 14px;
+    font-weight: 400;
+    color: #fff;
+    margin: 0px 0px 10px;
+}
+
+.dhr-lodges-camps-panel ul li:last-child {
+    margin-bottom: 0px;
+}
+
+.dhr-lodges-legend {
+    margin: 30px 0px 0px;
+}
+
+.dhr-lodges-legend ul {
+    margin: 0px;
+    padding: 0px;
+    list-style: none;
+}
+
+.dhr-lodges-legend ul li {
+    font-size: 12px !important;
+    font-weight: 400;
+    color: #fff;
+    margin: 0px 0px 0x;
+    position: relative;
+    padding-left: 30px;
+}
+
+.dhr-lodges-legend ul li::before {
+    content: '';
+    position: absolute;
+    left: 7px;
+    top: 50%;
+    transform: translateY(-50%);
+    width: 10px;
+    height: 10px;
+    border-radius: 50%;
+    background-color: rgba(68, 185, 248, 0.30);
+    border: 1px solid #fff;
+}
+
+.dhr-lodges-legend ul li:last-child::before {
+    background-color: rgba(211, 170, 116, 0.30);
+}
+
+.dhr-lodges-legend ul li:last-child {
+    margin-bottom: 0px;
+}
+
+/* Lodges & Camps Map Markers */
+.dhr-lodge-marker {
+    width: 14px;
+    height: 14px;
+    background-color: #062943;
+    border-radius: 50%;
+    transform: translate(-50%, -50%);
+    border: 1px solid #fff;
+    position: relative;
+}
+
+.dhr-lodge-marker::before {
+    content: '';
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    width: 14px;
+    height: 14px;
+    transform: translate(-50%, -50%);
+    border: 7px solid rgba(68, 185, 248, 0.10);
+    border-radius: 50%;
+    opacity: 0;
+    animation: dhr-lodge-marker-animation 3s cubic-bezier(0.4, 0, 0.6, 1) infinite;
+}
+
+.dhr-wedding-marker {
+    width: 14px;
+    height: 14px;
+    background-color: #062943;
+    border-radius: 50%;
+    transform: translate(-50%, -50%);
+    border: 1px solid #fff;
+    position: relative;
+}
+
+.dhr-wedding-marker::before {
+    content: '';
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    width: 14px;
+    height: 14px;
+    transform: translate(-50%, -50%);
+    border: 7px solid rgba(211, 170, 116, 0.30);
+    border-radius: 50%;
+    opacity: 0;
+    animation: dhr-wedding-marker-animation 3s cubic-bezier(0.4, 0, 0.6, 1) infinite;
+}
+
+@keyframes dhr-lodge-marker-animation {
+    0% {
+        transform: translate(-50%, -50%) scale(1);
+        opacity: 1;
     }
-    .dhr-lodges-camps-panel {
-        flex: 0 0 auto;
-        max-height: 300px;
+
+    100% {
+        transform: translate(-50%, -50%) scale(2.3);
+        opacity: 0;
+    }
+}
+
+@keyframes dhr-wedding-marker-animation {
+    0% {
+        transform: translate(-50%, -50%) scale(1);
+        opacity: 1;
+    }
+
+    100% {
+        transform: translate(-50%, -50%) scale(2.3);
+        opacity: 0;
     }
 }
