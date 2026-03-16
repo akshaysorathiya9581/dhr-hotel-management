@@ -1181,3 +1181,66 @@ ul{
         handleResize();
     });
 </script>
+
+
+<!-- Backup -->
+ <div class="bys-hotel-rooms-second">
+        <div class="bys-hotel-room-design swiper hotel-rooms-swiper">
+            <div class="swiper-wrapper">
+                <?php foreach ($rooms as $room):
+                    $room_images = !empty($room->images) && is_array($room->images) ? $room->images : array();
+                    $first_image = !empty($room_images) ? $room_images[0] : $plugin_url . 'assets/images/package/2.png';
+                    $room_price = isset($room->from_price) ? (int) $room->from_price : 0;
+                ?>
+                <div class="swiper-slide">
+                    <div class="bys-hotel-room-card">
+                        <div class="bys-hotel-room-card__frature-img bys-room-image-slider swiper">
+                            <div class="swiper-wrapper">
+                                <?php if (!empty($room_images)): ?>
+                                    <?php foreach ($room_images as $image_url): ?>
+                                        <div class="swiper-slide">
+                                            <img src="<?php echo esc_url($image_url); ?>"
+                                                alt="<?php echo esc_attr($room->room_type_name); ?>"
+                                                loading="lazy">
+                                        </div>
+                                    <?php endforeach; ?>
+                                <?php else: ?>
+                                    <div class="swiper-slide">
+                                        <img src="<?php echo esc_url($first_image); ?>"
+                                            alt="<?php echo esc_attr($room->room_type_name); ?>"
+                                            loading="lazy">
+                                    </div>
+                                <?php endif; ?>
+                            </div>
+                            <div class="bys-room-image-pagination"></div>
+                        </div>
+                        <div class="bys-hotel__content">
+                            <div class="card__top-badge">
+                                <p class="package-overlay__tag">
+                                    <?php echo esc_html(sprintf(__('From R%s/Night', 'dhr-hotel-management'), dhr_format_room_price($room_price))); ?>
+                                </p>
+                            </div>
+                            <div class="bys-hotel-overlay__content">
+                                <div class="bys-hotel-overlay__content__inner">
+                                    <h3 class="bys-hotel-overlay__main-title"><?php echo esc_html($room->room_type_name); ?></h3>
+                                </div>
+                                <div class="bys-hotel-btn-grp">
+                                    <a href="#" class="bys-hotel-btn button-light bys-book-now-link"
+                                        data-room-code="<?php echo esc_attr($room->room_type_code); ?>"
+                                        data-hotel-code="<?php echo esc_attr($hotel_code); ?>"
+                                        data-channel-id="<?php echo esc_attr($channel_id); ?>"
+                                        data-checkin="<?php echo esc_attr($book_now_checkin); ?>"
+                                        data-checkout="<?php echo esc_attr($book_now_checkout); ?>"
+                                        data-adults="<?php echo esc_attr($room->max_occupancy ?: 2); ?>"
+                                        data-children="0"
+                                        data-rooms="1"><?php _e('Book Now', 'dhr-hotel-management'); ?></a>
+                                    <a href="#" class="bys-hotel-btn button-dark"><?php _e('View Room', 'dhr-hotel-management'); ?></a>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <?php endforeach; ?>
+            </div>
+        </div>
+    </div>

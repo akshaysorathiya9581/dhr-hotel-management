@@ -135,9 +135,36 @@ $book_now_text = !empty($enquire_text) ? $enquire_text : 'Book Now';
     <div id="wtfu-map" class="wtfu-map" data-lat="<?php echo esc_attr($lat); ?>" data-lng="<?php echo esc_attr($lng); ?>" data-name="<?php echo esc_attr($hotel_name); ?>" data-default-lat="<?php echo esc_attr($default_center_lat); ?>" data-default-lng="<?php echo esc_attr($default_center_lng); ?>" data-has-coords="<?php echo $has_valid_coords ? '1' : '0'; ?>"></div>
     <div class="wtfu-info-content">
         <div id="wtfu-info-content-left" class="wtfu-info-content__left" style="background-image: url('<?php echo esc_url($left_bg_image); ?>');">
-            <?php if (!empty($logo_url)): ?>
+            <!-- <?php //if (!empty($logo_url)): ?>
                 <div class="wtfu-info__logo">
-                    <img src="<?php echo esc_url($logo_url); ?>" width="227" height="164" alt="<?php echo esc_attr($hotel_name); ?> Logo">
+                    <img src="<?php //echo esc_url($logo_url); ?>" width="227" height="164" alt="<?php //echo esc_attr($hotel_name); ?> Logo">
+                </div>
+            <?php //endif; ?> -->
+            <?php if (!empty($hotels) && is_array($hotels)): ?>
+                <div class="wtfu-info__logo">
+                    <?php foreach ($hotels as $h): ?>
+                        <?php
+                        $logo = '';
+                        if (isset($h->logo_url) && !empty($h->logo_url)) {
+                            $logo = $h->logo_url;
+                        } elseif (isset($h->image_url) && !empty($h->image_url)) {
+                            $logo = $h->image_url;
+                        }
+                        if (empty($logo)) {
+                            continue;
+                        }
+                        $hid = isset($h->id) ? (int) $h->id : 0;
+                        if ($hid <= 0) {
+                            continue;
+                        }
+                        ?>
+                        <div class="wtfu-hotel-logo-item"
+                                data-hotel-id="<?php echo esc_attr($hid); ?>"
+                                aria-label="<?php echo esc_attr($h->name); ?>">
+                            <img src="<?php echo esc_url($logo); ?>"
+                                 alt="<?php echo esc_attr($h->name); ?>">
+                    </div>
+                    <?php endforeach; ?>
                 </div>
             <?php endif; ?>
             <?php if (!empty($enquire_text)): ?>
@@ -187,35 +214,6 @@ $book_now_text = !empty($enquire_text) ? $enquire_text : 'Book Now';
                         </svg>
                         Google Maps
                     </a>
-                </div>
-            <?php endif; ?>
-
-            <?php if (!empty($hotels) && is_array($hotels)): ?>
-                <div class="wtfu-hotel-logos">
-                    <?php foreach ($hotels as $h): ?>
-                        <?php
-                        $logo = '';
-                        if (isset($h->logo_url) && !empty($h->logo_url)) {
-                            $logo = $h->logo_url;
-                        } elseif (isset($h->image_url) && !empty($h->image_url)) {
-                            $logo = $h->image_url;
-                        }
-                        if (empty($logo)) {
-                            continue;
-                        }
-                        $hid = isset($h->id) ? (int) $h->id : 0;
-                        if ($hid <= 0) {
-                            continue;
-                        }
-                        ?>
-                        <button type="button"
-                                class="wtfu-hotel-logo-item"
-                                data-hotel-id="<?php echo esc_attr($hid); ?>"
-                                aria-label="<?php echo esc_attr($h->name); ?>">
-                            <img src="<?php echo esc_url($logo); ?>"
-                                 alt="<?php echo esc_attr($h->name); ?>">
-                        </button>
-                    <?php endforeach; ?>
                 </div>
             <?php endif; ?>
         </div>
