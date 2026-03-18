@@ -2069,6 +2069,95 @@ div:focus-visible {
     margin: 0 auto;
 }
 
+.bys-packages .first-packages__featured {
+    max-width: 1140px;
+    margin: 0 auto 32px;
+}
+
+@media (max-width: 767px) {
+    .bys-packages .first-packages__featured {
+        margin-bottom: 25px;
+    }
+}
+
+.bys-packages .first-packages__featured .bys-packages-card {
+    display: grid;
+    grid-template-columns: 1.92fr 1fr;
+}
+
+@media (max-width: 991px) {
+    .bys-packages .first-packages__featured .bys-packages-card {
+        grid-template-columns: 1.5fr 1fr;
+    }
+}
+
+@media (max-width: 767px) {
+    .bys-packages .first-packages__featured .bys-packages-card {
+        grid-template-columns: 1fr;
+    }
+    .bys-packages .first-packages__featured .bys-package-content {
+        display: none;
+    }
+}
+
+.bys-packages .first-packages__featured .bys-packages-card__top {
+    border-radius: 4px;
+}
+
+.bys-packages .first-packages__featured .package-overlay__label,
+.bys-packages .first-packages__featured .package-overlay__location,
+.bys-packages .first-packages__featured .package-overlay__divider {
+    display: none !important;
+}
+
+.bys-packages .first-packages__featured .package-overlay__title {
+    max-width: 48%;
+}
+
+@media (max-width: 1280px) {
+    .bys-packages .first-packages__featured .package-overlay__title {
+        max-width: 55%;
+    }
+}
+
+@media (max-width: 1024px) {
+    .bys-packages .first-packages__featured .package-overlay__title {
+        max-width: 60%;
+    }
+}
+
+@media (max-width: 767px) {
+    .bys-packages .first-packages__featured .package-overlay__title {
+        max-width: 100%;
+    }
+}
+
+.bys-packages .first-packages__featured .bys-package-content {
+    justify-content: center;
+}
+
+.bys-packages .first-packages__featured .featured-experience__label {
+    position: absolute;
+    right: 25px;
+    top: 25px;
+    font-size: 12px;
+    font-weight: 400;
+    line-height: 20px;
+    text-transform: uppercase;
+    background-color: #D3AA74;
+    color: #fafafa;
+    padding: 9px 12px;
+    letter-spacing: 0;
+}
+
+@media (max-width: 767px) {
+    .bys-packages .first-packages__featured .featured-experience__label {
+        position: unset;
+        display: inline-block;
+        margin-bottom: 20px;
+    }
+}
+
 .package-design-grid .bys-packages {
     background-color: #FFFFFF;
 }
