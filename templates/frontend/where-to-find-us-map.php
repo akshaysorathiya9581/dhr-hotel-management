@@ -229,6 +229,7 @@ $book_now_text = !empty($enquire_text) ? $enquire_text : 'Book Now';
     var infoWindows = [];
     var pulseOverlays = {};
     var activeMarker = null;
+    var hoveredMarker = null;
     var PulseOverlay;
 
     function createNormalMarkerIcon() {
@@ -346,6 +347,7 @@ $book_now_text = !empty($enquire_text) ? $enquire_text : 'Book Now';
             markerData.marker.setIcon(normalIcon);
         });
         activeMarker = null;
+        hoveredMarker = null;
     }
 
     function setMarkerToActive(marker) {
@@ -525,6 +527,21 @@ $book_now_text = !empty($enquire_text) ? $enquire_text : 'Book Now';
                 setAllMarkersToNormal();
             });
 
+            // Base map behaviour: pulse on hover (but not when active)
+            marker.addListener('mouseover', function () {
+                hoveredMarker = marker;
+                if (activeMarker !== marker) {
+                    startPulse(marker, false);
+                }
+            });
+
+            marker.addListener('mouseout', function () {
+                hoveredMarker = null;
+                if (activeMarker !== marker) {
+                    stopPulse(marker);
+                }
+            });
+
             marker.addListener('click', function () {
                 setAllMarkersToNormal();
                 setMarkerToActive(marker);
@@ -553,6 +570,9 @@ $book_now_text = !empty($enquire_text) ? $enquire_text : 'Book Now';
                 defaultCode = String(dhrWtfuMapSettings.default_hotel_code || '').trim().toUpperCase();
             }
 
+            // Base map logic: only auto-activate when explicitly configured
+            if (!defaultCode) return;
+
             var markerToActivate = null;
 
             if (defaultCode) {
@@ -564,11 +584,6 @@ $book_now_text = !empty($enquire_text) ? $enquire_text : 'Book Now';
                         break;
                     }
                 }
-            }
-
-            // If no default match, activate first hotel so one marker is always active (same as other map types)
-            if (!markerToActivate && markers.length > 0 && markers[0].marker) {
-                markerToActivate = markers[0];
             }
 
             if (markerToActivate) {
