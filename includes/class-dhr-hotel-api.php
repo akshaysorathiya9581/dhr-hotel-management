@@ -1039,7 +1039,25 @@ class DHR_Hotel_API {
                         $room->amenities[] = array('name' => $a);
                     } elseif (is_array($a)) {
                         $name = isset($a['amenityName']) ? $a['amenityName'] : (isset($a['name']) ? $a['name'] : (isset($a['description']) ? $a['description'] : reset($a)));
-                        if (!empty($name)) $room->amenities[] = array('name' => $name);
+                        $id_or_code = '';
+
+                        // Try common amenity id/code keys across APIs
+                        foreach (array('id', 'amenityId', 'amenityID', 'amenity_id', 'code', 'amenityCode', 'amenity_code', 'roomAmenityCode', 'RoomAmenityCode') as $k) {
+                            if (isset($a[$k]) && (is_scalar($a[$k]) || is_numeric($a[$k]))) {
+                                $id_or_code = (string) $a[$k];
+                                break;
+                            }
+                        }
+
+                        if (!empty($name)) {
+                            $row = array('name' => (string) $name);
+                            if ($id_or_code !== '') {
+                                // Keep both fields so templates can pick either.
+                                $row['code'] = $id_or_code;
+                                $row['id']   = $id_or_code;
+                            }
+                            $room->amenities[] = $row;
+                        }
                     }
                 }
             } else {

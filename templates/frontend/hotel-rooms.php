@@ -25,103 +25,61 @@ $show_amenities = $hotel_data['show_amenities'];
 $show_description = $hotel_data['show_description'];
 $plugin_url = plugin_dir_url(dirname(__FILE__, 2));
 
+
+// echo "<pre>";
+// print_r($rooms);
+// die();
 /**
  * Get amenity icon SVG (wrapped in function_exists for multiple shortcode instances on same page)
  */
 if (!function_exists('get_amenity_icon')) {
-function get_amenity_icon($amenity_name)
+function get_amenity_icon($amenity)
 {
-    // Map amenity names to SVG icon image paths
-    $plugin_url = plugin_dir_url(dirname(__FILE__, 2));
+    $amenity_arr  = is_array($amenity) ? $amenity : array();
+    $amenity_name = '';
+    $amenity_id   = '';
 
-    $icon_map = array(
-        'Bathroom amenities' => 'assets/images/amenity-icon/bathroom/bathroom-amenities.svg',
-        'Bathtub Ensuite bath' => 'assets/images/amenity-icon/bathroom/bathtub-ensuite-bath.svg',
-        'Hairdryer in room' => 'assets/images/amenity-icon/bathroom/hairdryer-in-room.svg',
-        'Shower' => 'assets/images/amenity-icon/bathroom/shower.svg',
-
-        'Telephone' => 'assets/images/amenity-icon/communication-telephone/telephone.svg',
-
-        'Private Pool' => 'assets/images/amenity-icon/fitness-health/private-pool.svg',
-
-        'Double bed' => 'assets/images/amenity-icon/general/double-bed.svg',
-        'Double Bed' => 'assets/images/amenity-icon/general/double-bed.svg',
-        'King bed' => 'assets/images/amenity-icon/general/king-bed.svg',
-        'Queen bed' => 'assets/images/amenity-icon/general/queen-bed.svg',
-        'Single bed' => 'assets/images/amenity-icon/general/single-bed.svg',
-        'Terrace' => 'assets/images/amenity-icon/general/terrace.svg',
-        'Twin bed' => 'assets/images/amenity-icon/general/twin-bed.svg',
-
-        'Wheelchair access - Handicap facilities' => 'assets/images/amenity-icon/handicap-facilities/wheelchair-access-handicap-facilities.svg',
-
-        'Bottled Water' => 'assets/images/amenity-icon/kitchen-dining/bottled-water.svg',
-        'Coffee Maker' => 'assets/images/amenity-icon/kitchen-dining/coffee-maker.svg',
-        'Cups glasses' => 'assets/images/amenity-icon/kitchen-dining/cups-glasses.svg',
-        'Desk' => 'assets/images/amenity-icon/kitchen-dining/desk.svg',
-        'Dishes - plates' => 'assets/images/amenity-icon/kitchen-dining/dishes-plates.svg',
-        'Dishwasher' => 'assets/images/amenity-icon/kitchen-dining/dishwasher.svg',
-        'Kitchen' => 'assets/images/amenity-icon/kitchen-dining/kitchen.svg',
-        'Kitchenette' => 'assets/images/amenity-icon/kitchen-dining/kitchenette.svg',
-        'Microwave' => 'assets/images/amenity-icon/kitchen-dining/microwave.svg',
-        'Oven' => 'assets/images/amenity-icon/kitchen-dining/oven.svg',
-        'Posts - pans' => 'assets/images/amenity-icon/kitchen-dining/posts-pans.svg',
-        'Refrigeration' => 'assets/images/amenity-icon/kitchen-dining/refrigeration.svg',
-        'Silverware' => 'assets/images/amenity-icon/kitchen-dining/silverware.svg',
-        'Stove' => 'assets/images/amenity-icon/kitchen-dining/stove.svg',
-        'Table - chairs' => 'assets/images/amenity-icon/kitchen-dining/table-chairs.svg',
-
-        'Air conditioner' => 'assets/images/amenity-icon/room-type/air-conditioner.svg',
-        'Balcony' => 'assets/images/amenity-icon/room-type/balcony.svg',
-        'Ceiling fan' => 'assets/images/amenity-icon/room-type/ceiling-fan.svg',
-        'Childrens Suite' => 'assets/images/amenity-icon/room-type/childrens-suite.svg',
-        'Cribs' => 'assets/images/amenity-icon/room-type/cribs.svg',
-        'Fireplace' => 'assets/images/amenity-icon/room-type/fireplace.svg',
-        'Iron' => 'assets/images/amenity-icon/room-type/iron.svg',
-        'Ironing board' => 'assets/images/amenity-icon/room-type/ironing-board.svg',
-        'Loft' => 'assets/images/amenity-icon/room-type/loft.svg',
-        'Minibar' => 'assets/images/amenity-icon/room-type/minibar.svg',
-        'Plush bathrobes' => 'assets/images/amenity-icon/room-type/plush-bathrobes.svg',
-        'Plush slippers' => 'assets/images/amenity-icon/room-type/plush-slippers.svg',
-        'Plush towels' => 'assets/images/amenity-icon/room-type/plush-towels.svg',
-        'Private Patio' => 'assets/images/amenity-icon/room-type/private-patio.svg',
-        'Safe' => 'assets/images/amenity-icon/room-type/safe.svg',
-        'Sitting area' => 'assets/images/amenity-icon/room-type/sitting-area.svg',
-        'Sofa bed' => 'assets/images/amenity-icon/room-type/sofa-bed.svg',
-        'Solid wood writing desk and chair' => 'assets/images/amenity-icon/room-type/solid-wood-writing-desk-and-chair.svg',
-        'Washer - dryer' => 'assets/images/amenity-icon/room-type/washer-dryer.svg',
-
-        'DVD' => 'assets/images/amenity-icon/technology/dvd.svg',
-        'Internet Access - Complimentary' => 'assets/images/amenity-icon/technology/internet-access-complimentary.svg',
-        'Internet Access - Wireless' => 'assets/images/amenity-icon/technology/internet-access-complimentary.svg',
-        'Satellite TV' => 'assets/images/amenity-icon/technology/satellite-tb.svg',
-        'TV' => 'assets/images/amenity-icon/technology/tv.svg',
-
-        'Checkmark' => 'assets/images/amenity-icon/generic-icon/checkmark.svg',
-        
-
-
-        'Shower'             => 'assets/images/amenity-icon/bathroom/shower.svg',
-        'Bidet'              => 'assets/images/amenity-icon/bathroom/bathroom-amenities.svg',
-        'Bath Tub'           => 'assets/images/amenity-icon/bathroom/bathtub-ensuite-bath.svg',
-        'Bathrobes'          => 'assets/images/amenity-icon/room-type/plush-bathrobes.svg',
-        'DSTV'               => 'assets/images/amenity-icon/technology/tv.svg',
-        'Internet available' => 'assets/images/amenity-icon/technology/internet-access-complimentary.svg',
-        'Safe'               => 'assets/images/amenity-icon/room-type/safe.svg',
-        'Air Conditioning'   => 'assets/images/amenity-icon/room-type/air-conditioner.svg',
-        'Minibar'            => 'assets/images/amenity-icon/room-type/minibar.svg',
-        'Balcony'            => 'assets/images/amenity-icon/room-type/balcony.svg',
-        'Hairdryer In Room'  => 'assets/images/amenity-icon/bathroom/hairdryer-in-room.svg',
-        'Toilet'             => 'assets/images/amenity-icon/fitness-health/private-pool.svg',
-        'Bathroom Private'   => 'assets/images/amenity-icon/fitness-health/private-pool.svg',
-    );
-
-    if (!isset($icon_map[$amenity_name])) {
-        return '';
+    if (!empty($amenity_arr)) {
+        $amenity_name = isset($amenity_arr['name']) ? (string) $amenity_arr['name'] : '';
+        // OTA uses RoomAmenityCode in 'code'. Other APIs might use id/amenity_id.
+        $amenity_id = isset($amenity_arr['code']) ? (string) $amenity_arr['code'] : (isset($amenity_arr['id']) ? (string) $amenity_arr['id'] : (isset($amenity_arr['amenity_id']) ? (string) $amenity_arr['amenity_id'] : ''));
+    } elseif (is_string($amenity)) {
+        $amenity_name = $amenity;
     }
 
-    $src = $plugin_url . $icon_map[$amenity_name];
+    $amenity_name = trim($amenity_name);
+    $amenity_id   = trim($amenity_id);
 
-    return '<img aria-hidden="true" class="bys-amenity-icon-img" src="' . esc_url($src) . '" alt="' . esc_attr($amenity_name) . '">';
+    $plugin_file = dirname(__FILE__, 3) . '/dhr-hotel-management.php';
+    $plugin_url  = plugins_url('/', $plugin_file);
+    $plugin_path = dirname(__FILE__, 3) . '/';
+
+    $base_rel = 'assets/images/amenity-icon/';
+
+    // 1) Prefer ID-based SVGs like assets/images/amenity-icon/12.svg
+    if ($amenity_id !== '') {
+        $id_filename = preg_replace('/[^0-9A-Za-z_-]/', '', $amenity_id) . '.svg';
+        $id_rel      = $base_rel . $id_filename;
+        $id_abs      = $plugin_path . $id_rel;
+        if (is_file($id_abs)) {
+            $src = $plugin_url . $id_rel;
+            $alt = $amenity_name !== '' ? $amenity_name : $amenity_id;
+            return '<img aria-hidden="true" class="bys-amenity-icon-img" src="' . esc_url($src) . '" alt="' . esc_attr($alt) . '">';
+        }
+    }
+
+    // 2) Fallback: slug-name SVGs like assets/images/amenity-icon/terrace.svg
+    if ($amenity_name !== '') {
+        $slug = function_exists('sanitize_title') ? sanitize_title($amenity_name) : strtolower(preg_replace('/[^0-9a-z]+/i', '-', $amenity_name));
+        $name_rel = $base_rel . $slug . '.svg';
+        $name_abs = $plugin_path . $name_rel;
+        if (is_file($name_abs)) {
+            $src = $plugin_url . $name_rel;
+            return '<img aria-hidden="true" class="bys-amenity-icon-img" src="' . esc_url($src) . '" alt="' . esc_attr($amenity_name) . '">';
+        }
+    }
+
+    return '';
 }
 }
 
@@ -264,7 +222,7 @@ function dhr_format_room_price($amount) {
                                     ?>
                                         <li class="bys-room-amenity-item">
                                             <span class="bys-amenity-icon">
-                                                <?php echo get_amenity_icon($amenity_name); ?>
+                                                <?php echo get_amenity_icon($amenity); ?>
                                             </span>
                                             <span class="bys-amenity-text"><?php echo esc_html($amenity_name); ?></span>
                                         </li>
@@ -372,7 +330,7 @@ function dhr_format_room_price($amount) {
                                             ?>
                                                 <li class="bys-room-amenity-item">
                                                     <span class="bys-amenity-icon">
-                                                        <?php echo get_amenity_icon($amenity_name); ?>
+                                                        <?php echo get_amenity_icon($amenity); ?>
                                                     </span>
                                                     <span class="bys-amenity-text"><?php echo esc_html($amenity_name); ?></span>
                                                 </li>
