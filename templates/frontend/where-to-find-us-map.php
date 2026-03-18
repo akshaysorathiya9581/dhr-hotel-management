@@ -140,31 +140,22 @@ $book_now_text = !empty($enquire_text) ? $enquire_text : 'Book Now';
                     <img src="<?php //echo esc_url($logo_url); ?>" width="227" height="164" alt="<?php //echo esc_attr($hotel_name); ?> Logo">
                 </div>
             <?php //endif; ?> -->
-            <?php if (!empty($hotels) && is_array($hotels)): ?>
+            <?php
+            $logo = '';
+            if (isset($hotel->logo_url) && !empty($hotel->logo_url)) {
+                $logo = $hotel->logo_url;
+            } elseif (isset($hotel->image_url) && !empty($hotel->image_url)) {
+                $logo = $hotel->image_url;
+            }
+            ?>
+            <?php if (!empty($logo)): ?>
                 <div class="wtfu-info__logo">
-                    <?php foreach ($hotels as $h): ?>
-                        <?php
-                        $logo = '';
-                        if (isset($h->logo_url) && !empty($h->logo_url)) {
-                            $logo = $h->logo_url;
-                        } elseif (isset($h->image_url) && !empty($h->image_url)) {
-                            $logo = $h->image_url;
-                        }
-                        if (empty($logo)) {
-                            continue;
-                        }
-                        $hid = isset($h->id) ? (int) $h->id : 0;
-                        if ($hid <= 0) {
-                            continue;
-                        }
-                        ?>
-                        <div class="wtfu-hotel-logo-item"
-                                data-hotel-id="<?php echo esc_attr($hid); ?>"
-                                aria-label="<?php echo esc_attr($h->name); ?>">
-                            <img src="<?php echo esc_url($logo); ?>"
-                                 alt="<?php echo esc_attr($h->name); ?>">
+                    <div class="wtfu-hotel-logo-item"
+                         data-hotel-id="<?php echo esc_attr(isset($hotel->id) ? (int) $hotel->id : 0); ?>"
+                         aria-label="<?php echo esc_attr($hotel_name); ?>">
+                        <img src="<?php echo esc_url($logo); ?>"
+                             alt="<?php echo esc_attr($hotel_name); ?>">
                     </div>
-                    <?php endforeach; ?>
                 </div>
             <?php endif; ?>
             <?php if (!empty($enquire_text)): ?>

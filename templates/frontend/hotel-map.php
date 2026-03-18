@@ -416,6 +416,28 @@ if (isset($settings['default_hotel_code']) && $settings['default_hotel_code'] !=
             // Initial zoom only until fitBounds runs (zoom set dynamically from view)
             var initialZoom = 8;
 
+            // When only one hotel exists on the map, we want a slightly wider view (zoomed out)
+            // and the marker positioned a bit left/top by panning the map right + down.
+            function applySingleHotelZoomAndPan(singleHotelLatLng) {
+                if (!map) return;
+
+                // Device-tuned zoom (slightly more zoomed-in on desktop, but still "zoomed out" vs fitBounds on a single point)
+                var targetZoom = deviceType === 'mobile' ? 11 : (deviceType === 'tablet' ? 11 : 12);
+                targetZoom = Math.max(minZoom, Math.min(maxZoom, targetZoom));
+
+                map.setCenter(singleHotelLatLng);
+                map.setZoom(targetZoom);
+
+                var mapDiv = document.getElementById('hotel-map');
+                if (mapDiv) {
+                    var w = mapDiv.offsetWidth;
+                    var h = mapDiv.offsetHeight;
+                    // To place the marker toward the right/bottom of the screen,
+                    // pan the MAP left/up (marker appears right/down).
+                    map.panBy(-Math.round(w * 0.22), -Math.round(h * 0.14));
+                }
+            }
+
             map = new google.maps.Map(document.getElementById('hotel-map'), {
                 zoom: initialZoom,
                 center: count > 0 ? { lat: centerLat, lng: centerLng } : southAfricaCenter,
@@ -462,13 +484,21 @@ if (isset($settings['default_hotel_code']) && $settings['default_hotel_code'] !=
 
             function applyFitBoundsAndPan() {
                 if (!bounds || bounds.isEmpty()) return;
+
+                // Special case: exactly 1 hotel -> don't fitBounds a zero-span box
+                if (validHotels.length === 1) {
+                    var only = validHotels[0];
+                    applySingleHotelZoomAndPan(new google.maps.LatLng(parseFloat(only.latitude), parseFloat(only.longitude)));
+                    return;
+                }
+
                 var padding = deviceType === 'mobile' ? 40 : (deviceType === 'tablet' ? 60 : 80);
                 var ne = bounds.getNorthEast();
                 var sw = bounds.getSouthWest();
                 var center = bounds.getCenter();
                 var latSpan = ne.lat() - sw.lat();
                 var lngSpan = ne.lng() - sw.lng();
-                var expandFactor = 0.98;
+                var expandFactor = 0.8;
                 var expandedBounds = new google.maps.LatLngBounds(
                     new google.maps.LatLng(center.lat() - (latSpan * expandFactor) / 2, center.lng() - (lngSpan * expandFactor) / 2),
                     new google.maps.LatLng(center.lat() + (latSpan * expandFactor) / 2, center.lng() + (lngSpan * expandFactor) / 2)
@@ -478,6 +508,7 @@ if (isset($settings['default_hotel_code']) && $settings['default_hotel_code'] !=
                 if (mapDiv) {
                     var w = mapDiv.offsetWidth;
                     var h = mapDiv.offsetHeight;
+                    // Pan the MAP left/up so markers sit right/bottom on screen
                     map.panBy(-Math.round(w * 0.14), -Math.round(h * 0.08));
                 }
             }
@@ -485,6 +516,17 @@ if (isset($settings['default_hotel_code']) && $settings['default_hotel_code'] !=
             // After map loads, fit to markers and shift toward right-bottom (same as dining-venue-map)
             google.maps.event.addListenerOnce(map, 'idle', function () {
                 if (validHotels.length > 0 && !bounds.isEmpty()) {
+                    // Special case: exactly 1 hotel -> apply zoom-out + right/bottom pan
+                    if (validHotels.length === 1) {
+                        var only = validHotels[0];
+                        applySingleHotelZoomAndPan(new google.maps.LatLng(parseFloat(only.latitude), parseFloat(only.longitude)));
+                        setTimeout(function () {
+                            activateDefaultHotelMarker();
+                            setTimeout(activateDefaultHotelMarker, 500);
+                        }, 50);
+                        return;
+                    }
+
                     var padding = deviceType === 'mobile' ? 40 : (deviceType === 'tablet' ? 60 : 80);
                     var ne = bounds.getNorthEast();
                     var sw = bounds.getSouthWest();
@@ -502,6 +544,7 @@ if (isset($settings['default_hotel_code']) && $settings['default_hotel_code'] !=
                         if (mapDiv) {
                             var w = mapDiv.offsetWidth;
                             var h = mapDiv.offsetHeight;
+                            // Pan the MAP left/up so markers sit right/bottom on screen
                             map.panBy(-Math.round(w * 0.14), -Math.round(h * 0.08));
                         }
                         activateDefaultHotelMarker();

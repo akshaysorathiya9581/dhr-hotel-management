@@ -1604,7 +1604,7 @@ div:focus-visible {
     height: 100%;
     left: 0;
     top: 0;
-    background-color: rgba(0, 0, 0, 0.35);
+    background-color: rgba(0, 0, 0, 0.6);
     z-index: 0;
 }
 
