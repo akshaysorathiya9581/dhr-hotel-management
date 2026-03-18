@@ -2069,6 +2069,14 @@ div:focus-visible {
     margin: 0 auto;
 }
 
+.bys-packages .first-packages__design .swiper-slide,
+.bys-packages .second-packages__design .swiper-slide,
+.bys-packages .kids-packages__design .swiper-slide,
+.bys-packages .bird-packages__design .swiper-slide {
+    display: flex;
+    height: auto;
+}
+
 .bys-packages .first-packages__featured {
     max-width: 1140px;
     margin: 0 auto 32px;
@@ -2483,6 +2491,10 @@ div:focus-visible {
     flex: 1;
 }
 
+.bys-packages .bys-package-content .bys-package-button {
+    margin-top: auto;
+}
+
 .bys-packages .bys-package-features li {
     position: relative;
     font-size: 13px;
@@ -2531,6 +2543,11 @@ div:focus-visible {
     transition: all 0.25s ease-in-out;
     margin-left: auto;
     margin-right: auto;
+}
+
+.first-packages__design .swiper-slide {
+    display: flex;
+    height: auto;
 }
 
 @media (min-width: 1024px) {
