@@ -2102,6 +2102,14 @@ div:focus-visible {
 
 .bys-packages .first-packages__featured .bys-packages-card__top {
     border-radius: 4px;
+    min-height: 100%;
+}
+
+@media (max-width: 767px) {
+    .bys-packages .first-packages__featured .bys-packages-card__top {
+        min-height: auto;
+        height: 480px;
+    }
 }
 
 .bys-packages .first-packages__featured .package-overlay__label,
