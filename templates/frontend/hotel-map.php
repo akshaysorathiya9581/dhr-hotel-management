@@ -409,10 +409,10 @@ if (isset($settings['default_hotel_code']) && $settings['default_hotel_code'] !=
 
             var deviceType = getDeviceType();
             // Padding (px) when fitting bounds so markers aren't at the edge
-            var fitPadding = deviceType === 'mobile' ? 40 : (deviceType === 'tablet' ? 60 : 80);
+            var fitPadding = deviceType === 'mobile' ? 55 : (deviceType === 'tablet' ? 80 : 120);
             // Zoom limits: allow zoom in/out without breaking initial view
             var minZoom = 4;
-            var maxZoom = 18;
+            var maxZoom = 14;
             // Initial zoom only until fitBounds runs (zoom set dynamically from view)
             var initialZoom = 8;
 
@@ -421,8 +421,8 @@ if (isset($settings['default_hotel_code']) && $settings['default_hotel_code'] !=
             function applySingleHotelZoomAndPan(singleHotelLatLng) {
                 if (!map) return;
 
-                // Device-tuned zoom (slightly more zoomed-in on desktop, but still "zoomed out" vs fitBounds on a single point)
-                var targetZoom = deviceType === 'mobile' ? 11 : (deviceType === 'tablet' ? 11 : 12);
+                // Keep single-hotel view noticeably zoomed out (closer to country view)
+                var targetZoom = deviceType === 'mobile' ? 7 : (deviceType === 'tablet' ? 7 : 8);
                 targetZoom = Math.max(minZoom, Math.min(maxZoom, targetZoom));
 
                 map.setCenter(singleHotelLatLng);
@@ -434,7 +434,7 @@ if (isset($settings['default_hotel_code']) && $settings['default_hotel_code'] !=
                     var h = mapDiv.offsetHeight;
                     // To place the marker toward the right/bottom of the screen,
                     // pan the MAP left/up (marker appears right/down).
-                    map.panBy(-Math.round(w * 0.22), -Math.round(h * 0.14));
+                    map.panBy(0, -Math.round(h * 0.14));
                 }
             }
 
@@ -492,24 +492,15 @@ if (isset($settings['default_hotel_code']) && $settings['default_hotel_code'] !=
                     return;
                 }
 
-                var padding = deviceType === 'mobile' ? 40 : (deviceType === 'tablet' ? 60 : 80);
-                var ne = bounds.getNorthEast();
-                var sw = bounds.getSouthWest();
-                var center = bounds.getCenter();
-                var latSpan = ne.lat() - sw.lat();
-                var lngSpan = ne.lng() - sw.lng();
-                var expandFactor = 0.8;
-                var expandedBounds = new google.maps.LatLngBounds(
-                    new google.maps.LatLng(center.lat() - (latSpan * expandFactor) / 2, center.lng() - (lngSpan * expandFactor) / 2),
-                    new google.maps.LatLng(center.lat() + (latSpan * expandFactor) / 2, center.lng() + (lngSpan * expandFactor) / 2)
-                );
-                map.fitBounds(expandedBounds, padding);
+                var padding = fitPadding;
+                map.fitBounds(bounds, padding);
+                map.setOptions({ maxZoom: 14 });
                 var mapDiv = document.getElementById('hotel-map');
                 if (mapDiv) {
                     var w = mapDiv.offsetWidth;
                     var h = mapDiv.offsetHeight;
                     // Pan the MAP left/up so markers sit right/bottom on screen
-                    map.panBy(-Math.round(w * 0.14), -Math.round(h * 0.08));
+                    map.panBy(Math.round(w * 0.02), -Math.round(h * 0.12));
                 }
             }
 
@@ -527,25 +518,16 @@ if (isset($settings['default_hotel_code']) && $settings['default_hotel_code'] !=
                         return;
                     }
 
-                    var padding = deviceType === 'mobile' ? 40 : (deviceType === 'tablet' ? 60 : 80);
-                    var ne = bounds.getNorthEast();
-                    var sw = bounds.getSouthWest();
-                    var center = bounds.getCenter();
-                    var latSpan = ne.lat() - sw.lat();
-                    var lngSpan = ne.lng() - sw.lng();
-                    var expandFactor = 0.98;
-                    var expandedBounds = new google.maps.LatLngBounds(
-                        new google.maps.LatLng(center.lat() - (latSpan * expandFactor) / 2, center.lng() - (lngSpan * expandFactor) / 2),
-                        new google.maps.LatLng(center.lat() + (latSpan * expandFactor) / 2, center.lng() + (lngSpan * expandFactor) / 2)
-                    );
-                    map.fitBounds(expandedBounds, padding);
+                    var padding = fitPadding;
+                    map.fitBounds(bounds, padding);
+                    map.setOptions({ maxZoom: 14 });
                     setTimeout(function () {
                         var mapDiv = document.getElementById('hotel-map');
                         if (mapDiv) {
                             var w = mapDiv.offsetWidth;
                             var h = mapDiv.offsetHeight;
                             // Pan the MAP left/up so markers sit right/bottom on screen
-                            map.panBy(-Math.round(w * 0.14), -Math.round(h * 0.08));
+                            map.panBy(Math.round(w * 0.02), -Math.round(h * 0.12));
                         }
                         activateDefaultHotelMarker();
                         setTimeout(activateDefaultHotelMarker, 500);
