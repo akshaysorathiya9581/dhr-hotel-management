@@ -79,7 +79,17 @@ function get_amenity_icon($amenity)
         }
     }
 
-    return '';
+    // 3) Default icon when no ID/name SVG exists
+    $default_rel = $base_rel . 'default.svg';
+    $default_abs = $plugin_path . $default_rel;
+    $alt_fallback  = $amenity_name !== '' ? $amenity_name : ($amenity_id !== '' ? $amenity_id : __('Amenity', 'dhr-hotel-management'));
+    if (is_file($default_abs)) {
+        $src = $plugin_url . $default_rel;
+        return '<img aria-hidden="true" class="bys-amenity-icon-img bys-amenity-icon-img--default" src="' . esc_url($src) . '" alt="' . esc_attr($alt_fallback) . '">';
+    }
+
+    // Inline fallback if default.svg is missing from the install
+    return '<span class="bys-amenity-icon-fallback" aria-hidden="true"><svg class="bys-amenity-icon-svg" width="15" height="17" viewBox="0 0 15 17" fill="none" xmlns="http://www.w3.org/2000/svg"><path d="M7.5 0.5L9.35 5.65L14.5 7.5L9.35 9.35L7.5 14.5L5.65 9.35L0.5 7.5L5.65 5.65L7.5 0.5Z" stroke="#D3AA74" stroke-width="1.2" stroke-linejoin="round" fill="none"/><circle cx="7.5" cy="7.5" r="1.8" fill="#D3AA74"/></svg></span>';
 }
 }
 
