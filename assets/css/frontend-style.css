@@ -1360,13 +1360,7 @@ div:focus-visible {
     .wtfu-map-container {
         height: 100% !important;
         padding-bottom: 40px;
-        background-color: #a0b6cb;
-    }
-}
-
-@media (max-width: 575px) {
-    .wtfu-map-container {
-        padding-bottom: 0;
+        background-color: #e4e8eb;
     }
 }
 
@@ -1383,6 +1377,12 @@ div:focus-visible {
         position: relative;
         overflow: hidden;
         height: 500px;
+    }
+}
+
+@media (max-width: 575px) {
+    .wtfu-map-container .wtfu-map {
+        height: 550px;
     }
 }
 
@@ -1428,24 +1428,21 @@ div:focus-visible {
 
 @media (max-width: 991px) {
     .wtfu-map-container .wtfu-info-content {
-        position: unset;
+        position: relative !important;
+        right: 0;
         width: calc(100% - 70px);
         margin-left: auto;
         margin-right: auto;
         margin-top: 20px;
+        position: relative;
+        margin-top: -230px;
+        z-index: 1;
     }
 }
 
 @media (max-width: 768px) {
     .wtfu-map-container .wtfu-info-content {
         grid-template-columns: 1fr;
-    }
-}
-
-@media (max-width: 575px) {
-    .wtfu-map-container .wtfu-info-content {
-        width: 100%;
-        border-radius: 0;
     }
 }
 
@@ -1467,7 +1464,7 @@ div:focus-visible {
 
 @media (max-width: 575px) {
     .wtfu-map-container .wtfu-info-content__right {
-        padding: 30px 35px;
+        padding: 25px 30px 30px;
     }
 }
 
@@ -1537,7 +1534,6 @@ div:focus-visible {
 }
 
 @media (max-width: 768px) {
-
     .wtfu-map-container .map-phone,
     .wtfu-map-container .map-phone span,
     .wtfu-map-container .map-phone a {
@@ -1614,12 +1610,6 @@ div:focus-visible {
     }
 }
 
-@media (max-width: 480px) {
-    .wtfu-map-container .wtfu-info-content__left {
-        /* height: 200px; */
-    }
-}
-
 .wtfu-map-container .wtfu-info__logo {
     width: 227px;
     height: auto;
@@ -1654,28 +1644,32 @@ div:focus-visible {
     z-index: 1;
 }
 
+@media (max-width: 991px) {
+    .wtfu-map-container .wtfu-info__enq-btn {
+        width: 100%;
+        margin-top: 20px;
+    }
+}
 
+.wtfu-info__enq-btn--desktop {
+    display: inline-flex !important;
+}
+
+.wtfu-info__enq-btn--mobile {
+    display: none !important;
+}
+
+@media (max-width: 991px) {
+    .wtfu-info__enq-btn--desktop {
+        display: none !important;
+    }
+
+    .wtfu-info__enq-btn--mobile {
+        display: inline-flex !important;
+    }
+}
 
 /*  */
-/*  */
-/*  */
-/*  */
-/*  */
-/*  */
-/*  */
-/*  */
-/*  */
-/*  */
-/*  */
-/*  */
-/*  */
-/*  */
-/*  */
-
-
-/* ============================================
-   Hotel Rooms Display Styles (BYS Design)
-   ============================================ */
 /* Hotel Rooms List Styles - Matching Live Site Design */
 .bys-hotel-rooms {
     font-family: "Open Sans", sans-serif;
@@ -1915,6 +1909,7 @@ div:focus-visible {
     height: auto;
     max-width: 20px;
     width: auto;
+    display: flex;
 }
 
 .bys-hotel-rooms .bys-amenity-icon [class^="fa-dhr-"]:before,
