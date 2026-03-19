@@ -159,7 +159,7 @@ $book_now_text = !empty($enquire_text) ? $enquire_text : 'Book Now';
                 </div>
             <?php endif; ?>
             <?php if (!empty($enquire_text)): ?>
-                <a class="wtfu-info__enq-btn" href="<?php echo !empty($enquire_url) ? esc_url($enquire_url) : '#'; ?>" <?php echo !empty($enquire_url) ? 'target="_blank"' : ''; ?>>
+                <a class="wtfu-info__enq-btn wtfu-info__enq-btn--desktop" href="<?php echo !empty($enquire_url) ? esc_url($enquire_url) : '#'; ?>" <?php echo !empty($enquire_url) ? 'target="_blank"' : ''; ?>>
                     <?php echo esc_html($enquire_text); ?>
                 </a>
             <?php endif; ?>
@@ -206,6 +206,12 @@ $book_now_text = !empty($enquire_text) ? $enquire_text : 'Book Now';
                         Google Maps
                     </a>
                 </div>
+            <?php endif; ?>
+
+            <?php if (!empty($enquire_text)): ?>
+                <a class="wtfu-info__enq-btn wtfu-info__enq-btn--mobile" href="<?php echo !empty($enquire_url) ? esc_url($enquire_url) : '#'; ?>" <?php echo !empty($enquire_url) ? 'target="_blank"' : ''; ?>>
+                    <?php echo esc_html($enquire_text); ?>
+                </a>
             <?php endif; ?>
         </div>
     </div>
