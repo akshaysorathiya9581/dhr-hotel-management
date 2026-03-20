@@ -102,15 +102,17 @@ $book_now_checkout = function_exists('wp_date') ? wp_date('Y-m-d', current_time(
                                     <?php foreach ($included_list as $line) : ?><li><?php echo esc_html($line); ?></li><?php endforeach; ?>
                                 </ul>
                             </div>
-                            <div class="package-content__divider"></div>
-                            <a href="javascript:void(0)" class="bys-package-button button--theme-2 bys-book-now-link"
-                                data-hotel-code="<?php echo esc_attr($pkg->hotel_code); ?>"
-                                data-channel-id="<?php echo esc_attr($channel_id); ?>"
-                                data-checkin="<?php echo esc_attr($book_now_checkin); ?>"
-                                data-checkout="<?php echo esc_attr($book_now_checkout); ?>"
-                                data-adults="2"
-                                data-children="0"
-                                data-rooms="1"><?php esc_html_e('View Package', 'dhr-hotel-management'); ?></a>
+                            <div class="package-content__bottom">
+                                <div class="package-content__divider"></div>
+                                <a href="javascript:void(0)" class="bys-package-button button--theme-2 bys-book-now-link"
+                                    data-hotel-code="<?php echo esc_attr($pkg->hotel_code); ?>"
+                                    data-channel-id="<?php echo esc_attr($channel_id); ?>"
+                                    data-checkin="<?php echo esc_attr($book_now_checkin); ?>"
+                                    data-checkout="<?php echo esc_attr($book_now_checkout); ?>"
+                                    data-adults="2"
+                                    data-children="0"
+                                    data-rooms="1"><?php esc_html_e('View Package', 'dhr-hotel-management'); ?></a>
+                            </div>
                         </div>
                     </div>
                 </div>

@@ -97,15 +97,17 @@ $book_now_checkout = function_exists('wp_date') ? wp_date('Y-m-d', current_time(
                             <?php foreach ($included_list as $line) : ?><li><?php echo esc_html($line); ?></li><?php endforeach; ?>
                         </ul>
                     </div>
-                    <div class="package-content__divider"></div>
-                    <a href="javascript:void(0)" class="bys-package-button bys-book-now-link"
-                        data-hotel-code="<?php echo esc_attr($pkg->hotel_code); ?>"
-                        data-channel-id="<?php echo esc_attr($channel_id); ?>"
-                        data-checkin="<?php echo esc_attr($book_now_checkin); ?>"
-                        data-checkout="<?php echo esc_attr($book_now_checkout); ?>"
-                        data-adults="2"
-                        data-children="0"
-                        data-rooms="1"><?php esc_html_e('View Package', 'dhr-hotel-management'); ?></a>
+                    <div class="package-content__bottom">
+                        <div class="package-content__divider"></div>
+                        <a href="javascript:void(0)" class="bys-package-button bys-book-now-link"
+                            data-hotel-code="<?php echo esc_attr($pkg->hotel_code); ?>"
+                            data-channel-id="<?php echo esc_attr($channel_id); ?>"
+                            data-checkin="<?php echo esc_attr($book_now_checkin); ?>"
+                            data-checkout="<?php echo esc_attr($book_now_checkout); ?>"
+                            data-adults="2"
+                            data-children="0"
+                            data-rooms="1"><?php esc_html_e('View Package', 'dhr-hotel-management'); ?></a>
+                    </div>
                 </div>
             </div>
             <?php
@@ -117,15 +119,22 @@ $book_now_checkout = function_exists('wp_date') ? wp_date('Y-m-d', current_time(
         </div>
 
         <?php if (!empty($slider_items)) : ?>
-            <div class="first-packages__design swiper package-first-swiper">
+            <!-- <div class="first-packages__design swiper package-first-swiper">
                 <div class="swiper-wrapper">
-                    <?php foreach ($slider_items as $item) : ?>
+                    <?php //foreach ($slider_items as $item) : ?>
                         <div class="swiper-slide">
-                            <?php $render_package_card($item, false); ?>
+                            <?php //$render_package_card($item, false); ?>
                         </div>
-                    <?php endforeach; ?>
+                    <?php //endforeach; ?>
                 </div>
                 <div class="package-swiper-pagination first-package-pagination"></div>
+            </div> -->
+            <div class="first-packages__design">
+                <div class="bys-packages-grid">
+                    <?php foreach ($slider_items as $item) : ?>
+                        <?php $render_package_card($item, false); ?>
+                    <?php endforeach; ?>
+                </div>
             </div>
         <?php endif; ?>
     <?php endif; ?>

@@ -2074,7 +2074,13 @@ div:focus-visible {
 
 .bys-packages .first-packages__featured {
     max-width: 1140px;
-    margin: 0 auto 32px;
+    margin: 0 auto 60px;
+}
+
+@media (max-width: 1280px) {
+    .bys-packages .first-packages__featured {
+        margin-bottom: 40px;
+    }
 }
 
 @media (max-width: 767px) {
@@ -2512,9 +2518,17 @@ div:focus-visible {
     margin-bottom: 0;
 }
 
+.bys-packages .package-content__bottom {
+    margin-top: auto;
+}
+
 .bys-packages .package-content__divider {
     width: 100%;
     border-bottom: 1px solid #CDD2D4;
+}
+
+.bys-packages .package-content__bottom .package-content__divider {
+    margin-bottom: 20px;
 }
 
 .bys-packages .bys-package-button {
