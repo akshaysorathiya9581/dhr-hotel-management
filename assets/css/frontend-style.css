@@ -1534,6 +1534,7 @@ div:focus-visible {
 }
 
 @media (max-width: 768px) {
+
     .wtfu-map-container .map-phone,
     .wtfu-map-container .map-phone span,
     .wtfu-map-container .map-phone a {
@@ -1833,7 +1834,7 @@ div:focus-visible {
     }
 }
 
-.bys-hotel-rooms .bys-room-content > div {
+.bys-hotel-rooms .bys-room-content>div {
     display: flex;
     flex-direction: column;
     justify-content: space-between;
@@ -1842,7 +1843,7 @@ div:focus-visible {
 }
 
 @media (max-width: 767px) {
-    .bys-hotel-rooms .bys-room-content > div {
+    .bys-hotel-rooms .bys-room-content>div {
         row-gap: 13px;
     }
 }
@@ -2104,6 +2105,7 @@ div:focus-visible {
     .bys-packages .first-packages__featured .bys-packages-card {
         grid-template-columns: 1fr;
     }
+
     .bys-packages .first-packages__featured .bys-package-content {
         display: none;
     }
@@ -2311,6 +2313,12 @@ div:focus-visible {
     text-transform: uppercase;
 }
 
+@media (max-width: 767px) {
+    .bys-packages .package-overlay__label {
+        margin-bottom: 5px;
+    }
+}
+
 .bys-packages .package-overlay__main-title {
     font-size: 28px;
     font-weight: 300;
@@ -2359,10 +2367,12 @@ div:focus-visible {
 }
 
 @media (max-width: 767px) {
-    .package-overlay__content__inner .package-overlay__main-title {
-        /* transform: translateY(-20px); */
+    .bys-packages .first-packages__featured .package-overlay__title,
+    .bys-packages .first-packages__design .package-overlay__title {
+        font-size: 32px;
+        line-height: 100%;
+        font-family: "Playfair", Sans-serif !important;
     }
-
     .package-overlay__content__inner .package-overlay__valid {
         transform: translateY(-7px);
     }
@@ -2370,6 +2380,14 @@ div:focus-visible {
     .package-overlay__content__inner .package-overlay__description {
         margin-bottom: 15px;
     }
+}
+
+.bys-packages .package-overlay__subtitle {
+    font-size: 18px;
+    font-weight: 400;
+    color: #ffffff;
+    line-height: 140%;
+    margin-bottom: 10px;
 }
 
 .bys-packages .bys-package-overlay-label {
@@ -2699,7 +2717,7 @@ div:focus-visible {
 
 .bys-packages .bird-packages-card {
     position: relative;
-    height: 550px;
+    height: 600px;
     padding: 20px 18px;
     display: flex;
     flex-direction: column;
@@ -2715,7 +2733,6 @@ div:focus-visible {
     .bys-packages .bird-packages-card {
         height: 412px;
     }
-
 }
 
 .bys-packages .bird-packages-card::after {
@@ -3524,4 +3541,10 @@ div:focus-visible {
 .bys-room-image-pagination .swiper-pagination-bullet.swiper-pagination-bullet-active {
     background-color: #D3AA74;
     opacity: 1;
+}
+
+@media (max-width: 767px) {
+    .elementor-1534 .elementor-element.elementor-element-aaa7507 {
+        overflow: hidden;
+    }
 }

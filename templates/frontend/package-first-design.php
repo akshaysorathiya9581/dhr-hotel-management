@@ -76,6 +76,7 @@ $book_now_checkout = function_exists('wp_date') ? wp_date('Y-m-d', current_time(
                         <?php if ($show_category_label) : ?>
                             <span class="featured-experience__label"><?php echo esc_html('FEATURED PACKAGED EXPERIENCE'); ?></span>
                         <?php endif; ?>
+                        <span class="package-overlay__label"><?php echo esc_html($category_label); ?></span>
                         <h3 class="package-overlay__title"><?php echo esc_html($title); ?></h3>
                         <div class="package-overlay__divider"><span></span></div>
                         <div class="package-overlay__location">
