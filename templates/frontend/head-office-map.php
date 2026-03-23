@@ -77,6 +77,7 @@ $google_maps_url = isset($settings['google_maps_url']) ? $settings['google_maps_
         'use strict';
 
         var map;
+        var mapEl;
         var markers = [];
         var infoWindows = [];
         var pulseOverlays = {}; // Store pulse overlay elements for each marker
@@ -84,6 +85,20 @@ $google_maps_url = isset($settings['google_maps_url']) ? $settings['google_maps_
         var hoveredMarker = null; // Track currently hovered marker
         var PulseOverlay; // Will be defined after Google Maps loads
         var fitMapBounds;
+        // Shared map styles: geometry colors + all labels hidden
+        var mapStyles = [
+            { featureType: 'all', elementType: 'geometry', stylers: [{ color: '#f5f5f5' }] },
+            { featureType: 'water', elementType: 'geometry', stylers: [{ color: '#A0B6CB' }] },
+            { featureType: 'road', elementType: 'geometry', stylers: [{ color: '#ffffff' }] },
+            { featureType: 'road', elementType: 'labels.text.fill', stylers: [{ color: '#9e9e9e' }] },
+            { featureType: 'all', elementType: 'labels', stylers: [{ visibility: 'off' }] },
+            { featureType: 'road', elementType: 'labels', stylers: [{ visibility: 'off' }] },
+            { featureType: 'administrative', elementType: 'labels', stylers: [{ visibility: 'off' }] },
+            { featureType: 'poi', elementType: 'labels', stylers: [{ visibility: 'off' }] },
+            { featureType: 'transit', elementType: 'labels', stylers: [{ visibility: 'off' }] },
+            { featureType: 'landscape', elementType: 'labels', stylers: [{ visibility: 'off' }] },
+            { featureType: 'water', elementType: 'labels', stylers: [{ visibility: 'off' }] }
+        ];
 
         // Detect if device is mobile
         function isMobileDevice() {
@@ -237,15 +252,15 @@ $google_maps_url = isset($settings['google_maps_url']) ? $settings['google_maps_
             definePulseOverlay();
 
             // Check if the map element exists
-            var mapElement = document.getElementById('head-office-map');
-            if (!mapElement) {
+            mapEl = document.getElementById('head-office-map');
+            if (!mapEl) {
                 // Map element doesn't exist, this script is not needed
                 return;
             }
 
             var hotels = [];
             try {
-                var dataHotels = mapElement.getAttribute('data-hotels');
+                var dataHotels = mapEl.getAttribute('data-hotels');
                 if (dataHotels) {
                     var parsed = JSON.parse(dataHotels);
                     if (Array.isArray(parsed) && parsed.length > 0) hotels = parsed;
@@ -268,67 +283,43 @@ $google_maps_url = isset($settings['google_maps_url']) ? $settings['google_maps_
                 return isFinite(lat) && lat >= -90 && lat <= 90 && isFinite(lng) && lng >= -180 && lng <= 180;
             });
 
-            // South Africa default: center and zoom for country view
-            var southAfricaCenter = { lat: -29.0, lng: 24.0 };
-            var southAfricaZoom = 5;
+            var selectedHotel = null;
+            var defaultCode = ((typeof dhrHeadOfficeMapSettings !== 'undefined' && dhrHeadOfficeMapSettings.default_hotel_code) || mapEl.getAttribute('data-default-hotel-code') || '').trim().toUpperCase();
 
-            map = new google.maps.Map(document.getElementById('head-office-map'), {
-                zoom: southAfricaZoom,
-                center: southAfricaCenter,
-                styles: [
-                    { featureType: 'all', elementType: 'geometry', stylers: [{ color: '#f5f5f5' }] },
-                    { featureType: 'water', elementType: 'geometry', stylers: [{ color: '#e0e0e0' }] }
-                ]
-            });
-
-            var bounds = new google.maps.LatLngBounds();
-            validHotels.forEach(function (hotel) {
-                var lat = parseFloat(hotel.latitude);
-                var lng = parseFloat(hotel.longitude);
-                bounds.extend(new google.maps.LatLng(lat, lng));
-            });
-
-            if (validHotels.length > 0) {
-                var padding = 40;
-                map.fitBounds(bounds, padding);
-                map.setOptions({ maxZoom: 14 });
-                fitMapBounds = function () {
-                    map.fitBounds(bounds, padding);
-                };
+            if (defaultCode) {
+                selectedHotel = validHotels.find(function (hotel) {
+                    var hotelCode = String(hotel.hotel_code || '').trim().toUpperCase();
+                    return hotelCode && hotelCode === defaultCode;
+                }) || null;
             }
 
-            function activateDefaultHotelMarker() {
-                var defaultCode = ((typeof dhrHeadOfficeMapSettings !== 'undefined' && dhrHeadOfficeMapSettings.default_hotel_code) || mapElement.getAttribute('data-default-hotel-code') || '').trim();
-                if (!defaultCode) return;
-                defaultCode = defaultCode.toUpperCase();
-                for (var i = 0; i < validHotels.length; i++) {
-                    var hCode = (String(validHotels[i].hotel_code || '')).trim().toUpperCase();
-                    if (hCode && hCode === defaultCode) {
-                        var m = markers[i];
-                        if (m) {
-                            (function (markerData) {
-                                setTimeout(function () {
-                                    google.maps.event.trigger(markerData.marker, 'click');
-                                }, 50);
-                            })(m);
-                        }
-                        break;
-                    }
-                }
+            // Fallback to first valid hotel if no explicit selected code match is found.
+            if (!selectedHotel && validHotels.length > 0) {
+                selectedHotel = validHotels[0];
             }
+
+            if (!selectedHotel) {
+                console.warn('No selected hotel with valid coordinates available');
+                return;
+            }
+
+            var selectedLat = parseFloat(selectedHotel.latitude);
+            var selectedLng = parseFloat(selectedHotel.longitude);
+            var selectedCenter = { lat: selectedLat, lng: selectedLng };
+
+            map = new google.maps.Map(mapEl, {
+                zoom: 14,
+                center: selectedCenter,
+                styles: mapStyles
+            });
+
+            createMarker(selectedHotel, 0);
 
             google.maps.event.addListenerOnce(map, 'idle', function () {
-                if (validHotels.length > 0 && !bounds.isEmpty()) {
-                    activateDefaultHotelMarker();
-                    setTimeout(activateDefaultHotelMarker, 500);
-                } else {
-                    activateDefaultHotelMarker();
-                    setTimeout(activateDefaultHotelMarker, 500);
+                var markerData = markers[0];
+                if (markerData && markerData.marker) {
+                    google.maps.event.trigger(markerData.marker, 'click');
                 }
-            });
-
-            validHotels.forEach(function (hotel, index) {
-                createMarker(hotel, index);
             });
         }
 
