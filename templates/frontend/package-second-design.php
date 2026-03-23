@@ -18,7 +18,7 @@ $book_now_checkout = function_exists('wp_date') ? wp_date('Y-m-d', current_time(
 ?>
 
 <!-- Second Package Design (slider by default; grid when inside .package-design-grid) -->
-<div class="bys-packages">
+<div class="bys-packages bys-packages__second-main">
     <div class="second-packages__design swiper package-swiper">
         <div class="swiper-wrapper">
             <?php if (empty($packages)) : ?>
@@ -150,7 +150,11 @@ $book_now_checkout = function_exists('wp_date') ? wp_date('Y-m-d', current_time(
                     bulletActiveClass: 'package-swiper-pagination-bullet-active',
                 },
                 breakpoints: {
-                    768: { slidesPerView: 2, spaceBetween: 20, pagination: false },
+                    0: {
+                        slidesPerView: "auto",
+                        spaceBetween: 15,
+                    },
+                    767: { slidesPerView: 2, spaceBetween: 20, pagination: false },
                     1024: { slidesPerView: 3, spaceBetween: 25, pagination: false },
                     1280: { slidesPerView: 3, spaceBetween: 32, pagination: false }
                 }

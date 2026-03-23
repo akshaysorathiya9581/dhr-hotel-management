@@ -17,7 +17,7 @@ $book_now_checkout = function_exists('wp_date') ? wp_date('Y-m-d', current_time(
 ?>
 
 <!-- Fourth Package Design (Early Bird) -->
-<div class="bys-packages">
+<div class="bys-packages bys-packages__bird-main">
     <!-- <div class="early-bird-packages-grid"> -->
     <div class="bird-packages__design swiper">
         <?php if (empty($packages)) : ?>
@@ -85,6 +85,7 @@ $book_now_checkout = function_exists('wp_date') ? wp_date('Y-m-d', current_time(
             </div>
             <?php endforeach; ?>
         </div>
+        <div class="package-swiper-pagination bird-package-pagination"></div>
         <?php endif; ?>
     </div>
 </div>
@@ -92,7 +93,7 @@ $book_now_checkout = function_exists('wp_date') ? wp_date('Y-m-d', current_time(
 <script>
     document.addEventListener('DOMContentLoaded', function () {
         var packageSwiper = new Swiper('.bird-packages__design', {
-            slidesPerView: 1,
+            slidesPerView: 3,
             spaceBetween: 15,
             loop: false,
             navigation: false,
@@ -109,7 +110,11 @@ $book_now_checkout = function_exists('wp_date') ? wp_date('Y-m-d', current_time(
                 bulletActiveClass: 'package-swiper-pagination-bullet-active',
             },
             breakpoints: {
-                768: { slidesPerView: 2, spaceBetween: 20, pagination: false },
+                0: {
+                    slidesPerView: "auto",
+                    spaceBetween: 15,
+                },
+                767: { slidesPerView: 2, spaceBetween: 20, pagination: false },
                 1024: { slidesPerView: 3, spaceBetween: 25, pagination: false },
                 1280: { slidesPerView: 3, spaceBetween: 32, pagination: false }
             }
