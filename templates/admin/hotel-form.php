@@ -147,6 +147,20 @@ $title = $is_edit ? __('Edit Hotel', 'dhr-hotel-management') : __('Add New Hotel
                     <button type="button" class="button" id="upload-image-btn">
                         <?php _e('Upload Image', 'dhr-hotel-management'); ?>
                     </button>
+                    <button type="button" class="button" id="remove-image-btn">
+                        <?php _e('Remove Image', 'dhr-hotel-management'); ?>
+                    </button>
+                    <?php
+                    $image_preview_url = ($is_edit && !empty($hotel->image_url)) ? $hotel->image_url : '';
+                    ?>
+                    <div class="dhr-hotel-media-preview dhr-hotel-image-preview" id="image_url_preview_wrap"<?php echo $image_preview_url ? '' : ' hidden'; ?>>
+                        <span class="dhr-hotel-media-preview-label"><?php _e('Preview', 'dhr-hotel-management'); ?></span>
+                        <img id="image_url_preview"
+                             src="<?php echo $image_preview_url ? esc_url($image_preview_url) : ''; ?>"
+                             alt=""
+                             decoding="async"
+                             loading="lazy">
+                    </div>
                     <p class="description">
                         <?php _e('Used as the large photo/background for this hotel (cards, panels, etc.).', 'dhr-hotel-management'); ?>
                     </p>
@@ -168,6 +182,20 @@ $title = $is_edit ? __('Edit Hotel', 'dhr-hotel-management') : __('Add New Hotel
                     <button type="button" class="button" id="upload-logo-btn">
                         <?php _e('Upload Logo', 'dhr-hotel-management'); ?>
                     </button>
+                    <button type="button" class="button" id="remove-logo-btn">
+                        <?php _e('Remove Logo', 'dhr-hotel-management'); ?>
+                    </button>
+                    <?php
+                    $logo_preview_url = ($is_edit && !empty($hotel->logo_url)) ? $hotel->logo_url : '';
+                    ?>
+                    <div class="dhr-hotel-media-preview dhr-hotel-logo-preview" id="logo_url_preview_wrap"<?php echo $logo_preview_url ? '' : ' hidden'; ?>>
+                        <span class="dhr-hotel-media-preview-label"><?php _e('Preview', 'dhr-hotel-management'); ?></span>
+                        <img id="logo_url_preview"
+                             src="<?php echo $logo_preview_url ? esc_url($logo_preview_url) : ''; ?>"
+                             alt=""
+                             decoding="async"
+                             loading="lazy">
+                    </div>
                     <p class="description">
                         <?php _e('Used as the small logo on maps (for example, in the Where To Find Us logos bar). If empty, the main image may be used instead.', 'dhr-hotel-management'); ?>
                     </p>
