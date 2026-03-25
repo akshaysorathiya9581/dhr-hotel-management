@@ -30,7 +30,13 @@ $title = $is_edit ? __('Edit Hotel', 'dhr-hotel-management') : __('Add New Hotel
                            placeholder="<?php esc_attr_e('e.g. DRE013', 'dhr-hotel-management'); ?>"
                            <?php echo $is_edit ? ' readonly' : ''; ?>>
                     <?php if ($is_edit): ?>
-                    <p class="description"><?php _e('Hotel code cannot be changed when editing. Re-sync from the hotel list to update data from SHR.', 'dhr-hotel-management'); ?></p>
+                    <p class="description"><?php
+                    if (!empty($hotel->manual_entry)) {
+                        _e('Hotel code cannot be changed when editing. This hotel was added manually; SHR re-sync is not available for this row.', 'dhr-hotel-management');
+                    } else {
+                        _e('Hotel code cannot be changed when editing. Re-sync from the hotel list to update data from SHR.', 'dhr-hotel-management');
+                    }
+                    ?></p>
                     <?php else: ?>
                     <p class="description">
                         <?php _e('Optional code from the external CRS (e.g. SHR). This can be used for API-based sync.', 'dhr-hotel-management'); ?>

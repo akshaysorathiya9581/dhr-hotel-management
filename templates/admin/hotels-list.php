@@ -108,7 +108,10 @@ $messages = array(
                             </span>
                         </td>
                         <td>
-                            <?php if ( !empty($hotel->hotel_code) ) : ?>
+                            <?php
+                            $is_manual_hotel = isset($hotel->manual_entry) && (int) $hotel->manual_entry === 1;
+                            if (!empty($hotel->hotel_code) && !$is_manual_hotel) :
+                            ?>
                             <button type="button" class="button button-small dhr-row-sync-btn" data-hotel-code="<?php echo esc_attr($hotel->hotel_code); ?>" title="<?php esc_attr_e('Re-sync from SHR', 'dhr-hotel-management'); ?>">
                                 <span class="dashicons dashicons-update" style="vertical-align: middle;"></span> <?php _e('Sync', 'dhr-hotel-management'); ?>
                             </button>

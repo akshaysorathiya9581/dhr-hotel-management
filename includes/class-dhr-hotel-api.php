@@ -1686,6 +1686,7 @@ class DHR_Hotel_API {
 
         if ($existing) {
             $hotel_id = $existing->id;
+            $hotel_data['manual_entry'] = 0;
             $updated  = DHR_Hotel_Database::update_hotel($hotel_id, $hotel_data);
             if (!$updated) {
                 global $wpdb;

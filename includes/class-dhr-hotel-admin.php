@@ -236,6 +236,7 @@ class DHR_Hotel_Admin {
                 wp_safe_redirect(admin_url('admin.php?page=dhr-hotel-management&message=error&error=' . $error_param));
                 exit;
             }
+            $data['manual_entry'] = 1;
             $new_id = DHR_Hotel_Database::insert_hotel($data);
             $message = $new_id ? 'added' : 'error';
             wp_safe_redirect(admin_url('admin.php?page=dhr-hotel-management&message=' . $message));
