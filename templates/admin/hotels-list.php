@@ -19,6 +19,9 @@ $messages = array(
 
 <div class="wrap dhr-hotel-admin">
     <h1 class="wp-heading-inline"><?php _e('DHR Hotel Management', 'dhr-hotel-management'); ?></h1>
+    <a href="<?php echo esc_url(admin_url('admin.php?page=dhr-hotel-management&action=add')); ?>"
+       class="page-title-action"><?php _e('Add New Hotel', 'dhr-hotel-management'); ?></a>
+    <hr class="wp-header-end">
     
     <?php if ($message && isset($messages[$message])): ?>
         <div class="notice notice-<?php echo esc_attr($messages[$message]['type']); ?> is-dismissible">

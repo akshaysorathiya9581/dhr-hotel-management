@@ -168,6 +168,11 @@ class DHR_Hotel_Admin {
         $action = isset($_GET['action']) ? sanitize_text_field($_GET['action']) : 'list';
         $hotel_id = isset($_GET['hotel_id']) ? intval($_GET['hotel_id']) : 0;
         
+        if ($action === 'add') {
+            $this->display_hotel_form(0);
+            return;
+        }
+        
         if ($action === 'edit' && $hotel_id > 0) {
             $this->display_hotel_form($hotel_id);
             return;
@@ -177,12 +182,15 @@ class DHR_Hotel_Admin {
     }
     
     /**
-     * Display hotel form (edit only; add new hotel has been removed)
+     * Display hotel form (add or edit).
+     *
+     * @param int $hotel_id 0 = add new hotel; positive = edit existing.
      */
     public function display_hotel_form($hotel_id = 0) {
         if ($hotel_id <= 0) {
-            wp_safe_redirect(admin_url('admin.php?page=dhr-hotel-management'));
-            exit;
+            $hotel = null;
+            include DHR_HOTEL_PLUGIN_PATH . 'templates/admin/hotel-form.php';
+            return;
         }
         $hotel = DHR_Hotel_Database::get_hotel($hotel_id);
         if (!$hotel) {
@@ -202,10 +210,6 @@ class DHR_Hotel_Admin {
         check_admin_referer('dhr_hotel_nonce');
         
         $hotel_id = isset($_POST['hotel_id']) ? intval($_POST['hotel_id']) : 0;
-        if ($hotel_id <= 0) {
-            wp_safe_redirect(admin_url('admin.php?page=dhr-hotel-management&message=error'));
-            exit;
-        }
         
         $data = array(
             'hotel_code'      => isset($_POST['hotel_code']) ? sanitize_text_field(wp_unslash($_POST['hotel_code'])) : '',
@@ -225,6 +229,18 @@ class DHR_Hotel_Admin {
             'google_maps_url' => isset($_POST['google_maps_url']) ? esc_url_raw($_POST['google_maps_url']) : '',
             'status'          => isset($_POST['status']) ? sanitize_text_field(wp_unslash($_POST['status'])) : 'active'
         );
+        
+        if ($hotel_id <= 0) {
+            if (!empty($data['hotel_code']) && DHR_Hotel_Database::get_hotel_by_code($data['hotel_code'])) {
+                $error_param = urlencode(__('A hotel with this code already exists.', 'dhr-hotel-management'));
+                wp_safe_redirect(admin_url('admin.php?page=dhr-hotel-management&message=error&error=' . $error_param));
+                exit;
+            }
+            $new_id = DHR_Hotel_Database::insert_hotel($data);
+            $message = $new_id ? 'added' : 'error';
+            wp_safe_redirect(admin_url('admin.php?page=dhr-hotel-management&message=' . $message));
+            exit;
+        }
         
         $result = DHR_Hotel_Database::update_hotel($hotel_id, $data);
         $message = $result ? 'updated' : 'error';

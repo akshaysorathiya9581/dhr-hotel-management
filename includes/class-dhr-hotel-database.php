@@ -569,8 +569,12 @@ class DHR_Hotel_Database {
             'status'          => 'active',
         ));
 
+        $code_raw = sanitize_text_field(wp_unslash((string) ($data['hotel_code'] ?? '')));
+        // Several manual hotels may omit a code; UNIQUE allows multiple NULLs but not duplicate empty strings.
+        $hotel_code_val = ($code_raw === '') ? null : $code_raw;
+
         $row = array(
-            'hotel_code'      => sanitize_text_field(wp_unslash((string) ($data['hotel_code'] ?? ''))),
+            'hotel_code'      => $hotel_code_val,
             'name'            => sanitize_text_field(wp_unslash((string) ($data['name'] ?? ''))) ?: 'Hotel',
             'description'     => sanitize_textarea_field(wp_unslash((string) ($data['description'] ?? ''))),
             'address'         => sanitize_text_field(wp_unslash((string) ($data['address'] ?? ''))),

@@ -180,10 +180,10 @@ $title = $is_edit ? __('Edit Hotel', 'dhr-hotel-management') : __('Add New Hotel
                 <th><label for="status"><?php _e('Status', 'dhr-hotel-management'); ?></label></th>
                 <td>
                     <select id="status" name="status">
-                        <option value="active" <?php echo ($is_edit && $hotel->status === 'active') ? 'selected' : ''; ?>>
+                        <option value="active" <?php echo (!$is_edit || (isset($hotel->status) && $hotel->status === 'active')) ? 'selected' : ''; ?>>
                             <?php _e('Active', 'dhr-hotel-management'); ?>
                         </option>
-                        <option value="inactive" <?php echo ($is_edit && $hotel->status === 'inactive') ? 'selected' : ''; ?>>
+                        <option value="inactive" <?php echo ($is_edit && isset($hotel->status) && $hotel->status === 'inactive') ? 'selected' : ''; ?>>
                             <?php _e('Inactive', 'dhr-hotel-management'); ?>
                         </option>
                     </select>
