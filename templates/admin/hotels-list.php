@@ -19,6 +19,9 @@ $messages = array(
 
 <div class="wrap dhr-hotel-admin">
     <h1 class="wp-heading-inline"><?php _e('DHR Hotel Management', 'dhr-hotel-management'); ?></h1>
+    <a href="<?php echo esc_url(admin_url('admin.php?page=dhr-hotel-management&action=add')); ?>"
+       class="page-title-action"><?php _e('Add New Hotel', 'dhr-hotel-management'); ?></a>
+    <hr class="wp-header-end">
     
     <?php if ($message && isset($messages[$message])): ?>
         <div class="notice notice-<?php echo esc_attr($messages[$message]['type']); ?> is-dismissible">
@@ -105,7 +108,10 @@ $messages = array(
                             </span>
                         </td>
                         <td>
-                            <?php if ( !empty($hotel->hotel_code) ) : ?>
+                            <?php
+                            $is_manual_hotel = isset($hotel->manual_entry) && (int) $hotel->manual_entry === 1;
+                            if (!empty($hotel->hotel_code) && !$is_manual_hotel) :
+                            ?>
                             <button type="button" class="button button-small dhr-row-sync-btn" data-hotel-code="<?php echo esc_attr($hotel->hotel_code); ?>" title="<?php esc_attr_e('Re-sync from SHR', 'dhr-hotel-management'); ?>">
                                 <span class="dashicons dashicons-update" style="vertical-align: middle;"></span> <?php _e('Sync', 'dhr-hotel-management'); ?>
                             </button>

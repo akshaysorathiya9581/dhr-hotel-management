@@ -58,8 +58,56 @@
     color: #dc3232;
 }
 
-#upload-image-btn {
+.dhr-hotel-form .regular-text + .button {
     margin-left: 10px;
+}
+
+.dhr-hotel-form .button + .button {
+    margin-left: 6px;
+}
+
+.dhr-hotel-media-preview {
+    margin-top: 12px;
+}
+
+.dhr-hotel-media-preview[hidden] {
+    display: none !important;
+}
+
+.dhr-hotel-media-preview-label {
+    display: block;
+    font-size: 11px;
+    font-weight: 600;
+    text-transform: uppercase;
+    color: #646970;
+    margin-bottom: 8px;
+}
+
+.dhr-hotel-image-preview img {
+    display: block;
+    max-width: 420px;
+    width: auto;
+    max-height: 280px;
+    height: auto;
+    object-fit: contain;
+    border: 1px solid #c3c4c7;
+    border-radius: 4px;
+    background: #f6f7f7;
+    box-shadow: 0 1px 1px rgba(0, 0, 0, 0.04);
+}
+
+.dhr-hotel-logo-preview img {
+    display: block;
+    max-width: 220px;
+    max-height: 96px;
+    width: auto;
+    height: auto;
+    object-fit: contain;
+    border: 1px solid #c3c4c7;
+    border-radius: 4px;
+    background: #fff;
+    padding: 8px;
+    box-shadow: 0 1px 1px rgba(0, 0, 0, 0.04);
 }
 
 .dhr-shortcode-wrapper {

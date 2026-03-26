@@ -36,6 +36,7 @@ class DHR_Hotel_Database {
         logo_url varchar(500),
         google_maps_url varchar(500),
         status varchar(20) DEFAULT 'active',
+        manual_entry tinyint(1) NOT NULL DEFAULT 0,
         created_at datetime DEFAULT CURRENT_TIMESTAMP,
         updated_at datetime DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
         PRIMARY KEY (id),
@@ -257,7 +258,8 @@ class DHR_Hotel_Database {
             'logo_url'        => "ADD COLUMN logo_url varchar(500) DEFAULT NULL AFTER image_url",
             'google_maps_url' => "ADD COLUMN google_maps_url varchar(500) DEFAULT NULL AFTER logo_url",
             'status'          => "ADD COLUMN status varchar(20) DEFAULT 'active' AFTER google_maps_url",
-            'created_at'      => "ADD COLUMN created_at datetime DEFAULT CURRENT_TIMESTAMP AFTER status",
+            'manual_entry'    => "ADD COLUMN manual_entry tinyint(1) NOT NULL DEFAULT 0 AFTER status",
+            'created_at'      => "ADD COLUMN created_at datetime DEFAULT CURRENT_TIMESTAMP AFTER manual_entry",
             'updated_at'      => "ADD COLUMN updated_at datetime DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP AFTER created_at",
         );
 
@@ -567,10 +569,15 @@ class DHR_Hotel_Database {
             'logo_url'        => '',
             'google_maps_url' => '',
             'status'          => 'active',
+            'manual_entry'    => 0,
         ));
 
+        $code_raw = sanitize_text_field(wp_unslash((string) ($data['hotel_code'] ?? '')));
+        // Several manual hotels may omit a code; UNIQUE allows multiple NULLs but not duplicate empty strings.
+        $hotel_code_val = ($code_raw === '') ? null : $code_raw;
+
         $row = array(
-            'hotel_code'      => sanitize_text_field(wp_unslash((string) ($data['hotel_code'] ?? ''))),
+            'hotel_code'      => $hotel_code_val,
             'name'            => sanitize_text_field(wp_unslash((string) ($data['name'] ?? ''))) ?: 'Hotel',
             'description'     => sanitize_textarea_field(wp_unslash((string) ($data['description'] ?? ''))),
             'address'         => sanitize_text_field(wp_unslash((string) ($data['address'] ?? ''))),
@@ -586,12 +593,13 @@ class DHR_Hotel_Database {
             'logo_url'        => esc_url_raw((string) ($data['logo_url'] ?? '')) ?: '',
             'google_maps_url' => esc_url_raw((string) ($data['google_maps_url'] ?? '')) ?: '',
             'status'          => sanitize_text_field(wp_unslash((string) ($data['status'] ?? ''))) ?: 'active',
+            'manual_entry'    => !empty($data['manual_entry']) ? 1 : 0,
         );
 
         $result = $wpdb->insert(
             $table_name,
             $row,
-            array('%s', '%s', '%s', '%s', '%s', '%s', '%s', '%f', '%f', '%s', '%s', '%s', '%s', '%s', '%s', '%s')
+            array('%s', '%s', '%s', '%s', '%s', '%s', '%s', '%f', '%f', '%s', '%s', '%s', '%s', '%s', '%s', '%s', '%d')
         );
 
         if ($result === false && defined('WP_DEBUG') && WP_DEBUG && $wpdb->last_error) {
@@ -607,6 +615,12 @@ class DHR_Hotel_Database {
     public static function update_hotel($id, $data) {
         global $wpdb;
         $table_name = $wpdb->prefix . 'dhr_hotels';
+
+        $set_manual_entry = array_key_exists('manual_entry', $data);
+        $manual_entry_val = $set_manual_entry ? (!empty($data['manual_entry']) ? 1 : 0) : null;
+        if ($set_manual_entry) {
+            unset($data['manual_entry']);
+        }
 
         $data = wp_parse_args($data, array(
             'hotel_code' => '', 'name' => '', 'description' => '', 'address' => '', 'city' => '', 'province' => '',
@@ -633,11 +647,17 @@ class DHR_Hotel_Database {
             'status'          => sanitize_text_field(wp_unslash((string) ($data['status'] ?? ''))) ?: 'active',
         );
 
+        $formats = array('%s', '%s', '%s', '%s', '%s', '%s', '%s', '%f', '%f', '%s', '%s', '%s', '%s', '%s', '%s', '%s');
+        if ($set_manual_entry) {
+            $row['manual_entry'] = $manual_entry_val;
+            $formats[] = '%d';
+        }
+
         $result = $wpdb->update(
             $table_name,
             $row,
             array('id' => intval($id)),
-            array('%s', '%s', '%s', '%s', '%s', '%s', '%s', '%f', '%f', '%s', '%s', '%s', '%s', '%s', '%s', '%s'),
+            $formats,
             array('%d')
         );
 

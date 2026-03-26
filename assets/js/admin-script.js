@@ -6,6 +6,35 @@
     'use strict';
     
     $(document).ready(function() {
+
+        function dhrSyncMediaPreview($input, $wrap, $img) {
+            var url = ($input.val() || '').trim();
+            if (url) {
+                $img.attr('src', url);
+                $wrap.removeAttr('hidden');
+            } else {
+                $img.removeAttr('src');
+                $wrap.attr('hidden', 'hidden');
+            }
+        }
+
+        var $imageUrl = $('#image_url');
+        var $imagePreviewWrap = $('#image_url_preview_wrap');
+        var $imagePreviewImg = $('#image_url_preview');
+        var $logoUrl = $('#logo_url');
+        var $logoPreviewWrap = $('#logo_url_preview_wrap');
+        var $logoPreviewImg = $('#logo_url_preview');
+
+        if ($imageUrl.length && $imagePreviewWrap.length) {
+            $imageUrl.on('input change blur', function() {
+                dhrSyncMediaPreview($imageUrl, $imagePreviewWrap, $imagePreviewImg);
+            });
+        }
+        if ($logoUrl.length && $logoPreviewWrap.length) {
+            $logoUrl.on('input change blur', function() {
+                dhrSyncMediaPreview($logoUrl, $logoPreviewWrap, $logoPreviewImg);
+            });
+        }
         
         // Image upload functionality (main image)
         $('#upload-image-btn').on('click', function(e) {
@@ -21,10 +50,17 @@
 
             fileFrame.on('select', function() {
                 var attachment = fileFrame.state().get('selection').first().toJSON();
-                $('#image_url').val(attachment.url);
+                $imageUrl.val(attachment.url);
+                dhrSyncMediaPreview($imageUrl, $imagePreviewWrap, $imagePreviewImg);
             });
 
             fileFrame.open();
+        });
+
+        $('#remove-image-btn').on('click', function(e) {
+            e.preventDefault();
+            $imageUrl.val('');
+            dhrSyncMediaPreview($imageUrl, $imagePreviewWrap, $imagePreviewImg);
         });
 
         // Logo upload functionality (small logo)
@@ -41,10 +77,17 @@
 
             fileFrame.on('select', function() {
                 var attachment = fileFrame.state().get('selection').first().toJSON();
-                $('#logo_url').val(attachment.url);
+                $logoUrl.val(attachment.url);
+                dhrSyncMediaPreview($logoUrl, $logoPreviewWrap, $logoPreviewImg);
             });
 
             fileFrame.open();
+        });
+
+        $('#remove-logo-btn').on('click', function(e) {
+            e.preventDefault();
+            $logoUrl.val('');
+            dhrSyncMediaPreview($logoUrl, $logoPreviewWrap, $logoPreviewImg);
         });
         
         // Auto-fill Google Maps URL from coordinates
