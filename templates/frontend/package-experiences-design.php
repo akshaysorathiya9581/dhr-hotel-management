@@ -139,3 +139,6 @@ $accordion_svg = '<path d="M20.8359 15.9141L21.9141 14.8359L12.5391 5.46094L12 4
         });
     </script>
 </div>
+
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/Swiper/8.4.5/swiper-bundle.css">
+<script src="https://cdnjs.cloudflare.com/ajax/libs/Swiper/8.4.5/swiper-bundle.min.js"></script>

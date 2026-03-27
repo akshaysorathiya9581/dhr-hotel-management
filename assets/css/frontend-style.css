@@ -1673,6 +1673,7 @@ div:focus-visible {
 /*  */
 /* Hotel Rooms List Styles - Matching Live Site Design */
 .bys-hotel-rooms {
+    position: relative;
     font-family: "Open Sans", sans-serif;
     max-width: 100%;
     padding: 0;
@@ -1712,6 +1713,7 @@ div:focus-visible {
 }
 
 .bys-hotel-rooms .bys-room-card {
+    position: relative;
     background: transparent;
     border-radius: 0;
     overflow: hidden;
@@ -1785,6 +1787,7 @@ div:focus-visible {
     padding: 8px 16px 8px 16px;
     min-width: auto;
     text-align: center;
+    z-index: 2;
 }
 
 .bys-hotel-rooms .bys-room-price-badge span {
@@ -1937,6 +1940,11 @@ div:focus-visible {
     display: flex;
     flex-direction: column;
     align-items: flex-start;
+}
+
+.bys-hotel-rooms .bys-room-actions.bys-packages .bys-package-button {
+    background: #D3AA74;
+    color: #ffffff;
 }
 
 .bys-hotel-rooms .bys-book-now-link {
