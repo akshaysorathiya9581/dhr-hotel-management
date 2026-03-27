@@ -283,42 +283,60 @@ $google_maps_url = isset($settings['google_maps_url']) ? $settings['google_maps_
                 return isFinite(lat) && lat >= -90 && lat <= 90 && isFinite(lng) && lng >= -180 && lng <= 180;
             });
 
-            var selectedHotel = null;
-            var defaultCode = ((typeof dhrHeadOfficeMapSettings !== 'undefined' && dhrHeadOfficeMapSettings.default_hotel_code) || mapEl.getAttribute('data-default-hotel-code') || '').trim().toUpperCase();
+            if (!validHotels.length) {
+                console.warn('No hotels with valid coordinates available');
+                return;
+            }
 
+            var defaultCode = ((typeof dhrHeadOfficeMapSettings !== 'undefined' && dhrHeadOfficeMapSettings.default_hotel_code) || mapEl.getAttribute('data-default-hotel-code') || '').trim().toUpperCase();
+            var defaultHotel = null;
             if (defaultCode) {
-                selectedHotel = validHotels.find(function (hotel) {
+                defaultHotel = validHotels.find(function (hotel) {
                     var hotelCode = String(hotel.hotel_code || '').trim().toUpperCase();
                     return hotelCode && hotelCode === defaultCode;
                 }) || null;
             }
 
-            // Fallback to first valid hotel if no explicit selected code match is found.
-            if (!selectedHotel && validHotels.length > 0) {
-                selectedHotel = validHotels[0];
-            }
+            var initialCenter = {
+                lat: parseFloat(validHotels[0].latitude),
+                lng: parseFloat(validHotels[0].longitude)
+            };
+            var initialZoom = 6;
 
-            if (!selectedHotel) {
-                console.warn('No selected hotel with valid coordinates available');
-                return;
+            if (defaultHotel) {
+                initialCenter = {
+                    lat: parseFloat(defaultHotel.latitude),
+                    lng: parseFloat(defaultHotel.longitude)
+                };
+                initialZoom = 14;
             }
-
-            var selectedLat = parseFloat(selectedHotel.latitude);
-            var selectedLng = parseFloat(selectedHotel.longitude);
-            var selectedCenter = { lat: selectedLat, lng: selectedLng };
 
             map = new google.maps.Map(mapEl, {
-                zoom: 14,
-                center: selectedCenter,
+                zoom: initialZoom,
+                center: initialCenter,
                 styles: mapStyles
             });
 
-            createMarker(selectedHotel, 0);
+            var bounds = new google.maps.LatLngBounds();
+            validHotels.forEach(function (hotel, index) {
+                createMarker(hotel, index);
+                bounds.extend(new google.maps.LatLng(parseFloat(hotel.latitude), parseFloat(hotel.longitude)));
+            });
 
             google.maps.event.addListenerOnce(map, 'idle', function () {
-                var markerData = markers[0];
-                if (markerData && markerData.marker) {
-                    google.maps.event.trigger(markerData.marker, 'click');
+                if (validHotels.length > 1 && !defaultHotel && !bounds.isEmpty()) {
+                    map.fitBounds(bounds, 60);
+                }
+
+                // Auto-activate marker ONLY when default hotel is explicitly selected in admin.
+                if (defaultCode) {
+                    var markerData = markers.find(function (m) {
+                        var code = String(m.hotelCode || '').trim().toUpperCase();
+                        return code && code === defaultCode;
+                    });
+                    if (markerData && markerData.marker) {
+                        google.maps.event.trigger(markerData.marker, 'click');
+                    }
                 }
             });
         }
@@ -396,7 +414,8 @@ $google_maps_url = isset($settings['google_maps_url']) ? $settings['google_maps_
             markers.push({
                 marker: marker,
                 infoWindow: infoWindow,
-                hotelId: hotel.id
+                hotelId: hotel.id,
+                hotelCode: hotel.hotel_code || ''
             });
 
             infoWindows.push(infoWindow);
