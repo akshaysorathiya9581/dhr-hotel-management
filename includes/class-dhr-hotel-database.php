@@ -1151,5 +1151,79 @@ class DHR_Hotel_Database {
         }
         return $row;
     }
+
+    /**
+     * Get all saved "Where To Find Us" property map settings.
+     *
+     * Stored as option:
+     * [ property_id => [field => value, ...], ... ]
+     *
+     * @return array
+     */
+    public static function get_where_to_find_us_property_maps() {
+        $maps = get_option('dhr_where_to_find_us_property_maps', array());
+        return is_array($maps) ? $maps : array();
+    }
+
+    /**
+     * Get one "Where To Find Us" property map config by property ID.
+     *
+     * @param int $property_id
+     * @return array
+     */
+    public static function get_where_to_find_us_property_map($property_id) {
+        $property_id = (int) $property_id;
+        if ($property_id <= 0) {
+            return array();
+        }
+        $maps = self::get_where_to_find_us_property_maps();
+        $row = isset($maps[$property_id]) && is_array($maps[$property_id]) ? $maps[$property_id] : array();
+        return $row;
+    }
+
+    /**
+     * Save one "Where To Find Us" property map config.
+     *
+     * @param int   $property_id
+     * @param array $data
+     * @return bool
+     */
+    public static function save_where_to_find_us_property_map($property_id, $data) {
+        $property_id = (int) $property_id;
+        if ($property_id <= 0) {
+            return false;
+        }
+
+        $defaults = array(
+            'property_image'      => '',
+            'property_logo_image' => '',
+            'latitude'            => '',
+            'longitude'           => '',
+            'main_heading'        => 'Where To Find Us',
+            'address_text'        => '',
+            'phone_label'         => '',
+            'phone_number'        => '',
+            'email_address'       => '',
+            'enquire_text'        => 'Enquire now',
+        );
+        $row = wp_parse_args((array) $data, $defaults);
+        $row = array(
+            'property_image'      => esc_url_raw($row['property_image']),
+            'property_logo_image' => esc_url_raw($row['property_logo_image']),
+            'latitude'            => sanitize_text_field(wp_unslash((string) $row['latitude'])),
+            'longitude'           => sanitize_text_field(wp_unslash((string) $row['longitude'])),
+            'main_heading'        => sanitize_text_field(wp_unslash((string) $row['main_heading'])),
+            'address_text'        => sanitize_textarea_field(wp_unslash((string) $row['address_text'])),
+            'phone_label'         => sanitize_text_field(wp_unslash((string) $row['phone_label'])),
+            'phone_number'        => sanitize_text_field(wp_unslash((string) $row['phone_number'])),
+            'email_address'       => sanitize_email(wp_unslash((string) $row['email_address'])),
+            'enquire_text'        => sanitize_text_field(wp_unslash((string) $row['enquire_text'])),
+        );
+
+        $maps = self::get_where_to_find_us_property_maps();
+        $maps[$property_id] = $row;
+
+        return (bool) update_option('dhr_where_to_find_us_property_maps', $maps, false);
+    }
 }
 

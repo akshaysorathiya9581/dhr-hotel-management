@@ -21,6 +21,7 @@ class DHR_Hotel_Admin {
         add_action('admin_post_dhr_delete_category', array($this, 'delete_category'));
         add_action('admin_post_dhr_save_package', array($this, 'save_package'));
         add_action('admin_post_dhr_delete_package', array($this, 'delete_package'));
+        add_action('admin_post_dhr_save_where_to_find_us_property_map', array($this, 'save_where_to_find_us_property_map'));
 
         // SHR WS Shop API (REST) sync actions
         add_action('admin_post_dhr_sync_shr_hotel', array($this, 'sync_shr_hotel'));
@@ -123,6 +124,14 @@ class DHR_Hotel_Admin {
             'manage_options',
             'dhr-hotel-room-settings',
             array($this, 'display_room_settings')
+        );
+        add_submenu_page(
+            'dhr-hotel-management',
+            __('Where To Find Us Property Map', 'dhr-hotel-management'),
+            __('Where To Find Us Property Map', 'dhr-hotel-management'),
+            'manage_options',
+            'dhr-where-to-find-us-property-map',
+            array($this, 'display_where_to_find_us_property_map')
         );
     }
     
@@ -685,6 +694,68 @@ class DHR_Hotel_Admin {
         }
         $categories = DHR_Hotel_Database::get_all_categories();
         include DHR_HOTEL_PLUGIN_PATH . 'templates/admin/package-settings.php';
+    }
+
+    /**
+     * Display property-wise settings for dhr_where_to_find_us_map shortcode.
+     */
+    public function display_where_to_find_us_property_map() {
+        if (!current_user_can('manage_options')) {
+            wp_die(__('You do not have sufficient permissions to access this page.'));
+        }
+
+        $selected_property_id = isset($_GET['property_id']) ? (int) $_GET['property_id'] : 0;
+        $message = isset($_GET['message']) ? sanitize_text_field(wp_unslash($_GET['message'])) : '';
+
+        $properties = get_posts(array(
+            'post_type'      => 'properties',
+            'post_status'    => array('publish', 'draft', 'pending', 'private'),
+            'posts_per_page' => -1,
+            'orderby'        => 'title',
+            'order'          => 'ASC',
+        ));
+
+        $saved_data = array();
+        if ($selected_property_id > 0) {
+            $saved_data = DHR_Hotel_Database::get_where_to_find_us_property_map($selected_property_id);
+        }
+
+        include DHR_HOTEL_PLUGIN_PATH . 'templates/admin/where-to-find-us-property-map.php';
+    }
+
+    /**
+     * Save property-wise settings for dhr_where_to_find_us_map shortcode.
+     */
+    public function save_where_to_find_us_property_map() {
+        if (!current_user_can('manage_options')) {
+            wp_die(__('You do not have sufficient permissions to access this page.'));
+        }
+
+        check_admin_referer('dhr_where_to_find_us_property_map_nonce');
+
+        $property_id = isset($_POST['property_id']) ? (int) $_POST['property_id'] : 0;
+        if ($property_id <= 0) {
+            wp_safe_redirect(admin_url('admin.php?page=dhr-where-to-find-us-property-map&message=error'));
+            exit;
+        }
+
+        $data = array(
+            'property_image'      => isset($_POST['property_image']) ? esc_url_raw(wp_unslash($_POST['property_image'])) : '',
+            'property_logo_image' => isset($_POST['property_logo_image']) ? esc_url_raw(wp_unslash($_POST['property_logo_image'])) : '',
+            'latitude'            => isset($_POST['latitude']) ? sanitize_text_field(wp_unslash($_POST['latitude'])) : '',
+            'longitude'           => isset($_POST['longitude']) ? sanitize_text_field(wp_unslash($_POST['longitude'])) : '',
+            'main_heading'        => isset($_POST['main_heading']) ? sanitize_text_field(wp_unslash($_POST['main_heading'])) : '',
+            'address_text'        => isset($_POST['address_text']) ? sanitize_textarea_field(wp_unslash($_POST['address_text'])) : '',
+            'phone_label'         => isset($_POST['phone_label']) ? sanitize_text_field(wp_unslash($_POST['phone_label'])) : '',
+            'phone_number'        => isset($_POST['phone_number']) ? sanitize_text_field(wp_unslash($_POST['phone_number'])) : '',
+            'email_address'       => isset($_POST['email_address']) ? sanitize_email(wp_unslash($_POST['email_address'])) : '',
+            'enquire_text'        => isset($_POST['enquire_text']) ? sanitize_text_field(wp_unslash($_POST['enquire_text'])) : '',
+        );
+
+        DHR_Hotel_Database::save_where_to_find_us_property_map($property_id, $data);
+
+        wp_safe_redirect(admin_url('admin.php?page=dhr-where-to-find-us-property-map&property_id=' . $property_id . '&message=saved'));
+        exit;
     }
     
     /**
