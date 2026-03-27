@@ -452,7 +452,11 @@ class DHR_Hotel_Frontend {
 
         $property_id = isset($atts['property_id']) ? (int) $atts['property_id'] : 0;
         if ($property_id <= 0 && function_exists('is_singular') && is_singular('properties')) {
-            $property_id = (int) get_the_ID();
+            // On single property page, auto-use current property ID when shortcode has no property_id.
+            $property_id = (int) get_queried_object_id();
+            if ($property_id <= 0) {
+                $property_id = (int) get_the_ID();
+            }
         }
 
         if ($property_id > 0) {
