@@ -24,6 +24,12 @@
         var $logoUrl = $('#logo_url');
         var $logoPreviewWrap = $('#logo_url_preview_wrap');
         var $logoPreviewImg = $('#logo_url_preview');
+        var $propertyImageUrl = $('#property_image');
+        var $propertyImagePreviewWrap = $('#property_image_preview_wrap');
+        var $propertyImagePreviewImg = $('#property_image_preview');
+        var $propertyLogoImageUrl = $('#property_logo_image');
+        var $propertyLogoImagePreviewWrap = $('#property_logo_image_preview_wrap');
+        var $propertyLogoImagePreviewImg = $('#property_logo_image_preview');
 
         if ($imageUrl.length && $imagePreviewWrap.length) {
             $imageUrl.on('input change blur', function() {
@@ -33,6 +39,16 @@
         if ($logoUrl.length && $logoPreviewWrap.length) {
             $logoUrl.on('input change blur', function() {
                 dhrSyncMediaPreview($logoUrl, $logoPreviewWrap, $logoPreviewImg);
+            });
+        }
+        if ($propertyImageUrl.length && $propertyImagePreviewWrap.length) {
+            $propertyImageUrl.on('input change blur', function() {
+                dhrSyncMediaPreview($propertyImageUrl, $propertyImagePreviewWrap, $propertyImagePreviewImg);
+            });
+        }
+        if ($propertyLogoImageUrl.length && $propertyLogoImagePreviewWrap.length) {
+            $propertyLogoImageUrl.on('input change blur', function() {
+                dhrSyncMediaPreview($propertyLogoImageUrl, $propertyLogoImagePreviewWrap, $propertyLogoImagePreviewImg);
             });
         }
         
@@ -88,6 +104,54 @@
             e.preventDefault();
             $logoUrl.val('');
             dhrSyncMediaPreview($logoUrl, $logoPreviewWrap, $logoPreviewImg);
+        });
+
+        // Property map image upload functionality
+        $('#upload-property-image-btn').on('click', function(e) {
+            e.preventDefault();
+            var fileFrame = wp.media({
+                title: 'Select Property Image',
+                button: {
+                    text: 'Use this image'
+                },
+                multiple: false
+            });
+            fileFrame.on('select', function() {
+                var attachment = fileFrame.state().get('selection').first().toJSON();
+                $propertyImageUrl.val(attachment.url);
+                dhrSyncMediaPreview($propertyImageUrl, $propertyImagePreviewWrap, $propertyImagePreviewImg);
+            });
+            fileFrame.open();
+        });
+
+        $('#remove-property-image-btn').on('click', function(e) {
+            e.preventDefault();
+            $propertyImageUrl.val('');
+            dhrSyncMediaPreview($propertyImageUrl, $propertyImagePreviewWrap, $propertyImagePreviewImg);
+        });
+
+        // Property map logo image upload functionality
+        $('#upload-property-logo-image-btn').on('click', function(e) {
+            e.preventDefault();
+            var fileFrame = wp.media({
+                title: 'Select Property Logo Image',
+                button: {
+                    text: 'Use this image'
+                },
+                multiple: false
+            });
+            fileFrame.on('select', function() {
+                var attachment = fileFrame.state().get('selection').first().toJSON();
+                $propertyLogoImageUrl.val(attachment.url);
+                dhrSyncMediaPreview($propertyLogoImageUrl, $propertyLogoImagePreviewWrap, $propertyLogoImagePreviewImg);
+            });
+            fileFrame.open();
+        });
+
+        $('#remove-property-logo-image-btn').on('click', function(e) {
+            e.preventDefault();
+            $propertyLogoImageUrl.val('');
+            dhrSyncMediaPreview($propertyLogoImageUrl, $propertyLogoImagePreviewWrap, $propertyLogoImagePreviewImg);
         });
         
         // Auto-fill Google Maps URL from coordinates

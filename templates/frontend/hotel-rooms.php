@@ -195,8 +195,11 @@ function dhr_format_room_price($amount) {
                 $first_image = !empty($room_images) ? $room_images[0] : 'https://dummyimage.com/1024x682/ccc/000';
                 $has_images = $show_images && !empty($room_images);
                 $room_price = isset($room->from_price) ? (int) $room->from_price : 0;
+                $room_card_id = 'bys-room-' . (function_exists('sanitize_title')
+                    ? sanitize_title((string) $room->room_type_name)
+                    : strtolower(trim(preg_replace('/[^0-9a-z]+/i', '-', (string) $room->room_type_name), '-')));
             ?>
-                <div class="bys-room-card">
+                <div class="bys-room-card" id="<?php echo esc_attr($room_card_id); ?>">
                     <span class="bys-room-price"></span>
 
                     <?php if ($has_images): ?>
@@ -302,9 +305,12 @@ function dhr_format_room_price($amount) {
                     $first_image = !empty($room_images) ? $room_images[0] : 'https://dummyimage.com/1024x682/ccc/000';
                     $has_images = $show_images && !empty($room_images);
                     $room_price = isset($room->from_price) ? (int) $room->from_price : 0;
+                    $room_card_id = 'bys-room-' . (function_exists('sanitize_title')
+                        ? sanitize_title((string) $room->room_type_name)
+                        : strtolower(trim(preg_replace('/[^0-9a-z]+/i', '-', (string) $room->room_type_name), '-')));
                 ?>
                     <div class="swiper-slide" style="display: grid;">
-                        <div class="bys-room-card">
+                        <div class="bys-room-card" id="<?php echo esc_attr($room_card_id); ?>">
                             <span class="bys-room-price"></span>
             
                             <?php if ($has_images): ?>
@@ -372,7 +378,7 @@ function dhr_format_room_price($amount) {
                                     <?php endif; ?>
                                 </div>
                                 <div class="bys-room-actions bys-packages">
-                                    <a href="javascript:void(0)" class="bys-package-button button--theme-3" data-room-code="<?php echo esc_attr($room->room_type_code); ?>"
+                                    <a href="javascript:void(0)" class="bys-package-button button--theme-3 bys-book-now-link" data-room-code="<?php echo esc_attr($room->room_type_code); ?>"
                                         data-hotel-code="<?php echo esc_attr($hotel_code); ?>" data-channel-id="<?php echo esc_attr($channel_id); ?>"
                                         data-checkin="<?php echo esc_attr($book_now_checkin); ?>" data-checkout="<?php echo esc_attr($book_now_checkout); ?>"
                                         data-adults="<?php echo esc_attr($room->max_occupancy ?: 2); ?>" data-children="0" data-rooms="1" style="width: auto; margin: 0;">
@@ -408,8 +414,11 @@ function dhr_format_room_price($amount) {
                 $room_images = !empty($room->images) && is_array($room->images) ? $room->images : array();
                 $first_image = !empty($room_images) ? $room_images[0] : $plugin_url . 'assets/images/package/2.png';
                 $room_price = isset($room->from_price) ? (int) $room->from_price : 0;
+                $room_card_id = 'bys-hotel-room-' . (function_exists('sanitize_title')
+                    ? sanitize_title((string) $room->room_type_name)
+                    : strtolower(trim(preg_replace('/[^0-9a-z]+/i', '-', (string) $room->room_type_name), '-')));
             ?>
-                <div class="bys-hotel-room-card">
+                <div class="bys-hotel-room-card" id="<?php echo esc_attr($room_card_id); ?>">
                     <div class="bys-hotel-room-card__frature-img bys-room-image-slider swiper">
                         <div class="swiper-wrapper">
                             <?php if (!empty($room_images)): ?>
