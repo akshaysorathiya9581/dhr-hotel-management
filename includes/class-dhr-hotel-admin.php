@@ -22,6 +22,7 @@ class DHR_Hotel_Admin {
         add_action('admin_post_dhr_save_package', array($this, 'save_package'));
         add_action('admin_post_dhr_delete_package', array($this, 'delete_package'));
         add_action('admin_post_dhr_save_where_to_find_us_property_map', array($this, 'save_where_to_find_us_property_map'));
+        add_action('admin_post_dhr_delete_where_to_find_us_property_map', array($this, 'delete_where_to_find_us_property_map'));
 
         // SHR WS Shop API (REST) sync actions
         add_action('admin_post_dhr_sync_shr_hotel', array($this, 'sync_shr_hotel'));
@@ -755,6 +756,27 @@ class DHR_Hotel_Admin {
         DHR_Hotel_Database::save_where_to_find_us_property_map($property_id, $data);
 
         wp_safe_redirect(admin_url('admin.php?page=dhr-where-to-find-us-property-map&property_id=' . $property_id . '&message=saved'));
+        exit;
+    }
+
+    /**
+     * Delete property-wise settings for dhr_where_to_find_us_map shortcode.
+     */
+    public function delete_where_to_find_us_property_map() {
+        if (!current_user_can('manage_options')) {
+            wp_die(__('You do not have sufficient permissions to access this page.'));
+        }
+
+        check_admin_referer('dhr_where_to_find_us_property_map_delete_nonce');
+
+        $property_id = isset($_POST['property_id']) ? (int) $_POST['property_id'] : 0;
+        if ($property_id > 0) {
+            DHR_Hotel_Database::delete_where_to_find_us_property_map($property_id);
+            wp_safe_redirect(admin_url('admin.php?page=dhr-where-to-find-us-property-map&property_id=' . $property_id . '&message=deleted'));
+            exit;
+        }
+
+        wp_safe_redirect(admin_url('admin.php?page=dhr-where-to-find-us-property-map&message=error'));
         exit;
     }
     

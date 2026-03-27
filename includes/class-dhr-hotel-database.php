@@ -1225,5 +1225,26 @@ class DHR_Hotel_Database {
 
         return (bool) update_option('dhr_where_to_find_us_property_maps', $maps, false);
     }
+
+    /**
+     * Delete one "Where To Find Us" property map config.
+     *
+     * @param int $property_id
+     * @return bool
+     */
+    public static function delete_where_to_find_us_property_map($property_id) {
+        $property_id = (int) $property_id;
+        if ($property_id <= 0) {
+            return false;
+        }
+
+        $maps = self::get_where_to_find_us_property_maps();
+        if (!isset($maps[$property_id])) {
+            return true;
+        }
+
+        unset($maps[$property_id]);
+        return (bool) update_option('dhr_where_to_find_us_property_maps', $maps, false);
+    }
 }
 

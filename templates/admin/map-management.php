@@ -57,6 +57,7 @@ foreach ($all_hotels as $h) {
         
         <div class="dhr-shortcodes-grid">
                 <?php foreach ($map_configs as $map): ?>
+                    <?php if ($map->shortcode === 'dhr_where_to_find_us_map') { continue; } ?>
                     <div class="dhr-shortcode-card">
                         <div class="dhr-shortcode-card-header">
                             <h3><?php echo esc_html($map->map_name); ?></h3>
@@ -110,6 +111,7 @@ foreach ($all_hotels as $h) {
                 <tbody>
                     <?php if (!empty($map_configs)): ?>
                         <?php foreach ($map_configs as $map): ?>
+                            <?php if ($map->shortcode === 'dhr_where_to_find_us_map') { continue; } ?>
                             <tr>
                                 <td><strong><?php echo esc_html($map->map_name); ?></strong></td>
                                 <td>

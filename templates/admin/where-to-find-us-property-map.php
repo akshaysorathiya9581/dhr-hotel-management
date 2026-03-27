@@ -22,9 +22,18 @@ $enquire_text = isset($saved_data['enquire_text']) ? $saved_data['enquire_text']
 <div class="wrap dhr-hotel-admin">
     <h1><?php esc_html_e('Where To Find Us Property Map', 'dhr-hotel-management'); ?></h1>
     <p class="description"><?php esc_html_e('Save map/contact details for each property (post type: properties).', 'dhr-hotel-management'); ?></p>
+    <div class="dhr-shortcode-wrapper" style="margin: 12px 0 18px;">
+        <input type="text" class="dhr-shortcode-input" value="[dhr_where_to_find_us_map]" readonly>
+        <button type="button" class="button dhr-copy-btn" data-shortcode="[dhr_where_to_find_us_map]">
+            <span class="dhr-copy-text"><?php esc_html_e('Copy', 'dhr-hotel-management'); ?></span>
+            <span class="dhr-copied-text" style="display:none;"><?php esc_html_e('Copied!', 'dhr-hotel-management'); ?></span>
+        </button>
+    </div>
 
     <?php if ($message === 'saved'): ?>
         <div class="notice notice-success is-dismissible"><p><?php esc_html_e('Property map settings saved.', 'dhr-hotel-management'); ?></p></div>
+    <?php elseif ($message === 'deleted'): ?>
+        <div class="notice notice-success is-dismissible"><p><?php esc_html_e('Property map settings removed.', 'dhr-hotel-management'); ?></p></div>
     <?php elseif ($message === 'error'): ?>
         <div class="notice notice-error is-dismissible"><p><?php esc_html_e('Please select a property.', 'dhr-hotel-management'); ?></p></div>
     <?php endif; ?>
@@ -114,6 +123,12 @@ $enquire_text = isset($saved_data['enquire_text']) ? $saved_data['enquire_text']
             <p class="submit">
                 <button type="submit" class="button button-primary"><?php esc_html_e('Save Settings', 'dhr-hotel-management'); ?></button>
             </p>
+        </form>
+        <form method="post" action="<?php echo esc_url(admin_url('admin-post.php')); ?>" onsubmit="return confirm('<?php echo esc_js(__('Are you sure you want to remove saved settings for this property?', 'dhr-hotel-management')); ?>');" style="margin-top: 8px;">
+            <?php wp_nonce_field('dhr_where_to_find_us_property_map_delete_nonce'); ?>
+            <input type="hidden" name="action" value="dhr_delete_where_to_find_us_property_map">
+            <input type="hidden" name="property_id" value="<?php echo esc_attr((int) $selected_property_id); ?>">
+            <button type="submit" class="button button-secondary"><?php esc_html_e('Remove Settings', 'dhr-hotel-management'); ?></button>
         </form>
     <?php endif; ?>
 </div>
