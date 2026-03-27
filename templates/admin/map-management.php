@@ -49,56 +49,8 @@ foreach ($all_hotels as $h) {
         </div>
     <?php endif; ?>
     
-    <!-- All Shortcodes Display Section -->
-    <?php if (!empty($map_configs)): ?>
-    <div class="dhr-all-shortcodes-section">
-        <h2><?php _e('All Map Shortcodes', 'dhr-hotel-management'); ?></h2>
-        <p class="description"><?php _e('Copy any shortcode below to use in your pages or posts:', 'dhr-hotel-management'); ?></p>
-        
-        <div class="dhr-shortcodes-grid">
-                <?php foreach ($map_configs as $map): ?>
-                    <?php if ($map->shortcode === 'dhr_where_to_find_us_map') { continue; } ?>
-                    <div class="dhr-shortcode-card">
-                        <div class="dhr-shortcode-card-header">
-                            <h3><?php echo esc_html($map->map_name); ?></h3>
-                            <span class="dhr-status-badge dhr-status-<?php echo esc_attr($map->status); ?>">
-                                <?php echo esc_html(ucfirst($map->status)); ?>
-                            </span>
-                        </div>
-                        <div class="dhr-shortcode-card-body">
-                            <label><?php _e('Shortcode:', 'dhr-hotel-management'); ?></label>
-                            <div class="dhr-shortcode-wrapper">
-                                <input type="text" 
-                                       class="dhr-shortcode-input-full" 
-                                       value="[<?php echo esc_attr($map->shortcode); ?>]" 
-                                       readonly>
-                                <button type="button" 
-                                        class="button button-primary dhr-copy-btn" 
-                                        data-shortcode="[<?php echo esc_attr($map->shortcode); ?>]">
-                                    <span class="dhr-copy-text"><?php _e('Copy', 'dhr-hotel-management'); ?></span>
-                                    <span class="dhr-copied-text" style="display: none;"><?php _e('Copied!', 'dhr-hotel-management'); ?></span>
-                                </button>
-                            </div>
-                            <div class="dhr-shortcode-examples">
-                                <strong><?php _e('Examples:', 'dhr-hotel-management'); ?></strong>
-                                <code>[<?php echo esc_html($map->shortcode); ?>]</code>
-                                <?php if ($map->shortcode === 'dhr_hotel_map'): ?>
-                                    <br><code>[<?php echo esc_html($map->shortcode); ?> province="Western Cape"]</code>
-                                    <br><code>[<?php echo esc_html($map->shortcode); ?> height="800px"]</code>
-                                <?php else: ?>
-                                    <br><code>[<?php echo esc_html($map->shortcode); ?> height="600px"]</code>
-                                <?php endif; ?>
-                            </div>
-                        </div>
-                    </div>
-                <?php endforeach; ?>
-        </div>
-    </div>
-    <?php endif; ?>
-    
     <div class="dhr-map-management-container">
         <div class="dhr-maps-list">
-            <h2><?php _e('Map Management', 'dhr-hotel-management'); ?></h2>
             <table class="wp-list-table widefat fixed striped">
                 <thead>
                     <tr>
