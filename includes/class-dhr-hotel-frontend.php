@@ -444,11 +444,6 @@ class DHR_Hotel_Frontend {
             'height' => '550px',
             'property_id' => 0
         ), $atts);
-        
-        $hotels = DHR_Hotel_Database::get_all_hotels('active');
-        $map_config = DHR_Hotel_Database::get_map_config('dhr_where_to_find_us_map');
-        $settings = self::get_map_settings($map_config);
-        $hotels = self::filter_hotels_by_map_selection($hotels, $settings);
 
         $property_id = isset($atts['property_id']) ? (int) $atts['property_id'] : 0;
         if ($property_id <= 0 && function_exists('is_singular') && is_singular('properties')) {
@@ -459,39 +454,45 @@ class DHR_Hotel_Frontend {
             }
         }
 
-        if ($property_id > 0) {
-            $property_map = DHR_Hotel_Database::get_where_to_find_us_property_map($property_id);
-            if (!empty($property_map)) {
-                $settings['main_heading'] = isset($property_map['main_heading']) ? $property_map['main_heading'] : (isset($settings['main_heading']) ? $settings['main_heading'] : 'Where To Find Us');
-                $settings['address_text'] = isset($property_map['address_text']) ? $property_map['address_text'] : '';
-                $settings['phone_label'] = isset($property_map['phone_label']) ? $property_map['phone_label'] : '';
-                $settings['phone_number'] = isset($property_map['phone_number']) ? $property_map['phone_number'] : '';
-                $settings['email_address'] = isset($property_map['email_address']) ? $property_map['email_address'] : '';
-                $settings['enquire_text'] = isset($property_map['enquire_text']) ? $property_map['enquire_text'] : 'Enquire now';
-
-                $lat = isset($property_map['latitude']) ? (float) $property_map['latitude'] : 0;
-                $lng = isset($property_map['longitude']) ? (float) $property_map['longitude'] : 0;
-
-                $pseudo_hotel = (object) array(
-                    'id' => $property_id,
-                    'name' => get_the_title($property_id),
-                    'address' => isset($property_map['address_text']) ? $property_map['address_text'] : '',
-                    'city' => '',
-                    'province' => '',
-                    'latitude' => $lat,
-                    'longitude' => $lng,
-                    'phone' => isset($property_map['phone_number']) ? $property_map['phone_number'] : '',
-                    'email' => isset($property_map['email_address']) ? $property_map['email_address'] : '',
-                    'image_url' => isset($property_map['property_image']) ? $property_map['property_image'] : '',
-                    'logo_url' => isset($property_map['property_logo_image']) ? $property_map['property_logo_image'] : '',
-                    'google_maps_url' => ($lat && $lng) ? ('https://www.google.com/maps?q=' . $lat . ',' . $lng) : '',
-                    'hotel_code' => 'property-' . $property_id,
-                );
-
-                $hotels = array($pseudo_hotel);
-                $settings['default_hotel_code'] = 'property-' . $property_id;
-            }
+        // This shortcode must use ONLY property-wise settings (no default map/hotel fallback).
+        if ($property_id <= 0) {
+            return '';
         }
+
+        $property_map = DHR_Hotel_Database::get_where_to_find_us_property_map($property_id);
+        if (empty($property_map) || !is_array($property_map)) {
+            return '';
+        }
+
+        $settings = array(
+            'main_heading'   => isset($property_map['main_heading']) ? $property_map['main_heading'] : '',
+            'address_text'   => isset($property_map['address_text']) ? $property_map['address_text'] : '',
+            'phone_label'    => isset($property_map['phone_label']) ? $property_map['phone_label'] : '',
+            'phone_number'   => isset($property_map['phone_number']) ? $property_map['phone_number'] : '',
+            'email_address'  => isset($property_map['email_address']) ? $property_map['email_address'] : '',
+            'enquire_text'   => isset($property_map['enquire_text']) ? $property_map['enquire_text'] : '',
+            'default_hotel_code' => 'property-' . $property_id,
+        );
+
+        $lat = isset($property_map['latitude']) ? (float) $property_map['latitude'] : 0;
+        $lng = isset($property_map['longitude']) ? (float) $property_map['longitude'] : 0;
+
+        $pseudo_hotel = (object) array(
+            'id' => $property_id,
+            'name' => get_the_title($property_id),
+            'address' => isset($property_map['address_text']) ? $property_map['address_text'] : '',
+            'city' => '',
+            'province' => '',
+            'latitude' => $lat,
+            'longitude' => $lng,
+            'phone' => isset($property_map['phone_number']) ? $property_map['phone_number'] : '',
+            'email' => isset($property_map['email_address']) ? $property_map['email_address'] : '',
+            'image_url' => isset($property_map['property_image']) ? $property_map['property_image'] : '',
+            'logo_url' => isset($property_map['property_logo_image']) ? $property_map['property_logo_image'] : '',
+            'google_maps_url' => ($lat && $lng) ? ('https://www.google.com/maps?q=' . $lat . ',' . $lng) : '',
+            'hotel_code' => 'property-' . $property_id,
+        );
+        $hotels = array($pseudo_hotel);
         
         ob_start();
         include DHR_HOTEL_PLUGIN_PATH . 'templates/frontend/where-to-find-us-map.php';
