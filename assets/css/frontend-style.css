@@ -1901,6 +1901,7 @@ div:focus-visible {
     font-weight: 400;
     line-height: 20px;
     color: #333632;
+    min-width: 50px;
 }
 
 .bys-hotel-rooms .bys-amenity-icon {
@@ -1942,9 +1943,22 @@ div:focus-visible {
     align-items: flex-start;
 }
 
+.bys-hotel-rooms .bys-room-actions.bys-packages {
+    padding: 0 !important;
+}
+
 .bys-hotel-rooms .bys-room-actions.bys-packages .bys-package-button {
     background: #D3AA74;
     color: #ffffff;
+    text-decoration: none;
+}
+
+.bys-hotel-rooms .bys-room-actions.bys-packages .bys-package-button:hover {
+    color: #462801;
+}
+
+.bys-hotel-rooms .bys-room-actions.bys-packages .bys-book-now-link:after {
+    display: none;
 }
 
 .bys-hotel-rooms .bys-book-now-link {
@@ -3554,7 +3568,7 @@ div:focus-visible {
 }
 
 .bys-hotel-rooms-second .card__top-badge {
-    padding: 4px 10px;
+    padding: 8px 14px;
     background-color: #FFFFFF;
     width: fit-content;
 }
