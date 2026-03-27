@@ -1901,6 +1901,7 @@ div:focus-visible {
     font-weight: 400;
     line-height: 20px;
     color: #333632;
+    min-width: 50px;
 }
 
 .bys-hotel-rooms .bys-amenity-icon {
@@ -1954,6 +1955,10 @@ div:focus-visible {
 
 .bys-hotel-rooms .bys-room-actions.bys-packages .bys-package-button:hover {
     color: #462801;
+}
+
+.bys-hotel-rooms .bys-room-actions.bys-packages .bys-book-now-link:after {
+    display: none;
 }
 
 .bys-hotel-rooms .bys-book-now-link {
