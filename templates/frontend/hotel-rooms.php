@@ -378,7 +378,7 @@ function dhr_format_room_price($amount) {
                                     <?php endif; ?>
                                 </div>
                                 <div class="bys-room-actions bys-packages">
-                                    <a href="javascript:void(0)" class="bys-package-button button--theme-3" data-room-code="<?php echo esc_attr($room->room_type_code); ?>"
+                                    <a href="javascript:void(0)" class="bys-package-button button--theme-3 bys-book-now-link" data-room-code="<?php echo esc_attr($room->room_type_code); ?>"
                                         data-hotel-code="<?php echo esc_attr($hotel_code); ?>" data-channel-id="<?php echo esc_attr($channel_id); ?>"
                                         data-checkin="<?php echo esc_attr($book_now_checkin); ?>" data-checkout="<?php echo esc_attr($book_now_checkout); ?>"
                                         data-adults="<?php echo esc_attr($room->max_occupancy ?: 2); ?>" data-children="0" data-rooms="1" style="width: auto; margin: 0;">
