@@ -141,6 +141,9 @@ $book_now_checkout = function_exists('wp_date') ? wp_date('Y-m-d', current_time(
     <?php endif; ?>
 </div>
 
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/Swiper/8.4.5/swiper-bundle.css">
+<script src="https://cdnjs.cloudflare.com/ajax/libs/Swiper/8.4.5/swiper-bundle.min.js"></script>
+
 <?php if (!empty($packages) && count($packages) > 1) : ?>
 <script>
     document.addEventListener('DOMContentLoaded', function () {

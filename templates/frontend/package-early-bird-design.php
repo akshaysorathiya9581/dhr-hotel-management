@@ -57,7 +57,7 @@ $book_now_checkout = function_exists('wp_date') ? wp_date('Y-m-d', current_time(
             <div class="swiper-slide">
                 <div class="bird-packages-card">
                     <div class="bird-packages-card__frature-img" style="background-image: url('<?php echo esc_url($img_url); ?>')"></div>
-                    <div class="bird-packages-card__premium-img" style="background-image: url('<?php echo esc_url($plugin_url . 'assets/images/package/primium-img.png'); ?>')"></div>
+                    <!-- <div class="bird-packages-card__premium-img" style="background-image: url('<?php //echo esc_url($plugin_url . 'assets/images/package/primium-img.png'); ?>')"></div> -->
                     <div class="card__bottom-content">
                         <div class="card__top-badge">
                             <p class="package-overlay__tag"><?php echo esc_html($category_label); ?></p>
@@ -89,6 +89,9 @@ $book_now_checkout = function_exists('wp_date') ? wp_date('Y-m-d', current_time(
         <?php endif; ?>
     </div>
 </div>
+
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/Swiper/8.4.5/swiper-bundle.css">
+<script src="https://cdnjs.cloudflare.com/ajax/libs/Swiper/8.4.5/swiper-bundle.min.js"></script>
 
 <script>
     document.addEventListener('DOMContentLoaded', function () {
