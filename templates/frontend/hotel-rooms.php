@@ -508,7 +508,6 @@ function dhr_format_room_price($amount) {
         });
     });
 
-
     document.addEventListener('DOMContentLoaded', function () {
         var packageSwiper = new Swiper('.rooms-design-swiper', {
             slidesPerView: 1,
