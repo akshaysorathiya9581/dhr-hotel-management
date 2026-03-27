@@ -64,7 +64,10 @@ $phone_number = isset($settings['phone_number']) ? $settings['phone_number'] : '
 $email_address = isset($settings['email_address']) ? $settings['email_address'] : '';
 $gps_coordinates = isset($settings['gps_coordinates']) ? $settings['gps_coordinates'] : '';
 $enquire_text = isset($settings['enquire_text']) ? $settings['enquire_text'] : 'Enquire now';
-$enquire_url = isset($settings['enquire_url']) ? $settings['enquire_url'] : '';
+$enquire_url = isset($settings['enquire_url']) ? trim((string) $settings['enquire_url']) : '';
+$google_maps_button_text = isset($settings['google_maps_button_text']) && $settings['google_maps_button_text'] !== ''
+    ? $settings['google_maps_button_text']
+    : 'Google Maps';
 $logo_url = isset($settings['logo_url']) ? $settings['logo_url'] : '';
 $bg_color = isset($settings['bg_color']) ? $settings['bg_color'] : '#8FA7BF';
 
@@ -203,7 +206,7 @@ $book_now_text = !empty($enquire_text) ? $enquire_text : 'Book Now';
                                 </clipPath>
                             </defs>
                         </svg>
-                        Google Maps
+                        <?php echo esc_html($google_maps_button_text); ?>
                     </a>
                 </div>
             <?php endif; ?>

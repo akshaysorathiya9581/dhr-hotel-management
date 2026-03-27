@@ -740,17 +740,23 @@ class DHR_Hotel_Admin {
             exit;
         }
 
+        $enquire_url_raw = isset($_POST['enquire_url']) ? wp_unslash((string) $_POST['enquire_url']) : '';
+        $enquire_url_save = $enquire_url_raw !== '' ? esc_url_raw($enquire_url_raw) : '';
+
         $data = array(
-            'property_image'      => isset($_POST['property_image']) ? esc_url_raw(wp_unslash($_POST['property_image'])) : '',
-            'property_logo_image' => isset($_POST['property_logo_image']) ? esc_url_raw(wp_unslash($_POST['property_logo_image'])) : '',
-            'latitude'            => isset($_POST['latitude']) ? sanitize_text_field(wp_unslash($_POST['latitude'])) : '',
-            'longitude'           => isset($_POST['longitude']) ? sanitize_text_field(wp_unslash($_POST['longitude'])) : '',
-            'main_heading'        => isset($_POST['main_heading']) ? sanitize_text_field(wp_unslash($_POST['main_heading'])) : '',
-            'address_text'        => isset($_POST['address_text']) ? sanitize_textarea_field(wp_unslash($_POST['address_text'])) : '',
-            'phone_label'         => isset($_POST['phone_label']) ? sanitize_text_field(wp_unslash($_POST['phone_label'])) : '',
-            'phone_number'        => isset($_POST['phone_number']) ? sanitize_text_field(wp_unslash($_POST['phone_number'])) : '',
-            'email_address'       => isset($_POST['email_address']) ? sanitize_email(wp_unslash($_POST['email_address'])) : '',
-            'enquire_text'        => isset($_POST['enquire_text']) ? sanitize_text_field(wp_unslash($_POST['enquire_text'])) : '',
+            'property_image'           => isset($_POST['property_image']) ? esc_url_raw(wp_unslash($_POST['property_image'])) : '',
+            'property_logo_image'      => isset($_POST['property_logo_image']) ? esc_url_raw(wp_unslash($_POST['property_logo_image'])) : '',
+            'latitude'                 => isset($_POST['latitude']) ? sanitize_text_field(wp_unslash($_POST['latitude'])) : '',
+            'longitude'                => isset($_POST['longitude']) ? sanitize_text_field(wp_unslash($_POST['longitude'])) : '',
+            'google_maps_url'          => isset($_POST['google_maps_url']) ? esc_url_raw(wp_unslash((string) $_POST['google_maps_url'])) : '',
+            'google_maps_button_text'  => isset($_POST['google_maps_button_text']) ? sanitize_text_field(wp_unslash((string) $_POST['google_maps_button_text'])) : '',
+            'main_heading'             => isset($_POST['main_heading']) ? sanitize_text_field(wp_unslash($_POST['main_heading'])) : '',
+            'address_text'             => isset($_POST['address_text']) ? sanitize_textarea_field(wp_unslash($_POST['address_text'])) : '',
+            'phone_label'              => isset($_POST['phone_label']) ? sanitize_text_field(wp_unslash($_POST['phone_label'])) : '',
+            'phone_number'             => isset($_POST['phone_number']) ? sanitize_text_field(wp_unslash($_POST['phone_number'])) : '',
+            'email_address'            => isset($_POST['email_address']) ? sanitize_email(wp_unslash($_POST['email_address'])) : '',
+            'enquire_text'             => isset($_POST['enquire_text']) ? sanitize_text_field(wp_unslash($_POST['enquire_text'])) : '',
+            'enquire_url'              => $enquire_url_save,
         );
 
         DHR_Hotel_Database::save_where_to_find_us_property_map($property_id, $data);

@@ -465,17 +465,22 @@ class DHR_Hotel_Frontend {
         }
 
         $settings = array(
-            'main_heading'   => isset($property_map['main_heading']) ? $property_map['main_heading'] : '',
-            'address_text'   => isset($property_map['address_text']) ? $property_map['address_text'] : '',
-            'phone_label'    => isset($property_map['phone_label']) ? $property_map['phone_label'] : '',
-            'phone_number'   => isset($property_map['phone_number']) ? $property_map['phone_number'] : '',
-            'email_address'  => isset($property_map['email_address']) ? $property_map['email_address'] : '',
-            'enquire_text'   => isset($property_map['enquire_text']) ? $property_map['enquire_text'] : '',
-            'default_hotel_code' => 'property-' . $property_id,
+            'main_heading'              => isset($property_map['main_heading']) ? $property_map['main_heading'] : '',
+            'address_text'              => isset($property_map['address_text']) ? $property_map['address_text'] : '',
+            'phone_label'               => isset($property_map['phone_label']) ? $property_map['phone_label'] : '',
+            'phone_number'              => isset($property_map['phone_number']) ? $property_map['phone_number'] : '',
+            'email_address'             => isset($property_map['email_address']) ? $property_map['email_address'] : '',
+            'enquire_text'              => isset($property_map['enquire_text']) ? $property_map['enquire_text'] : '',
+            'enquire_url'               => isset($property_map['enquire_url']) ? $property_map['enquire_url'] : '',
+            'google_maps_button_text'   => isset($property_map['google_maps_button_text']) ? $property_map['google_maps_button_text'] : '',
+            'default_hotel_code'        => 'property-' . $property_id,
         );
 
         $lat = isset($property_map['latitude']) ? (float) $property_map['latitude'] : 0;
         $lng = isset($property_map['longitude']) ? (float) $property_map['longitude'] : 0;
+
+        $custom_maps_url = isset($property_map['google_maps_url']) ? trim((string) $property_map['google_maps_url']) : '';
+        $resolved_google_maps_url = $custom_maps_url !== '' ? $custom_maps_url : (($lat && $lng) ? ('https://www.google.com/maps?q=' . $lat . ',' . $lng) : '');
 
         $pseudo_hotel = (object) array(
             'id' => $property_id,
@@ -489,7 +494,7 @@ class DHR_Hotel_Frontend {
             'email' => isset($property_map['email_address']) ? $property_map['email_address'] : '',
             'image_url' => isset($property_map['property_image']) ? $property_map['property_image'] : '',
             'logo_url' => isset($property_map['property_logo_image']) ? $property_map['property_logo_image'] : '',
-            'google_maps_url' => ($lat && $lng) ? ('https://www.google.com/maps?q=' . $lat . ',' . $lng) : '',
+            'google_maps_url' => $resolved_google_maps_url,
             'hotel_code' => 'property-' . $property_id,
         );
         $hotels = array($pseudo_hotel);
