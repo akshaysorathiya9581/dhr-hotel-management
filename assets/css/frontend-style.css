@@ -1670,6 +1670,18 @@ div:focus-visible {
     }
 }
 
+.wtfu-map-subtitle {
+    margin: 0 0 12px;
+    font-size: 1rem;
+    line-height: 1.5;
+    color: inherit;
+    opacity: 0.9;
+}
+
+.wtfu-google-coords {
+    font-size: 0.95em;
+}
+
 /*  */
 /* Hotel Rooms List Styles - Matching Live Site Design */
 .bys-hotel-rooms {

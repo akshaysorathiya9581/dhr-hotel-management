@@ -751,6 +751,8 @@ class DHR_Hotel_Admin {
             'google_maps_url'          => isset($_POST['google_maps_url']) ? esc_url_raw(wp_unslash((string) $_POST['google_maps_url'])) : '',
             'google_maps_button_text'  => isset($_POST['google_maps_button_text']) ? sanitize_text_field(wp_unslash((string) $_POST['google_maps_button_text'])) : '',
             'main_heading'             => isset($_POST['main_heading']) ? sanitize_text_field(wp_unslash($_POST['main_heading'])) : '',
+            'sub_title'                => isset($_POST['sub_title']) ? sanitize_text_field(wp_unslash((string) $_POST['sub_title'])) : '',
+            'gps_coordinates'          => isset($_POST['gps_coordinates']) ? sanitize_text_field(wp_unslash((string) $_POST['gps_coordinates'])) : '',
             'address_text'             => isset($_POST['address_text']) ? sanitize_textarea_field(wp_unslash($_POST['address_text'])) : '',
             'phone_label'              => isset($_POST['phone_label']) ? sanitize_text_field(wp_unslash($_POST['phone_label'])) : '',
             'phone_number'             => isset($_POST['phone_number']) ? sanitize_text_field(wp_unslash($_POST['phone_number'])) : '',

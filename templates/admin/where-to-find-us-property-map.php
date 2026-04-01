@@ -12,6 +12,8 @@ $property_logo_image = isset($saved_data['property_logo_image']) ? $saved_data['
 $latitude = isset($saved_data['latitude']) ? $saved_data['latitude'] : '';
 $longitude = isset($saved_data['longitude']) ? $saved_data['longitude'] : '';
 $main_heading = isset($saved_data['main_heading']) ? $saved_data['main_heading'] : 'Where To Find Us';
+$sub_title = isset($saved_data['sub_title']) ? $saved_data['sub_title'] : '';
+$gps_coordinates = isset($saved_data['gps_coordinates']) ? $saved_data['gps_coordinates'] : '';
 $address_text = isset($saved_data['address_text']) ? $saved_data['address_text'] : '';
 $phone_label = isset($saved_data['phone_label']) ? $saved_data['phone_label'] : '';
 $phone_number = isset($saved_data['phone_number']) ? $saved_data['phone_number'] : '';
@@ -90,12 +92,25 @@ $google_maps_button_text = isset($saved_data['google_maps_button_text']) ? $save
                     </td>
                 </tr>
                 <tr>
-                    <th scope="row"><label for="latitude"><?php esc_html_e('Latitude', 'dhr-hotel-management'); ?></label></th>
-                    <td><input type="text" id="latitude" name="latitude" class="regular-text" value="<?php echo esc_attr($latitude); ?>"></td>
+                    <th scope="row"><label for="latitude"><?php esc_html_e('Latitude (Google Maps)', 'dhr-hotel-management'); ?></label></th>
+                    <td>
+                        <input type="text" id="latitude" name="latitude" class="regular-text" value="<?php echo esc_attr($latitude); ?>" placeholder="-26.2041">
+                        <p class="description"><?php esc_html_e('Decimal latitude for the map marker.', 'dhr-hotel-management'); ?></p>
+                    </td>
                 </tr>
                 <tr>
-                    <th scope="row"><label for="longitude"><?php esc_html_e('Longitude', 'dhr-hotel-management'); ?></label></th>
-                    <td><input type="text" id="longitude" name="longitude" class="regular-text" value="<?php echo esc_attr($longitude); ?>"></td>
+                    <th scope="row"><label for="longitude"><?php esc_html_e('Longitude (Google Maps)', 'dhr-hotel-management'); ?></label></th>
+                    <td>
+                        <input type="text" id="longitude" name="longitude" class="regular-text" value="<?php echo esc_attr($longitude); ?>" placeholder="28.0473">
+                        <p class="description"><?php esc_html_e('Decimal longitude for the map marker.', 'dhr-hotel-management'); ?></p>
+                    </td>
+                </tr>
+                <tr>
+                    <th scope="row"><label for="gps_coordinates"><?php esc_html_e('Google coordinates (display text)', 'dhr-hotel-management'); ?></label></th>
+                    <td>
+                        <input type="text" id="gps_coordinates" name="gps_coordinates" class="large-text" value="<?php echo esc_attr($gps_coordinates); ?>" placeholder="26°12′15″S 28°02′50″E">
+                        <p class="description"><?php esc_html_e('Optional. Shown under contact details. If empty, latitude and longitude are shown as decimal coordinates.', 'dhr-hotel-management'); ?></p>
+                    </td>
                 </tr>
                 <tr>
                     <th scope="row"><label for="google_maps_url"><?php esc_html_e('Google Maps URL', 'dhr-hotel-management'); ?></label></th>
@@ -111,6 +126,13 @@ $google_maps_button_text = isset($saved_data['google_maps_button_text']) ? $save
                 <tr>
                     <th scope="row"><label for="main_heading"><?php esc_html_e('Main Heading', 'dhr-hotel-management'); ?></label></th>
                     <td><input type="text" id="main_heading" name="main_heading" class="regular-text" value="<?php echo esc_attr($main_heading); ?>"></td>
+                </tr>
+                <tr>
+                    <th scope="row"><label for="sub_title"><?php esc_html_e('Sub title', 'dhr-hotel-management'); ?></label></th>
+                    <td>
+                        <input type="text" id="sub_title" name="sub_title" class="large-text" value="<?php echo esc_attr($sub_title); ?>">
+                        <p class="description"><?php esc_html_e('Optional line shown below the main heading.', 'dhr-hotel-management'); ?></p>
+                    </td>
                 </tr>
                 <tr>
                     <th scope="row"><label for="address_text"><?php esc_html_e('Address Text', 'dhr-hotel-management'); ?></label></th>
@@ -136,7 +158,7 @@ $google_maps_button_text = isset($saved_data['google_maps_button_text']) ? $save
                     <th scope="row"><label for="enquire_url"><?php esc_html_e('Enquire Button URL', 'dhr-hotel-management'); ?></label></th>
                     <td>
                         <input type="text" id="enquire_url" name="enquire_url" class="large-text" value="<?php echo esc_attr($enquire_url); ?>" placeholder="https://... or mailto:...">
-                        <p class="description"><?php esc_html_e('URL for the Enquire button (e.g. contact page, booking form, or mailto link).', 'dhr-hotel-management'); ?></p>
+                        <p class="description"><?php esc_html_e('Leave empty to use a mailto link to the Email Address above. If set, the button uses this URL instead.', 'dhr-hotel-management'); ?></p>
                     </td>
                 </tr>
             </table>

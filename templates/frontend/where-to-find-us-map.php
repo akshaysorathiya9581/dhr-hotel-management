@@ -58,6 +58,7 @@ if (!$hotel) {
 }
 
 $heading = isset($settings['main_heading']) ? $settings['main_heading'] : 'Where To Find Us';
+$sub_title = isset($settings['sub_title']) ? $settings['sub_title'] : '';
 $address_text = isset($settings['address_text']) ? $settings['address_text'] : '';
 $phone_label = isset($settings['phone_label']) ? $settings['phone_label'] : '';
 $phone_number = isset($settings['phone_number']) ? $settings['phone_number'] : '';
@@ -89,6 +90,22 @@ $lng = isset($hotel->longitude) ? floatval($hotel->longitude) : 0;
 $default_center_lat = -26.2;
 $default_center_lng = 28.5;
 $has_valid_coords = ($lat && $lng && $lat >= -90 && $lat <= 90 && $lng >= -180 && $lng <= 180);
+$google_coords_display = '';
+if ($gps_coordinates !== '') {
+    $google_coords_display = $gps_coordinates;
+} elseif ($has_valid_coords) {
+    $google_coords_display = $lat . ', ' . $lng;
+}
+$enquire_href = '';
+if ($enquire_url !== '') {
+    $enquire_href = $enquire_url;
+} elseif (!empty($email_address)) {
+    $clean_mail = sanitize_email($email_address);
+    if ($clean_mail !== '') {
+        $enquire_href = 'mailto:' . $clean_mail;
+    }
+}
+$enquire_new_tab = ($enquire_url !== '' && stripos($enquire_url, 'mailto:') !== 0);
 $hotel_name = isset($hotel->name) ? $hotel->name : '';
 $hotel_image = isset($hotel->image_url) ? $hotel->image_url : '';
 $google_maps_url = isset($hotel->google_maps_url) ? $hotel->google_maps_url : '';
@@ -161,8 +178,8 @@ $book_now_text = !empty($enquire_text) ? $enquire_text : 'Book Now';
                     </div>
                 </div>
             <?php endif; ?>
-            <?php if (!empty($enquire_text)): ?>
-                <a class="wtfu-info__enq-btn wtfu-info__enq-btn--desktop" href="<?php echo !empty($enquire_url) ? esc_url($enquire_url) : '#'; ?>" <?php echo !empty($enquire_url) ? 'target="_blank"' : ''; ?>>
+            <?php if (!empty($enquire_text)) : ?>
+                <a class="wtfu-info__enq-btn wtfu-info__enq-btn--desktop" href="<?php echo $enquire_href !== '' ? esc_url($enquire_href) : '#'; ?>"<?php echo $enquire_new_tab ? ' target="_blank" rel="noopener noreferrer"' : ''; ?>>
                     <?php echo esc_html($enquire_text); ?>
                 </a>
             <?php endif; ?>
@@ -170,6 +187,9 @@ $book_now_text = !empty($enquire_text) ? $enquire_text : 'Book Now';
 
         <div class="wtfu-info-content__right">
             <h2 class="map-title"><?php echo esc_html($heading); ?></h2>
+            <?php if (!empty($sub_title)) : ?>
+                <p class="wtfu-map-subtitle"><?php echo esc_html($sub_title); ?></p>
+            <?php endif; ?>
             <?php if (!empty($address_text)): ?>
                 <p class="map-description"><?php echo esc_html($address_text); ?></p>
             <?php endif; ?>
@@ -189,8 +209,8 @@ $book_now_text = !empty($enquire_text) ? $enquire_text : 'Book Now';
                 </p>
             <?php endif; ?>
 
-            <?php if (!empty($gps_coordinates)): ?>
-                <p class="map-description">GPS: <?php echo esc_html($gps_coordinates); ?></p>
+            <?php if (!empty($google_coords_display)) : ?>
+                <p class="map-description wtfu-google-coords"><?php echo esc_html__('Google coordinates', 'dhr-hotel-management'); ?>: <?php echo esc_html($google_coords_display); ?></p>
             <?php endif; ?>
 
             <?php if (!empty($google_maps_url)): ?>
@@ -211,8 +231,8 @@ $book_now_text = !empty($enquire_text) ? $enquire_text : 'Book Now';
                 </div>
             <?php endif; ?>
 
-            <?php if (!empty($enquire_text)): ?>
-                <a class="wtfu-info__enq-btn wtfu-info__enq-btn--mobile" href="<?php echo !empty($enquire_url) ? esc_url($enquire_url) : '#'; ?>" <?php echo !empty($enquire_url) ? 'target="_blank"' : ''; ?>>
+            <?php if (!empty($enquire_text)) : ?>
+                <a class="wtfu-info__enq-btn wtfu-info__enq-btn--mobile" href="<?php echo $enquire_href !== '' ? esc_url($enquire_href) : '#'; ?>"<?php echo $enquire_new_tab ? ' target="_blank" rel="noopener noreferrer"' : ''; ?>>
                     <?php echo esc_html($enquire_text); ?>
                 </a>
             <?php endif; ?>
@@ -435,7 +455,7 @@ $book_now_text = !empty($enquire_text) ? $enquire_text : 'Book Now';
                 fullscreenControl: false,
                 styles: [
                     { featureType: 'all', elementType: 'geometry', stylers: [{ color: '#f5f5f5' }] },
-                    { featureType: 'water', elemaddListenerOnceentType: 'geometry', stylers: [{ color: '#A0B6CB' }] },
+                    { featureType: 'water', elementType: 'geometry', stylers: [{ color: '#A0B6CB' }] },
                     { featureType: 'road', elementType: 'geometry', stylers: [{ color: '#ffffff' }] },
                     { featureType: 'road', elementType: 'labels.text.fill', stylers: [{ color: '#9e9e9e' }] }
                 ]

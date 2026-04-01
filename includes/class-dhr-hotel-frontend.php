@@ -467,6 +467,8 @@ class DHR_Hotel_Frontend {
 
         $settings = array(
             'main_heading'              => isset($property_map['main_heading']) ? $property_map['main_heading'] : '',
+            'sub_title'                 => isset($property_map['sub_title']) ? $property_map['sub_title'] : '',
+            'gps_coordinates'           => isset($property_map['gps_coordinates']) ? $property_map['gps_coordinates'] : '',
             'address_text'              => isset($property_map['address_text']) ? $property_map['address_text'] : '',
             'phone_label'               => isset($property_map['phone_label']) ? $property_map['phone_label'] : '',
             'phone_number'              => isset($property_map['phone_number']) ? $property_map['phone_number'] : '',
