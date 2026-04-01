@@ -9,6 +9,10 @@ if (!defined('ABSPATH')) {
 
 $categories = isset($categories) ? $categories : array();
 $designs = array(
+    'first_home_design' => array(
+        'label' => __('First Home Design', 'dhr-hotel-management'),
+        'desc'  => __('Same as First Design layout and content output', 'dhr-hotel-management'),
+    ),
     'first_design' => array(
         'label' => __('First Design', 'dhr-hotel-management'),
         'desc'  => __('Grid / Swiper cards with icon, overlay info, and included list', 'dhr-hotel-management'),
@@ -99,7 +103,7 @@ $designs = array(
                         <label class="dhr-design-option <?php echo $is_first ? 'dhr-design-selected' : ''; ?>" style="display:flex; flex-direction:column; border:2px solid <?php echo $is_first ? '#2271b1' : '#e2e4e7'; ?>; border-radius:6px; cursor:pointer; transition:all .15s; overflow:hidden; background:#fff;">
                             <input type="radio" name="dhr_package_design" value="<?php echo esc_attr($value); ?>" <?php checked($is_first); ?> style="display:none;">
                             <div style="padding:10px 12px; background:#f9fafb; border-bottom:1px solid #e2e4e7; display:flex; align-items:center; justify-content:center;">
-                                <span style="display:block; width:100%; max-width:140px;"><?php echo $design_svgs[$value]; ?></span>
+                                <span style="display:block; width:100%; max-width:140px;"><?php echo isset($design_svgs[$value]) ? $design_svgs[$value] : $design_svgs['first_design']; ?></span>
                             </div>
                             <div style="padding:10px 12px;">
                                 <span style="font-size:12.5px; font-weight:600; color:#1d2327; display:block;"><?php echo esc_html($info['label']); ?></span>

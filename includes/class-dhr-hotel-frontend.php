@@ -28,6 +28,7 @@ class DHR_Hotel_Frontend {
         
         // Register package design shortcodes
         add_shortcode('dhr_package_first_design', array($this, 'display_package_first_design'));
+        add_shortcode('dhr_package_first__home_design', array($this, 'display_package_first_home_design'));
         add_shortcode('dhr_package_second_design', array($this, 'display_package_second_design'));
         add_shortcode('dhr_package_kids_design', array($this, 'display_package_kids_design'));
         add_shortcode('dhr_package_early_bird_design', array($this, 'display_package_early_bird_design'));
@@ -631,7 +632,7 @@ class DHR_Hotel_Frontend {
 
     /**
      * Shortcode [dhr_packages]: category-wise package display.
-     * Attributes: categories (comma-separated category IDs), design (first_design|second_design|kids_design|early_bird_design).
+     * Attributes: categories (comma-separated category IDs), design (first_design|first_home_design|second_design|kids_design|early_bird_design).
      * For second_design grid: wrap shortcode in <div class="package-design-grid">...</div> (static class, no layout attribute).
      */
     public function display_packages_by_category($atts) {
@@ -645,11 +646,12 @@ class DHR_Hotel_Frontend {
         }
         $packages = self::get_packages_for_display($category_ids);
         $plugin_url = DHR_HOTEL_PLUGIN_URL;
-        $design = in_array($atts['design'], array('first_design', 'second_design', 'kids_design', 'early_bird_design'), true)
+        $design = in_array($atts['design'], array('first_design', 'first_home_design', 'second_design', 'kids_design', 'early_bird_design'), true)
             ? $atts['design']
             : 'first_design';
         $templates = array(
             'first_design'      => 'package-first-design.php',
+            'first_home_design' => 'package-first-home-design.php',
             'second_design'     => 'package-second-design.php',
             'kids_design'      => 'package-kids-design.php',
             'early_bird_design' => 'package-early-bird-design.php',
@@ -668,6 +670,18 @@ class DHR_Hotel_Frontend {
         $plugin_url = DHR_HOTEL_PLUGIN_URL;
         ob_start();
         include DHR_HOTEL_PLUGIN_PATH . 'templates/frontend/package-first-design.php';
+        return ob_get_clean();
+    }
+
+    /**
+     * Display first home package design shortcode – copied from first design template.
+     */
+    public function display_package_first_home_design($atts) {
+        $atts = shortcode_atts(array(), $atts);
+        $packages = self::get_packages_for_display();
+        $plugin_url = DHR_HOTEL_PLUGIN_URL;
+        ob_start();
+        include DHR_HOTEL_PLUGIN_PATH . 'templates/frontend/package-first-home-design.php';
         return ob_get_clean();
     }
 
