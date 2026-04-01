@@ -418,8 +418,15 @@ $book_now_text = !empty($enquire_text) ? $enquire_text : 'Book Now';
     }
 
     var mapEl;
-    /** Strong zoom-out after fit: linear scale ×1.5 ⇒ zoom −log2(1.5) */
-    var WTFU_ZOOM_OUT = Math.log(1.5) / Math.LN2;
+    /** Default zoom-out after fit: wider visible area (×1.95 on scale) */
+    var WTFU_ZOOM_OUT = Math.log(2.95) / Math.LN2;
+    /** Extra zoom-out pass (×1.4) so the map loads noticeably further out */
+    var WTFU_ZOOM_OUT_30 = Math.log(2.25) / Math.LN2;
+    /** Additional whole zoom steps after fit (bigger = more area visible) */
+    var WTFU_ZOOM_EXTRA = 1.9;
+    /** Pan focal area toward left + top (fractions of map width/height) */
+    var WTFU_PAN_LEFT = 0.30;
+    var WTFU_PAN_TOP = 0.40;
 
     function initWhereToFindUsMap() {
         if (typeof google === 'undefined' || typeof google.maps === 'undefined') return;
@@ -450,7 +457,7 @@ $book_now_text = !empty($enquire_text) ? $enquire_text : 'Book Now';
 
             var southAfricaCenter = { lat: defaultLat, lng: defaultLng };
             var initialCenter = hasCoords ? { lat: lat, lng: lng } : southAfricaCenter;
-            var initialZoom = hasCoords ? Math.max(2, 14 - WTFU_ZOOM_OUT) : 5;
+            var initialZoom = hasCoords ? Math.max(2, 12 - WTFU_ZOOM_OUT - WTFU_ZOOM_OUT_30 - WTFU_ZOOM_EXTRA) : 5;
 
             definePulseOverlay();
 
@@ -491,7 +498,7 @@ $book_now_text = !empty($enquire_text) ? $enquire_text : 'Book Now';
                         if (mapDiv) {
                             var w = mapDiv.offsetWidth;
                             var h = mapDiv.offsetHeight;
-                            map.panBy(Math.round(w * 0.15), Math.round(h * 0.12));
+                            map.panBy(Math.round(w * WTFU_PAN_LEFT), Math.round(h * WTFU_PAN_TOP));
                         }
                         infoWindow.open(map, singleMarker);
                     }, 100);
@@ -643,16 +650,16 @@ $book_now_text = !empty($enquire_text) ? $enquire_text : 'Book Now';
         }
         var deviceType = getDeviceType();
 
-        // After map loads, fit to markers then zoom out ~30% and shift focal area to left-top
+        // After map loads, fit to markers with generous padding, zoom out by default, then pan left + top
         google.maps.event.addListenerOnce(map, 'idle', function () {
             if (validHotels.length > 0 && !bounds.isEmpty()) {
-                var padding = deviceType === 'mobile' ? 52 : (deviceType === 'tablet' ? 78 : 110);
+                var padding = deviceType === 'mobile' ? 64 : (deviceType === 'tablet' ? 96 : 130);
                 var ne = bounds.getNorthEast();
                 var sw = bounds.getSouthWest();
                 var center = bounds.getCenter();
                 var latSpan = Math.max(ne.lat() - sw.lat(), 0.02);
                 var lngSpan = Math.max(ne.lng() - sw.lng(), 0.02);
-                var expandFactor = 1.45;
+                var expandFactor = 1.95;
                 var expandedBounds = new google.maps.LatLngBounds(
                     new google.maps.LatLng(center.lat() - (latSpan * expandFactor) / 2, center.lng() - (lngSpan * expandFactor) / 2),
                     new google.maps.LatLng(center.lat() + (latSpan * expandFactor) / 2, center.lng() + (lngSpan * expandFactor) / 2)
@@ -661,13 +668,13 @@ $book_now_text = !empty($enquire_text) ? $enquire_text : 'Book Now';
                 setTimeout(function () {
                     var z = map.getZoom();
                     if (isFinite(z)) {
-                        map.setZoom(Math.max(2, z - WTFU_ZOOM_OUT - 0.5));
+                        map.setZoom(Math.max(2, z - WTFU_ZOOM_OUT - WTFU_ZOOM_OUT_30 - WTFU_ZOOM_EXTRA));
                     }
                     var mapDiv = document.getElementById('wtfu-map');
                     if (mapDiv) {
                         var w = mapDiv.offsetWidth;
                         var h = mapDiv.offsetHeight;
-                        map.panBy(Math.round(w * 0.15), Math.round(h * 0.12));
+                        map.panBy(Math.round(w * WTFU_PAN_LEFT), Math.round(h * WTFU_PAN_TOP));
                     }
                     activateDefaultHotelMarker();
                     setTimeout(activateDefaultHotelMarker, 500);
