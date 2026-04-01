@@ -33,6 +33,8 @@ if (!empty($hotels) && is_array($hotels)) {
     }
 }
 
+$sub_title = isset($settings['sub_title']) ? trim((string) $settings['sub_title']) : '';
+
 // Build JS-friendly hotel list for multi-marker map (all selected hotels on this map)
 $wtfu_hotels_js = array();
 if (!empty($hotels) && is_array($hotels)) {
@@ -49,6 +51,7 @@ if (!empty($hotels) && is_array($hotels)) {
             'logo_url'    => isset($h->logo_url) ? $h->logo_url : '',
             'google_maps_url' => isset($h->google_maps_url) ? $h->google_maps_url : '',
             'hotel_code'  => isset($h->hotel_code) ? $h->hotel_code : '',
+            'sub_title'   => $sub_title,
         );
     }
 }
@@ -58,7 +61,6 @@ if (!$hotel) {
 }
 
 $heading = isset($settings['main_heading']) ? $settings['main_heading'] : 'Where To Find Us';
-$sub_title = isset($settings['sub_title']) ? $settings['sub_title'] : '';
 $address_text = isset($settings['address_text']) ? $settings['address_text'] : '';
 $phone_label = isset($settings['phone_label']) ? $settings['phone_label'] : '';
 $phone_number = isset($settings['phone_number']) ? $settings['phone_number'] : '';
@@ -122,6 +124,7 @@ $book_now_text = !empty($enquire_text) ? $enquire_text : 'Book Now';
     <div class="info-window">
         <div class="info-window-content">
             <h3 class="info-window-title">{name}</h3>
+            {sub_title_html}
             <p class="info-window-location">{city} | {province}</p>
             <div class="info-window-actions">
                 <a href="{google_maps_url}" target="_blank" class="btn-info">
@@ -142,7 +145,8 @@ $book_now_text = !empty($enquire_text) ? $enquire_text : 'Book Now';
         'image_url' => $hotel_image,
         'google_maps_url' => $google_maps_url,
         'phone' => $phone_number,
-        'book_now_text' => $book_now_text
+        'book_now_text' => $book_now_text,
+        'sub_title' => $sub_title,
     )); ?>;
     var dhrWtfuPluginUrl = <?php echo wp_json_encode(DHR_HOTEL_PLUGIN_URL); ?>;
     var dhrWtfuMapSettings = {
@@ -187,9 +191,6 @@ $book_now_text = !empty($enquire_text) ? $enquire_text : 'Book Now';
 
         <div class="wtfu-info-content__right">
             <h2 class="map-title"><?php echo esc_html($heading); ?></h2>
-            <?php if (!empty($sub_title)) : ?>
-                <p class="wtfu-map-subtitle"><?php echo esc_html($sub_title); ?></p>
-            <?php endif; ?>
             <?php if (!empty($address_text)): ?>
                 <p class="map-description"><?php echo esc_html($address_text); ?></p>
             <?php endif; ?>
@@ -383,14 +384,19 @@ $book_now_text = !empty($enquire_text) ? $enquire_text : 'Book Now';
     }
 
     function getInfoWindowContent(hotel) {
+        var sub = (hotel && hotel.sub_title && String(hotel.sub_title).trim()) ? String(hotel.sub_title).trim() : '';
+        var subTitleHtml = sub ? '<p class="info-window-subtitle">' + escapeHtml(sub) + '</p>' : '';
         var templateEl = document.getElementById('wtfu-info-window-template');
-        if (!templateEl) return '<div class="info-window-content"><h3 class="info-window-title">' + escapeHtml(hotel.name) + '</h3></div>';
+        if (!templateEl) {
+            return '<div class="info-window-content"><h3 class="info-window-title">' + escapeHtml(hotel.name) + '</h3>' + subTitleHtml + '</div>';
+        }
         var template = templateEl.innerHTML;
         var pluginUrl = (typeof dhrWtfuPluginUrl !== 'undefined') ? dhrWtfuPluginUrl : '';
         var imgUrl = hotel.image_url || (pluginUrl + 'assets/images/default-hotel.jpg');
         var gmUrl = hotel.google_maps_url || ('https://www.google.com/maps?q=' + (mapEl.getAttribute('data-lat') || '') + ',' + (mapEl.getAttribute('data-lng') || ''));
         return template
             .replace(/{name}/g, escapeHtml(hotel.name))
+            .replace(/{sub_title_html}/g, subTitleHtml)
             .replace(/{city}/g, escapeHtml(hotel.city || ''))
             .replace(/{province}/g, escapeHtml(hotel.province || ''))
             .replace(/{image_url}/g, imgUrl)
@@ -470,7 +476,7 @@ $book_now_text = !empty($enquire_text) ? $enquire_text : 'Book Now';
                     icon: createActiveMarkerIcon()
                 });
                 startPulse(singleMarker, true);
-                var hotel = (typeof dhrWtfuHotel !== 'undefined') ? dhrWtfuHotel : { name: name, city: '', province: '', image_url: '', google_maps_url: '', phone: '', book_now_text: 'Book Now' };
+                var hotel = (typeof dhrWtfuHotel !== 'undefined') ? dhrWtfuHotel : { name: name, city: '', province: '', image_url: '', google_maps_url: '', phone: '', book_now_text: 'Book Now', sub_title: '' };
                 var infoWindowContent = getInfoWindowContent(hotel);
                 var infoWindow = new google.maps.InfoWindow({ content: infoWindowContent });
                 singleMarker.addListener('click', function () { infoWindow.open(map, singleMarker); });

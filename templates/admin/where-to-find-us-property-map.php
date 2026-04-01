@@ -131,7 +131,7 @@ $google_maps_button_text = isset($saved_data['google_maps_button_text']) ? $save
                     <th scope="row"><label for="sub_title"><?php esc_html_e('Sub title', 'dhr-hotel-management'); ?></label></th>
                     <td>
                         <input type="text" id="sub_title" name="sub_title" class="large-text" value="<?php echo esc_attr($sub_title); ?>">
-                        <p class="description"><?php esc_html_e('Optional line shown below the main heading.', 'dhr-hotel-management'); ?></p>
+                        <p class="description"><?php esc_html_e('Optional text shown in the map marker popup, directly under the property title.', 'dhr-hotel-management'); ?></p>
                     </td>
                 </tr>
                 <tr>
