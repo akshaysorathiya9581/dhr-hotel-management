@@ -132,7 +132,10 @@ $book_now_text = !empty($enquire_text) ? $enquire_text : 'Book Now';
                         <path d="M10.4544 1.95996C5.77085 1.95996 1.96021 5.77061 1.96021 10.4542C1.96021 15.1377 5.77085 18.9484 10.4544 18.9484C15.138 18.9484 18.9486 15.1377 18.9486 10.4542C18.9486 5.77061 15.138 1.95996 10.4544 1.95996ZM10.4544 3.26676C14.431 3.26676 17.6418 6.47761 17.6418 10.4542C17.6418 14.4307 14.431 17.6416 10.4544 17.6416C6.47785 17.6416 3.26701 14.4307 3.26701 10.4542C3.26701 6.47761 6.47785 3.26676 10.4544 3.26676ZM9.80101 6.53376V7.84056H11.1078V6.53376H9.80101ZM9.80101 9.14736V14.3746H11.1078V9.14736H9.80101Z" fill="#0B5991"/>
                     </svg>
                 </a>
-                <a href="tel:{phone}" class="btn-book">{book_now_text}</a>
+                <a href="tel:{phone}" class="btn-book">
+                    Enquire
+                    <!-- {book_now_text} -->
+                </a>
             </div>
         </div>
     </div>
@@ -211,7 +214,7 @@ $book_now_text = !empty($enquire_text) ? $enquire_text : 'Book Now';
             <?php endif; ?>
 
             <?php if (!empty($google_coords_display)) : ?>
-                <p class="map-description wtfu-google-coords"><?php echo esc_html__('Google coordinates', 'dhr-hotel-management'); ?>: <?php echo esc_html($google_coords_display); ?></p>
+                <p class="map-description wtfu-google-coords"><?php echo esc_html__('GPS', 'dhr-hotel-management'); ?>: <?php echo esc_html($google_coords_display); ?></p>
             <?php endif; ?>
 
             <?php if (!empty($google_maps_url)): ?>
@@ -415,6 +418,8 @@ $book_now_text = !empty($enquire_text) ? $enquire_text : 'Book Now';
     }
 
     var mapEl;
+    /** Strong zoom-out after fit: linear scale ×1.5 ⇒ zoom −log2(1.5) */
+    var WTFU_ZOOM_OUT = Math.log(1.5) / Math.LN2;
 
     function initWhereToFindUsMap() {
         if (typeof google === 'undefined' || typeof google.maps === 'undefined') return;
@@ -445,7 +450,7 @@ $book_now_text = !empty($enquire_text) ? $enquire_text : 'Book Now';
 
             var southAfricaCenter = { lat: defaultLat, lng: defaultLng };
             var initialCenter = hasCoords ? { lat: lat, lng: lng } : southAfricaCenter;
-            var initialZoom = hasCoords ? 14 : 5;
+            var initialZoom = hasCoords ? Math.max(2, 14 - WTFU_ZOOM_OUT) : 5;
 
             definePulseOverlay();
 
@@ -481,7 +486,15 @@ $book_now_text = !empty($enquire_text) ? $enquire_text : 'Book Now';
                 var infoWindow = new google.maps.InfoWindow({ content: infoWindowContent });
                 singleMarker.addListener('click', function () { infoWindow.open(map, singleMarker); });
                 google.maps.event.addListenerOnce(map, 'idle', function () {
-                    infoWindow.open(map, singleMarker);
+                    setTimeout(function () {
+                        var mapDiv = document.getElementById('wtfu-map');
+                        if (mapDiv) {
+                            var w = mapDiv.offsetWidth;
+                            var h = mapDiv.offsetHeight;
+                            map.panBy(Math.round(w * 0.15), Math.round(h * 0.12));
+                        }
+                        infoWindow.open(map, singleMarker);
+                    }, 100);
                 });
             }
 
@@ -630,28 +643,31 @@ $book_now_text = !empty($enquire_text) ? $enquire_text : 'Book Now';
         }
         var deviceType = getDeviceType();
 
-        // After map loads, fit to markers with 2% zoom-in and shift to left-bottom (same as property-portfolio-map)
+        // After map loads, fit to markers then zoom out ~30% and shift focal area to left-top
         google.maps.event.addListenerOnce(map, 'idle', function () {
             if (validHotels.length > 0 && !bounds.isEmpty()) {
-                var padding = deviceType === 'mobile' ? 40 : (deviceType === 'tablet' ? 60 : 80);
+                var padding = deviceType === 'mobile' ? 52 : (deviceType === 'tablet' ? 78 : 110);
                 var ne = bounds.getNorthEast();
                 var sw = bounds.getSouthWest();
                 var center = bounds.getCenter();
-                var latSpan = ne.lat() - sw.lat();
-                var lngSpan = ne.lng() - sw.lng();
-                var expandFactor = 0.99;
+                var latSpan = Math.max(ne.lat() - sw.lat(), 0.02);
+                var lngSpan = Math.max(ne.lng() - sw.lng(), 0.02);
+                var expandFactor = 1.45;
                 var expandedBounds = new google.maps.LatLngBounds(
                     new google.maps.LatLng(center.lat() - (latSpan * expandFactor) / 2, center.lng() - (lngSpan * expandFactor) / 2),
                     new google.maps.LatLng(center.lat() + (latSpan * expandFactor) / 2, center.lng() + (lngSpan * expandFactor) / 2)
                 );
                 map.fitBounds(expandedBounds, padding);
                 setTimeout(function () {
+                    var z = map.getZoom();
+                    if (isFinite(z)) {
+                        map.setZoom(Math.max(2, z - WTFU_ZOOM_OUT - 0.5));
+                    }
                     var mapDiv = document.getElementById('wtfu-map');
                     if (mapDiv) {
                         var w = mapDiv.offsetWidth;
                         var h = mapDiv.offsetHeight;
-                        // Pan so content sits toward left and bottom (opposite of right-bottom: pan right + up)
-                        map.panBy(Math.round(w * 0.30), -Math.round(h * 0.14));
+                        map.panBy(Math.round(w * 0.15), Math.round(h * 0.12));
                     }
                     activateDefaultHotelMarker();
                     setTimeout(activateDefaultHotelMarker, 500);
