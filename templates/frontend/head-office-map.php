@@ -87,8 +87,8 @@ $google_maps_url = isset($settings['google_maps_url']) ? $settings['google_maps_
         var fitMapBounds;
         // Shared map styles: geometry colors + all labels hidden
         var mapStyles = [
-            { featureType: 'all', elementType: 'geometry', stylers: [{ color: '#f5f5f5' }] },
-            { featureType: 'water', elementType: 'geometry', stylers: [{ color: '#A0B6CB' }] },
+            { featureType: 'all', elementType: 'geometry', stylers: [{ color: '#f3f3f3' }] },
+            { featureType: 'water', elementType: 'geometry', stylers: [{ color: '#f3f3f3' }] },
             { featureType: 'road', elementType: 'geometry', stylers: [{ color: '#ffffff' }] },
             { featureType: 'road', elementType: 'labels.text.fill', stylers: [{ color: '#9e9e9e' }] },
             { featureType: 'all', elementType: 'labels', stylers: [{ visibility: 'off' }] },
@@ -323,9 +323,27 @@ $google_maps_url = isset($settings['google_maps_url']) ? $settings['google_maps_
                 bounds.extend(new google.maps.LatLng(parseFloat(hotel.latitude), parseFloat(hotel.longitude)));
             });
 
-            google.maps.event.addListenerOnce(map, 'idle', function () {
-                if (validHotels.length > 1 && !defaultHotel && !bounds.isEmpty()) {
+            // Keep bounds-fit logic reusable for initial load + resize recenter.
+            fitMapBounds = function () {
+                if (!map || !bounds || bounds.isEmpty() || defaultHotel) {
+                    return;
+                }
+
+                if (validHotels.length > 1) {
                     map.fitBounds(bounds, 60);
+                    // Enforce true center after fitBounds so viewport is balanced.
+                    google.maps.event.addListenerOnce(map, 'idle', function () {
+                        map.setCenter(bounds.getCenter());
+                    });
+                    return;
+                }
+
+                map.setCenter(bounds.getCenter());
+            };
+
+            google.maps.event.addListenerOnce(map, 'idle', function () {
+                if (!defaultHotel) {
+                    fitMapBounds();
                 }
 
                 // Auto-activate marker ONLY when default hotel is explicitly selected in admin.

@@ -2396,6 +2396,7 @@ div:focus-visible {
 }
 
 @media (max-width: 767px) {
+
     .bys-packages .first-packages__featured .package-overlay__title,
     .bys-packages .first-packages__design .package-overlay__title {
         font-size: 32px;
@@ -2774,18 +2775,22 @@ div:focus-visible {
 
 /* First Package Design */
 @media (max-width: 767px) {
+
     .first-packages__design .package-overlay__divider,
     .first-packages__design .package-content__divider,
     .first-packages__design .package-overlay__location {
         display: none;
     }
+
     .bys-packages__second-main .bys-packages-card {
         height: 464px;
     }
+
     .bys-packages__second-main .second-packages__design .swiper-slide {
         width: 350px;
         height: 464px;
     }
+
     .bys-packages__second-main .second-packages__design {
         width: 100%;
     }
@@ -2863,6 +2868,7 @@ div:focus-visible {
         width: 332px;
         height: 504px;
     }
+
     .bys-packages .bird-packages-card {
         width: 100%;
     }
@@ -3721,5 +3727,36 @@ div:focus-visible {
 
     .bys-packages__second-main .bird-package-pagination {
         display: flex;
+    }
+}
+
+.first-home-packages__design .package-content__title {
+    margin-bottom: 20px;
+}
+
+.first-home-packages__design .bys-package-button__more {
+    display: none;
+}
+
+@media (max-width: 767px) {
+    .first-home-packages__design .bys-package-content__top {
+        display: none;
+    }
+
+    .first-home-packages__design .package-content__bottom .bys-book-now-link:hover {
+        background-color: #4f6574;
+        color: #c7a272;
+    }
+
+    .first-home-packages__design .bys-package-button__more {
+        display: flex;
+        background-color: #EDEFF0;
+        color: #676B6D;
+        margin-bottom: 10px;
+    }
+
+    .first-home-packages__design .bys-package-button__more:hover {
+        background-color: #4f6574;
+        color: #c7a272;
     }
 }
