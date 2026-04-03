@@ -125,7 +125,7 @@ $book_now_text = !empty($enquire_text) ? $enquire_text : 'Book Now';
         <div class="info-window-content">
             <h3 class="info-window-title">{name}</h3>
             {sub_title_html}
-            <p class="info-window-location">{city} | {province}</p>
+            <!-- <p class="info-window-location">{city} | {province}</p> -->
             <div class="info-window-actions">
                 <a href="{google_maps_url}" target="_blank" class="btn-info">
                     <svg width="21" height="21" viewBox="0 0 21 21" fill="none" xmlns="http://www.w3.org/2000/svg">
@@ -424,9 +424,17 @@ $book_now_text = !empty($enquire_text) ? $enquire_text : 'Book Now';
     var WTFU_ZOOM_OUT_30 = Math.log(2.25) / Math.LN2;
     /** Additional whole zoom steps after fit (bigger = more area visible) */
     var WTFU_ZOOM_EXTRA = 1.9;
-    /** Pan focal area toward left + top (fractions of map width/height) */
-    var WTFU_PAN_LEFT = 0.30;
-    var WTFU_PAN_TOP = 0.40;
+    /** Pan focal area vertically (fraction of map height) */
+    var WTFU_PAN_TOP = 0.70;
+
+    /** Horizontal pan by viewport: ≥1480 default; <1480 / <1280 stronger pan; <991 centered */
+    function getWtfuPanLeft() {
+        var width = window.innerWidth;
+        if (width < 991) return 0;
+        if (width < 1280) return 0.80;
+        if (width < 1480) return 0.60;
+        return 0.30;
+    }
 
     function initWhereToFindUsMap() {
         if (typeof google === 'undefined' || typeof google.maps === 'undefined') return;
@@ -498,7 +506,7 @@ $book_now_text = !empty($enquire_text) ? $enquire_text : 'Book Now';
                         if (mapDiv) {
                             var w = mapDiv.offsetWidth;
                             var h = mapDiv.offsetHeight;
-                            map.panBy(Math.round(w * WTFU_PAN_LEFT), Math.round(h * WTFU_PAN_TOP));
+                            map.panBy(Math.round(w * getWtfuPanLeft()), Math.round(h * WTFU_PAN_TOP));
                         }
                         infoWindow.open(map, singleMarker);
                     }, 100);
@@ -674,7 +682,7 @@ $book_now_text = !empty($enquire_text) ? $enquire_text : 'Book Now';
                     if (mapDiv) {
                         var w = mapDiv.offsetWidth;
                         var h = mapDiv.offsetHeight;
-                        map.panBy(Math.round(w * WTFU_PAN_LEFT), Math.round(h * WTFU_PAN_TOP));
+                        map.panBy(Math.round(w * getWtfuPanLeft()), Math.round(h * WTFU_PAN_TOP));
                     }
                     activateDefaultHotelMarker();
                     setTimeout(activateDefaultHotelMarker, 500);
