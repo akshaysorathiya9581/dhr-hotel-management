@@ -240,7 +240,7 @@ div:focus-visible {
     border-radius: 5px;
     font-size: 12.2px;
     font-weight: 400;
-    line-height: 20.91px;
+    line-height: inherit;
     transition: all 0.25s ease-in-out;
     display: flex;
     align-items: center;
@@ -258,8 +258,8 @@ div:focus-visible {
 }
 
 .info-window .btn-info:hover {
-    background-color: #afd3e9;
-    color: #fff;
+    /* background-color: #afd3e9;
+    color: #fff; */
 }
 
 .info-window .btn-book {
@@ -1421,18 +1421,16 @@ div:focus-visible {
 
 @media (max-width: 1280px) {
     .wtfu-map-container .wtfu-info-content {
-        width: 760px;
+        width: 720px;
         right: calc(6% - 20px);
         grid-template-columns: 340px 1fr;
-        bottom: 20px;
-        top: unset;
-        transform: unset;
     }
 }
 
 @media (max-width: 1199px) {
     .wtfu-map-container .wtfu-info-content {
         right: 10px;
+        width: 700px;
     }
 }
 
@@ -1447,6 +1445,8 @@ div:focus-visible {
         position: relative;
         margin-top: -190px;
         z-index: 1;
+        top: unset;
+        transform: unset;
     }
 }
 
@@ -1520,6 +1520,9 @@ div:focus-visible {
 .wtfu-map-container .map-description a {
     color: #676B6D;
     text-decoration: none;
+    font-size: 16px;
+    font-weight: 400;
+    line-height: 140%;
 }
 
 @media (max-width: 420px) {
@@ -1601,8 +1604,9 @@ div:focus-visible {
 }
 
 .wtfu-map-container .map-btn__link:hover {
-    background-color: #0B5991;
-    color: #ffffff;
+    background-color: transparent;
+    color: #1473B7;
+    border-color: #1473B7;
 }
 
 .wtfu-map-container .wtfu-info-content__left {
@@ -1612,11 +1616,36 @@ div:focus-visible {
     display: flex;
     align-items: center;
     flex-direction: column;
-    justify-content: center;
+    justify-content: flex-end;
     gap: 20px;
     background-size: cover;
     background-position: center;
     background-repeat: no-repeat;
+    padding: 40px 80px;
+}
+
+@media (max-width: 1550px) {
+    .wtfu-map-container .wtfu-info-content__left {
+        padding: 40px 40px;
+    }
+}
+
+@media (max-width: 991px) {
+    .wtfu-map-container .wtfu-info-content__left {
+        justify-content: center;
+    }
+}
+
+@media (max-width: 575px) {
+    .wtfu-map-container .wtfu-info-content__left {
+        padding: 25px 30px 30px;
+    }
+}
+
+@media (max-width: 480px) {
+    .wtfu-map-container .wtfu-info-content__left {
+        padding: 20px 25px 30px;
+    }
 }
 
 .wtfu-map-container .wtfu-info-content__left::before {
@@ -1671,8 +1700,8 @@ div:focus-visible {
 }
 
 .wtfu-map-container .wtfu-info__enq-btn:hover {
-    background-color: #e6edf3;
-    color: #c7a272;
+    background-color: #E6EEF3;
+    color: #462801;
 }
 
 @media (max-width: 767px) {
@@ -3793,4 +3822,18 @@ div:focus-visible {
         background-color: #4f6574;
         color: #c7a272;
     }
+}
+
+.wtfu-map .info-window-actions {
+    margin-top: 8px;
+}
+
+.wtfu-map .info-window .btn-info:hover {
+    background-color: #F5F8F9;
+    color: #D3AA74;
+}
+
+.wtfu-map .info-window .btn-book:hover {
+    background-color: #4F6574;
+    color: #E0C8A9;
 }
