@@ -447,11 +447,20 @@ class DHR_Hotel_Frontend {
         ), $atts);
 
         $property_id = isset($atts['property_id']) ? (int) $atts['property_id'] : 0;
-        if ($property_id <= 0 && function_exists('is_singular') && is_singular('properties')) {
-            // On single property page, auto-use current property ID when shortcode has no property_id.
-            $property_id = (int) get_queried_object_id();
-            if ($property_id <= 0) {
-                $property_id = (int) get_the_ID();
+        if ($property_id <= 0 && function_exists('is_singular')) {
+            if (is_singular('properties')) {
+                // Single property: map uses this post ID as the property ID.
+                $property_id = (int) get_queried_object_id();
+                if ($property_id <= 0) {
+                    $property_id = (int) get_the_ID();
+                }
+            } elseif (is_singular('units')) {
+                // Single unit: resolve parent property from ACF field "properties".
+                $unit_id = (int) get_queried_object_id();
+                if ($unit_id <= 0) {
+                    $unit_id = (int) get_the_ID();
+                }
+                $property_id = self::resolve_property_id_from_unit_properties_acf($unit_id);
             }
         }
 
@@ -505,6 +514,48 @@ class DHR_Hotel_Frontend {
         ob_start();
         include DHR_HOTEL_PLUGIN_PATH . 'templates/frontend/where-to-find-us-map.php';
         return ob_get_clean();
+    }
+
+    /**
+     * Property post ID for a unit: ACF field "properties" (post object, ID, or list).
+     *
+     * @param int $unit_post_id
+     * @return int
+     */
+    private static function resolve_property_id_from_unit_properties_acf($unit_post_id) {
+        $unit_post_id = (int) $unit_post_id;
+        if ($unit_post_id <= 0 || !function_exists('get_field')) {
+            return 0;
+        }
+        return self::dhr_extract_post_id_from_acf_reference(get_field('properties', $unit_post_id));
+    }
+
+    /**
+     * Normalize ACF post / relationship values to a single post ID.
+     *
+     * @param mixed $raw
+     * @return int
+     */
+    private static function dhr_extract_post_id_from_acf_reference($raw) {
+        if ($raw === null || $raw === false || $raw === '') {
+            return 0;
+        }
+        if (is_numeric($raw)) {
+            $id = (int) $raw;
+            return $id > 0 ? $id : 0;
+        }
+        if (is_object($raw) && isset($raw->ID)) {
+            return (int) $raw->ID;
+        }
+        if (is_array($raw)) {
+            foreach ($raw as $item) {
+                $id = self::dhr_extract_post_id_from_acf_reference($item);
+                if ($id > 0) {
+                    return $id;
+                }
+            }
+        }
+        return 0;
     }
     
     /**
