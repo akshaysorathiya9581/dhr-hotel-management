@@ -89,8 +89,8 @@ $google_maps_url = isset($settings['google_maps_url']) ? $settings['google_maps_
         var mapStyles = [
             { featureType: 'all', elementType: 'geometry', stylers: [{ color: '#f3f3f3' }] },
             { featureType: 'water', elementType: 'geometry', stylers: [{ color: '#f3f3f3' }] },
-            { featureType: 'road', elementType: 'geometry', stylers: [{ color: '#ffffff' }] },
-            { featureType: 'road', elementType: 'labels.text.fill', stylers: [{ color: '#9e9e9e' }] },
+            { featureType: 'road', elementType: 'geometry', stylers: [{ color: '#b1afaa' }] },
+            { featureType: 'road', elementType: 'labels.text.fill', stylers: [{ color: '#4d4d4d' }] },
             { featureType: 'all', elementType: 'labels', stylers: [{ visibility: 'off' }] },
             { featureType: 'road', elementType: 'labels', stylers: [{ visibility: 'off' }] },
             { featureType: 'administrative', elementType: 'labels', stylers: [{ visibility: 'off' }] },
@@ -301,7 +301,7 @@ $google_maps_url = isset($settings['google_maps_url']) ? $settings['google_maps_
                 lat: parseFloat(validHotels[0].latitude),
                 lng: parseFloat(validHotels[0].longitude)
             };
-            var initialZoom = 6;
+            var initialZoom = 7;
 
             if (defaultHotel) {
                 initialCenter = {
