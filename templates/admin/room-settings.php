@@ -7,6 +7,10 @@ if (!defined('ABSPATH')) {
     exit;
 }
 
+$message = isset($_GET['message']) ? sanitize_text_field(wp_unslash($_GET['message'])) : '';
+$accommodation_url_pattern = get_option('dhr_room_accommodation_url_pattern', '');
+$accommodation_url_pattern = is_string($accommodation_url_pattern) ? $accommodation_url_pattern : '';
+
 $shortcode_rooms = '[hotel_rooms]';
 $shortcode_cards = '[hotel_rooms_cards]';
 $shortcode_rooms_second = '[hotel_rooms_second]';
@@ -15,7 +19,32 @@ $usage_php = "echo do_shortcode('[hotel_rooms]');\necho do_shortcode('[hotel_roo
 
 <div class="wrap dhr-hotel-admin">
     <h1><?php _e('Room Settings', 'dhr-hotel-management'); ?></h1>
+
+    <?php if ($message === 'saved'): ?>
+        <div class="notice notice-success is-dismissible">
+            <p><?php _e('Room settings saved.', 'dhr-hotel-management'); ?></p>
+        </div>
+    <?php endif; ?>
+
     <p class="description"><?php _e('Copy the shortcodes below to display hotel rooms on pages or in templates. Hotel code is taken from Book Your Stay → Settings.', 'dhr-hotel-management'); ?></p>
+
+    <form method="post" action="<?php echo esc_url(admin_url('admin-post.php')); ?>" class="dhr-hotel-form" style="max-width: 700px; margin-top: 24px;">
+        <?php wp_nonce_field('dhr_room_settings_nonce'); ?>
+        <input type="hidden" name="action" value="dhr_save_room_settings">
+        <h2 class="title" style="font-size: 14px; margin: 0 0 10px;"><?php _e('Accommodation URL (card layout)', 'dhr-hotel-management'); ?></h2>
+        <table class="form-table" role="presentation" style="margin-top: 0;">
+            <tr>
+                <th scope="row"><label for="dhr_room_accommodation_url_pattern"><?php _e('URL pattern', 'dhr-hotel-management'); ?></label></th>
+                <td>
+                    <input type="text" name="dhr_room_accommodation_url_pattern" id="dhr_room_accommodation_url_pattern" class="large-text"
+                        value="<?php echo esc_attr($accommodation_url_pattern); ?>"
+                        placeholder="https://example.com/accommodation/{room_slug}/">
+                    <p class="description"><?php _e('Leave empty to keep “View Room” as a non-navigating link until you set a pattern.', 'dhr-hotel-management'); ?></p>
+                </td>
+            </tr>
+        </table>
+        <?php submit_button(__('Save room settings', 'dhr-hotel-management')); ?>
+    </form>
 
     <div class="dhr-room-shortcodes" style="max-width: 700px; margin-top: 20px;">
         <div class="dhr-shortcode-box" style="background: #f6f7f7; border: 1px solid #c3c4c7; border-radius: 4px; padding: 16px 20px; margin-bottom: 16px;">

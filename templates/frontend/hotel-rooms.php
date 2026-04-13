@@ -23,6 +23,7 @@ $columns = $hotel_data['columns'];
 $show_images = $hotel_data['show_images'];
 $show_amenities = $hotel_data['show_amenities'];
 $show_description = $hotel_data['show_description'];
+$accommodation_url_pattern = isset($hotel_data['accommodation_url_pattern']) ? (string) $hotel_data['accommodation_url_pattern'] : '';
 $plugin_url = plugin_dir_url(dirname(__FILE__, 2));
 
 
@@ -390,6 +391,9 @@ function dhr_format_room_price($amount) {
                 $room_card_id = 'bys-hotel-room-' . (function_exists('sanitize_title')
                     ? sanitize_title((string) $room->room_type_name)
                     : strtolower(trim(preg_replace('/[^0-9a-z]+/i', '-', (string) $room->room_type_name), '-')));
+                $view_room_href = class_exists('DHR_Hotel_Frontend')
+                    ? DHR_Hotel_Frontend::build_room_accommodation_url($accommodation_url_pattern, $room)
+                    : '';
             ?>
                 <div class="bys-hotel-room-card" id="<?php echo esc_attr($room_card_id); ?>">
                     <div class="bys-hotel-room-card__frature-img bys-room-image-slider swiper">
@@ -432,7 +436,7 @@ function dhr_format_room_price($amount) {
                                     data-adults="<?php echo esc_attr($room->max_occupancy ?: 2); ?>"
                                     data-children="0"
                                     data-rooms="1"><?php _e('Book Now', 'dhr-hotel-management'); ?></a>
-                                <a href="#" class="bys-hotel-btn button-dark"><?php _e('View Room', 'dhr-hotel-management'); ?></a>
+                                <a href="<?php echo $view_room_href !== '' ? esc_url($view_room_href) : '#'; ?>" class="bys-hotel-btn button-dark"<?php echo $view_room_href !== '' ? '' : ' aria-disabled="true"'; ?>><?php _e('View Room', 'dhr-hotel-management'); ?></a>
                             </div>
                         </div>
                     </div>

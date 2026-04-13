@@ -559,6 +559,31 @@ class DHR_Hotel_Frontend {
     }
     
     /**
+     * Build "View Room" URL from Room Settings pattern and API room object.
+     * Placeholders: {room_code}, {room_type_code}, {room_slug} (slug from room type name).
+     *
+     * @param string $pattern Saved option value.
+     * @param object $room    Room from SHR API (room_type_code, room_type_name).
+     * @return string Escaped URL or empty if pattern blank / invalid.
+     */
+    public static function build_room_accommodation_url($pattern, $room) {
+        $pattern = trim((string) $pattern);
+        if ($pattern === '') {
+            return '';
+        }
+        $code = isset($room->room_type_code) ? (string) $room->room_type_code : '';
+        $name = isset($room->room_type_name) ? (string) $room->room_type_name : '';
+        $slug = function_exists('sanitize_title') ? sanitize_title($name) : '';
+        $url  = str_replace(
+            array('{room_code}', '{room_type_code}', '{room_slug}'),
+            array(rawurlencode($code), rawurlencode($code), rawurlencode($slug)),
+            $pattern
+        );
+        $url = esc_url($url);
+        return is_string($url) ? $url : '';
+    }
+
+    /**
      * [hotel_rooms] – grid layout (specs, amenities, description). No code change, only shortcode.
      */
     public function display_hotel_rooms($atts) {
@@ -641,6 +666,8 @@ class DHR_Hotel_Frontend {
         }
 
         $channel_id = (int) get_option('dhr_shr_channel_id', '30');
+        $accommodation_url_pattern = get_option('dhr_room_accommodation_url_pattern', '');
+        $accommodation_url_pattern = is_string($accommodation_url_pattern) ? $accommodation_url_pattern : '';
         $hotel_data = array(
             'layout' => $layout,
             'hotel_code' => $hotel_code,
@@ -650,7 +677,8 @@ class DHR_Hotel_Frontend {
             'columns' => intval($atts['columns']),
             'show_images' => filter_var($atts['show_images'], FILTER_VALIDATE_BOOLEAN),
             'show_amenities' => filter_var($atts['show_amenities'], FILTER_VALIDATE_BOOLEAN),
-            'show_description' => filter_var($atts['show_description'], FILTER_VALIDATE_BOOLEAN)
+            'show_description' => filter_var($atts['show_description'], FILTER_VALIDATE_BOOLEAN),
+            'accommodation_url_pattern' => $accommodation_url_pattern,
         );
 
         ob_start();

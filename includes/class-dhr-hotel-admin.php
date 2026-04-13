@@ -23,6 +23,7 @@ class DHR_Hotel_Admin {
         add_action('admin_post_dhr_delete_package', array($this, 'delete_package'));
         add_action('admin_post_dhr_save_where_to_find_us_property_map', array($this, 'save_where_to_find_us_property_map'));
         add_action('admin_post_dhr_delete_where_to_find_us_property_map', array($this, 'delete_where_to_find_us_property_map'));
+        add_action('admin_post_dhr_save_room_settings', array($this, 'save_room_settings'));
 
         // SHR WS Shop API (REST) sync actions
         add_action('admin_post_dhr_sync_shr_hotel', array($this, 'sync_shr_hotel'));
@@ -295,6 +296,24 @@ class DHR_Hotel_Admin {
      */
     public function display_room_settings() {
         include DHR_HOTEL_PLUGIN_PATH . 'templates/admin/room-settings.php';
+    }
+
+    /**
+     * Save Room Settings (accommodation URL pattern for card layout "View Room" links).
+     */
+    public function save_room_settings() {
+        if (!current_user_can('manage_options')) {
+            wp_die(__('You do not have sufficient permissions to access this page.', 'dhr-hotel-management'));
+        }
+
+        check_admin_referer('dhr_room_settings_nonce');
+
+        $pattern = isset($_POST['dhr_room_accommodation_url_pattern']) ? wp_unslash($_POST['dhr_room_accommodation_url_pattern']) : '';
+        $pattern = sanitize_textarea_field($pattern);
+        update_option('dhr_room_accommodation_url_pattern', $pattern);
+
+        wp_redirect(admin_url('admin.php?page=dhr-hotel-room-settings&message=saved'));
+        exit;
     }
     
     /**
