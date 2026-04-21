@@ -442,7 +442,7 @@ $google_maps_url = isset($settings['google_maps_url']) ? $settings['google_maps_
         function getInfoWindowContent(hotel) {
             var templateElement = document.getElementById('head-office-info-window-template');
             var template = templateElement.innerHTML;
-            var bookNowText = 'Get A Quote'; // Default text
+            var bookNowText = 'Book Now'; // Default text
             var pluginUrl = (typeof dhrHotelsData !== 'undefined' && dhrHotelsData.pluginUrl) ? dhrHotelsData.pluginUrl : '';
 
             var content = template
