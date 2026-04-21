@@ -541,12 +541,6 @@ function dhr_hotel_room_card_element_id($room) {
     });
 
     document.addEventListener('DOMContentLoaded', function () {
-        var MOBILE_MAX_WIDTH = 767;
-
-        function isMobileSliderEnabled() {
-            return window.innerWidth <= MOBILE_MAX_WIDTH;
-        }
-
         function initRoomSliders() {
             document.querySelectorAll('.bys-room-image-slider').forEach(function (sliderEl) {
                 // Only init once
@@ -567,37 +561,17 @@ function dhr_hotel_room_card_element_id($room) {
                 });
             });
         }
-
-        function destroyRoomSliders() {
-            document.querySelectorAll('.bys-room-image-slider').forEach(function (sliderEl) {
-                if (sliderEl && sliderEl.swiper && typeof sliderEl.swiper.destroy === 'function') {
-                    // destroy(deleteInstance=true, cleanStyles=true)
-                    sliderEl.swiper.destroy(true, true);
-                }
-            });
+        if (typeof Swiper !== 'undefined') {
+            initRoomSliders();
         }
-
-        function syncRoomSliders() {
-            if (typeof Swiper === 'undefined') {
-                return;
-            }
-            if (isMobileSliderEnabled()) {
-                initRoomSliders();
-            } else {
-                destroyRoomSliders();
-            }
-        }
-
-        var resizeTimer = null;
-        window.addEventListener('resize', function () {
-            if (resizeTimer) {
-                window.clearTimeout(resizeTimer);
-            }
-            resizeTimer = window.setTimeout(function () {
-                syncRoomSliders();
-            }, 150);
-        });
-
-        syncRoomSliders();
     });
 </script>
+
+<style>
+    .bys-rooms-grid .bys-room-image-slider .bys-room-image-pagination {
+        display: flex !important;
+        bottom: 25px !important;
+        padding-left: 25px;
+        justify-content: flex-start;
+    }
+</style>

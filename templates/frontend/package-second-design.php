@@ -126,6 +126,13 @@ $book_now_checkout = function_exists('wp_date') ? wp_date('Y-m-d', current_time(
 <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/Swiper/8.4.5/swiper-bundle.css">
 <script src="https://cdnjs.cloudflare.com/ajax/libs/Swiper/8.4.5/swiper-bundle.min.js"></script>
 
+<style>
+    .second-packages__design .package-swiper-pagination {
+        display: flex !important;
+        margin-top: 25px;
+    }
+</style>
+
 <script>
     document.addEventListener('DOMContentLoaded', function () {
         var containers = document.querySelectorAll('.bys-packages .package-swiper');
@@ -157,9 +164,9 @@ $book_now_checkout = function_exists('wp_date') ? wp_date('Y-m-d', current_time(
                         slidesPerView: "auto",
                         spaceBetween: 15,
                     },
-                    767: { slidesPerView: 2, spaceBetween: 20, pagination: false },
-                    1024: { slidesPerView: 3, spaceBetween: 25, pagination: false },
-                    1280: { slidesPerView: 3, spaceBetween: 32, pagination: false }
+                    767: { slidesPerView: 2, spaceBetween: 20,},
+                    1024: { slidesPerView: 3, spaceBetween: 25,},
+                    1280: { slidesPerView: 3, spaceBetween: 32,}
                 }
             });
         });
