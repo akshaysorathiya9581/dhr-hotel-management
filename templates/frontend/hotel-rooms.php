@@ -141,6 +141,26 @@ function dhr_format_room_price($amount) {
     return number_format((int) $amount, 0, '.', ',');
 }
 }
+
+/**
+ * Stable element id for room cards (no bys-room- / bys-hotel-room- prefix).
+ */
+if (!function_exists('dhr_hotel_room_card_element_id')) {
+function dhr_hotel_room_card_element_id($room) {
+    $name = isset($room->room_type_name) ? (string) $room->room_type_name : '';
+    $slug = function_exists('sanitize_title')
+        ? sanitize_title($name)
+        : strtolower(trim(preg_replace('/[^0-9a-z]+/i', '-', $name), '-'));
+    if ($slug !== '') {
+        return $slug;
+    }
+    $code = isset($room->room_type_code) ? (string) $room->room_type_code : '';
+    $slug = function_exists('sanitize_title')
+        ? sanitize_title($code)
+        : strtolower(trim(preg_replace('/[^0-9a-z]+/i', '-', $code), '-'));
+    return $slug !== '' ? $slug : 'room';
+}
+}
 ?>
 
 <link rel='stylesheet' id='custom-icons-animation-css-css'
@@ -196,9 +216,7 @@ function dhr_format_room_price($amount) {
                 $first_image = !empty($room_images) ? $room_images[0] : 'https://dummyimage.com/1024x682/ccc/000';
                 $has_images = $show_images && !empty($room_images);
                 $room_price = isset($room->from_price) ? (int) $room->from_price : 0;
-                $room_card_id = 'bys-room-' . (function_exists('sanitize_title')
-                    ? sanitize_title((string) $room->room_type_name)
-                    : strtolower(trim(preg_replace('/[^0-9a-z]+/i', '-', (string) $room->room_type_name), '-')));
+                $room_card_id = dhr_hotel_room_card_element_id($room);
             ?>
                 <div class="bys-room-card" id="<?php echo esc_attr($room_card_id); ?>">
                     <!-- <span class="bys-room-price"></span> -->
@@ -300,9 +318,7 @@ function dhr_format_room_price($amount) {
                 $first_image = !empty($room_images) ? $room_images[0] : 'https://dummyimage.com/1024x682/ccc/000';
                 $has_images = $show_images && !empty($room_images);
                 $room_price = isset($room->from_price) ? (int) $room->from_price : 0;
-                $room_card_id = 'bys-room-' . (function_exists('sanitize_title')
-                    ? sanitize_title((string) $room->room_type_name)
-                    : strtolower(trim(preg_replace('/[^0-9a-z]+/i', '-', (string) $room->room_type_name), '-')));
+                $room_card_id = dhr_hotel_room_card_element_id($room);
             ?>
                 <div class="bys-room-card" id="<?php echo esc_attr($room_card_id); ?>">
                     <!-- <span class="bys-room-price"></span> -->
@@ -388,9 +404,7 @@ function dhr_format_room_price($amount) {
                 $room_images = !empty($room->images) && is_array($room->images) ? $room->images : array();
                 $first_image = !empty($room_images) ? $room_images[0] : $plugin_url . 'assets/images/package/2.png';
                 $room_price = isset($room->from_price) ? (int) $room->from_price : 0;
-                $room_card_id = 'bys-hotel-room-' . (function_exists('sanitize_title')
-                    ? sanitize_title((string) $room->room_type_name)
-                    : strtolower(trim(preg_replace('/[^0-9a-z]+/i', '-', (string) $room->room_type_name), '-')));
+                $room_card_id = dhr_hotel_room_card_element_id($room);
                 $view_room_href = class_exists('DHR_Hotel_Frontend')
                     ? DHR_Hotel_Frontend::build_room_accommodation_url($accommodation_url_pattern, $room)
                     : '';
